@@ -1,0 +1,34 @@
+﻿@model HealthTek_Shared_Libraries.EnvironmentalChanges
+
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create" onsubmit="return jQueryAjaxPost(this);">
+                <input type="hidden" asp-for="FkBaMonthlyReportsId"/>
+                <input type="hidden" asp-for="FkBaProgressNotesId"/>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Category" class="control-label"></label>
+                    <select asp-for="Category" class="ModalSelect" asp-items="ViewBag.Environmentals" data-live-search="true"></select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateOfOccurrence" class="control-label"></label>
+                    <input asp-for="DateOfOccurrence" type="date" asp-format="{0:yyy-MM-dd}" class="form-control" />
+                    <span asp-validation-for="DateOfOccurrence" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="AddToGraph" /> @Html.DisplayNameFor(model => model.AddToGraph)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Create");}
+            </form>
+        </div>
+    </div>
+</div>

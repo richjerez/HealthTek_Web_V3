@@ -1,0 +1,60 @@
+﻿@page "~/Settings/Profile"
+@using HealthTek_Shared_Libraries
+@model IndexModel
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+
+    var user = UserManager.GetUserAsync(User).Result;
+}
+
+<div class="row">
+    <div class="col-xl-8">
+        <partial name="_StatusMessage" for="StatusMessage" />
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+            </div>
+            <div class="card-body">
+                <form id="profile-form" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="d-none">
+                            <label asp-for="FormFile" class="custom-file-upload"></label>
+                            <input asp-for="FormFile" type="file" class="custom-file-upload" onchange="document.getElementById('imgId').src = window.URL.createObjectURL(this.files[0])">
+                            <span asp-validation-for="FormFile" class="custom-file-upload"></span>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <img class="mt-4 img-profile rounded-block profilepic" src="@user.Avatar" id="imgId">
+                            <a id="getFile" onclick="performClick('FormFile')" href="#">
+                                <small>
+                                    Edit Profile Photo
+                                    <i class="fas fa-edit fa-sm ml-1"></i>
+                                </small>
+                            </a>
+                        </div>
+                        <div class="col-xl-1" style="max-width: fit-content;"><div class="divider"></div></div>
+                        <div class="col-lg-7">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="Input.UserName"></label>
+                                <input asp-for="Input.UserName" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.PhoneNumber"></label>
+                                <input asp-for="Input.PhoneNumber" class="form-control" />
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <button id="update-profile-button" type="submit" class="btn btn-primary" style="float: right;" value="Upload">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

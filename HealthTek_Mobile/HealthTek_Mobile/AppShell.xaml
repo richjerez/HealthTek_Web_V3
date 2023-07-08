@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:HealthTek_Mobile.Views"
+       Title="HealthTek_Mobile"
+       x:Class="HealthTek_Mobile.AppShell">
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <Tab Title="Home"
+             Icon="icon_speedometer.png">
+            <ShellContent Title="AboutPage"
+                          Icon="icon_speedometer.png"
+                          ContentTemplate="{DataTemplate local:AboutPage}" />
+        </Tab>
+        <!--
+        Shell has implicit conversion operators that enable the Shell visual hierarchy to be simplified.
+        This is possible because a subclassed Shell object can only ever contain a FlyoutItem object or a TabBar object,
+        which can only ever contain Tab objects, which can only ever contain ShellContent objects.
+
+        The implicit conversion automatically wraps the ShellContent objects below in Tab objects.
+        -->
+        <ShellContent Title="Appointments"
+                      Icon="icon_calendar.png"
+                       />
+        <ShellContent Title="Clients"
+                      Icon="icon_staff.png"
+                      ContentTemplate="{DataTemplate local:EmployeesPage}" />
+        <ShellContent Title="Tasks"
+                      Icon="icon_to_do.png"
+                      ContentTemplate="{DataTemplate local:ItemsPage}" />
+        <ShellContent Title="Counters"
+                      Icon="icon_chart_bar.png"
+                      ContentTemplate="{DataTemplate local:ItemsPage}" />
+    </FlyoutItem>
+    <ShellContent Title="Any other Page"
+                  Icon="icon_about.png"
+                  />
+    <ShellContent Title="You might want"
+                  Icon="icon_about.png"
+                  />
+    <ShellContent Title="To include"
+                  Icon="icon_about.png"
+                  />
+    <ShellContent Title="That are not"
+                  Icon="icon_about.png"
+                  />
+    <ShellContent Title="Included in the Tabs"
+                  Icon="icon_about.png"
+                  />
+    <ShellContent Title="Logout"
+                  Icon="icon_logout.png"
+                  ContentTemplate="{DataTemplate local:LoginPage}" />
+</Shell>

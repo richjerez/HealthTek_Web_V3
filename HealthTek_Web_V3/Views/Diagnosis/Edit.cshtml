@@ -1,0 +1,37 @@
+﻿@model HealthTek_Shared_Libraries.Diagnosis
+
+<div class="card shadow p-3">
+    <div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" onsubmit="return jQueryAjaxPost(this);">
+            <input type="hidden" asp-for="DiagnosisId" />
+            <input type="hidden" asp-for="CreationDate" />
+            <input type="hidden" asp-for="FkClientsId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DiagnosisType" class="control-label"></label>
+                <select asp-for="DiagnosisType" class ="form-control" asp-items="ViewBag.Types"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiagnosisCode" class="control-label"></label>
+                <input asp-for="DiagnosisCode" class="form-control" />
+                <span asp-validation-for="DiagnosisCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiagnosisName" class="control-label"></label>
+                <input asp-for="DiagnosisName" class="form-control" />
+                <span asp-validation-for="DiagnosisName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group text-right">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+</div>

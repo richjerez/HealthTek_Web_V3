@@ -1,0 +1,140 @@
+﻿@model HealthTek_Shared_Libraries.Maladaptives
+<div class="shadow p-3">
+    <form asp-action="Edit" method="post" onsubmit="return jQueryAjaxPost(this);">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="FkBaAssessmentsId" />
+        <input type="hidden" asp-for="FkClientsId" />
+        <input type="hidden" asp-for="MaladaptivesId" />
+        <input type="hidden" asp-for="CreationDate" />
+        <input type="hidden" asp-for="LastUpdateDate" />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="MaladaptiveName" class="control-label"></label>
+                    <select asp-for="MaladaptiveName" class="form-control" asp-items="ViewBag.Maladaptives" data-live-search="true"><option selected disabled>Select Behavior</option></select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="MaladaptiveName" class="control-label"></label>
+                    <input asp-for="MaladaptiveName" class="form-control" />
+                    <span asp-validation-for="MaladaptiveName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="MaladaptiveIntensity" class="control-label"></label>
+                    <input asp-for="MaladaptiveIntensity" class="form-control" />
+                    <span asp-validation-for="MaladaptiveIntensity" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label asp-for="BaselineDuration" class="control-label"></label>
+                    <input asp-for="BaselineDuration" class="form-control" />
+                    <span asp-validation-for="BaselineDuration" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label asp-for="BaselineDurationUnit" class="select-label"></label>
+                    <select asp-for="BaselineDurationUnit" class="ModalSelect" asp-items="ViewBag.TimeFrame">
+                        <option selected disabled>Select Duration</option></select>
+                    <span asp-validation-for="BaselineDurationUnit" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline1" class="control-label"></label>
+                    <input asp-for="Baseline1" class="form-control" />
+                    <span asp-validation-for="Baseline1" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline1StartDate" class="control-label"></label>
+                    <input asp-for="Baseline1StartDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline1StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline1EndDate" class="control-label"></label>
+                    <input asp-for="Baseline1EndDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}"/>
+                    <span asp-validation-for="Baseline1EndDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline2" class="control-label"></label>
+                    <input asp-for="Baseline2" class="form-control" />
+                    <span asp-validation-for="Baseline2" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline2StartDate" class="control-label"></label>
+                    <input asp-for="Baseline2StartDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline2StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline2EndDate" class="control-label"></label>
+                    <input asp-for="Baseline2EndDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline2EndDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline3" class="control-label"></label>
+                    <input asp-for="Baseline3" class="form-control" />
+                    <span asp-validation-for="Baseline3" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline3StartDate" class="control-label"></label>
+                    <input asp-for="Baseline3StartDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline3StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline3EndDate" class="control-label"></label>
+                    <input asp-for="Baseline3EndDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline3EndDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CollectionMethod" class="control-label"></label>
+            <select asp-for="CollectionMethod" class="form-control" asp-items="ViewBag.Collection"><option selected disabled>Select Collection Method</option></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Topography" class="control-label"></label>
+            <textarea asp-for="Topography" class="form-control"></textarea>
+            <span asp-validation-for="Topography" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PrevalentSettingEvent" class="control-label"></label>
+            <textarea asp-for="PrevalentSettingEvent" class="form-control"></textarea>
+            <span asp-validation-for="PrevalentSettingEvent" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MaladaptiveComment" class="control-label"></label>
+            <textarea asp-for="MaladaptiveComment" class="form-control"></textarea>
+            <span asp-validation-for="MaladaptiveComment" class="text-danger"></span>
+        </div>
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Save");}
+    </form>
+
+</div>

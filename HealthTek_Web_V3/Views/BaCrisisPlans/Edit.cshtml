@@ -1,0 +1,138 @@
+﻿@model HealthTek_Shared_Libraries.BaCrisisPlan
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit" onsubmit="return jQueryAjaxPost(this);">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="BaCrisisPlanId" />
+                <input type="hidden" asp-for="FkBaAssessmentsId" />
+                <div class="form-group">
+                    <label asp-for="CrisisPlan"></label>
+                    <textarea asp-for="CrisisPlan" class="form-control"></textarea>
+                    <span asp-validation-for="CrisisPlan"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input asp-for="DoesApply" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="DoesApply"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsAssaultive" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsAssaultive"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsSelfInjurious" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsSelfInjurious"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsImpulsive" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsFireSetting"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsFireSetting" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsImpulsive"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsSelfMutilating" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsSelfMutilating"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsFamilyViolence" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsFamilyViolence"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsPriorPsychiatric" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsPriorPsychiatric"></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input asp-for="IsElopement" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsElopement"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsSexuallyOffending" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsSexuallyOffending"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsSubstanceAbuse" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsSubstanceAbuse"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsPsychotic" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsPsychotic"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsCopingWithLoss" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsCaringForIllFamily"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="IsCaringForIllFamily" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="IsCopingWithLoss"></label>
+                        </div>
+                        <div class="input-group">
+                            <input asp-for="OtherRisks" type="checkbox" style="margin: 4px;" />
+                            <label asp-for="OtherRisks"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OtherRiskFactor"></label>
+                    <input asp-for="OtherRiskFactor" class="form-control" />
+                    <span asp-validation-for="OtherRiskFactor"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label style="font-weight: bold;">Suicidality</label>
+                            <div class="input-group">
+                                <input asp-for="SuicidalityNotPresent" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="SuicidalityNotPresent"></label>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="SuicidalityIdeation" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="SuicidalityIdeation"></label>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="SuicidalityPlan" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="SuicidalityPlan"></label>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="SuicidalityMeans" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="SuicidalityMeans"></label>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="SuicidalityPriorAttempt" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="SuicidalityPriorAttempt"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label style="font-weight: bold;">Homicidality</label>
+                            <div class="input-group">
+                                <input asp-for="HomicidalityNotPresent" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="HomicidalityNotPresent"></label>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="HomicidalityIdeation" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="HomicidalityIdeation"></label>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="HomicidalityPlan" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="HomicidalityPlan"></label>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="HomicidalityMeans" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="HomicidalityMeans"></label>
+                            </div>
+                            <div class="input-group">
+                                <input asp-for="HomicidalityPriorAttempt" type="checkbox" style="margin: 4px;" />
+                                <label asp-for="HomicidalityPriorAttempt"></label>
+                            </div>
+                        </div>
+                    </div>
+
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Save");}
+            </form>
+        </div>
+    </div>
+</div>

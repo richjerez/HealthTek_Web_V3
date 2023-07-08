@@ -1,0 +1,390 @@
+﻿@model HealthTek_Shared_Libraries.BaProgressNotes
+@section Styles{
+<!-- Custom styles for this page -->
+<link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 sticky-top pb-0">
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="m-0 font-weight-bold text-primary datatitle">
+                    Behavior Analysis Daily Progress Note<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                </h4>
+            </div>
+            <div class="col-md-6 text-right">
+                <small>Service Code:</small>
+                <p class="mb-0">@Model.FkAppointments.FkServiceCodes.CodeTitle</p>
+            </div>
+        </div>
+        <hr class="mt-3" />
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <small>Client:</small>
+                <a class="d-block" asp-controller="Clients" asp-action="Details" asp-route-id="@Model.FkAppointments.FkClientsId">@Model.FkAppointments.FkClients.FullName</a>
+                <span>@Model.FkAppointments.FkClients.ClientsFacilities.FirstOrDefault().ChartNumber</span>
+            </div>
+            <div class="col-md-3 border-right">
+                <small>From - To:</small>
+                <span class="d-block">@Model.FkAppointments.StartTime</span>
+                <span>@Model.FkAppointments.EndTime</span>
+            </div>
+            <div class="col-md-3 border-right">
+                <small>Location Start:</small>
+                <span class="d-block">@Model.FkAppointments.FkStartLocation.Address</span>
+                <span>@Model.FkAppointments.FkStartLocation.CityState,@Model.FkAppointments.FkStartLocation.Zipcode</span>
+            </div>
+            <div class="col-md-3">
+                <small>Location End:</small>
+                <span class="d-block">@Model.FkAppointments.FkEndLocation.Address</span>
+                <span>@Model.FkAppointments.FkEndLocation.CityState,@Model.FkAppointments.FkEndLocation.Zipcode</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BaProgressNotesId" />
+            <input type="hidden" asp-for="FkAppointmentsId" />
+            <input type="hidden" asp-for="CreationDate" />
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <input class="form-check-input" asp-for="IsRiskBehavior" /> @Html.DisplayNameFor(model => model.IsRiskBehavior)
+                            <small class="d-block">
+                                Risk Behavior Monitored (If Risk Behavior)
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-lg-4 text-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="IsRiskCrisisInvolved" /> @Html.DisplayNameFor(model => model.IsRiskCrisisInvolved)
+                            </label>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="IsRiskMonitored" /> @Html.DisplayNameFor(model => model.IsRiskMonitored)
+                            </label>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="IsRiskAddressed" /> @Html.DisplayNameFor(model => model.IsRiskAddressed)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label asp-for="ClientParticipation" class="select-label"></label>
+                        <select asp-for="ClientParticipation" class="selectpicker" asp-items="ViewBag.ClientParticipations"></select>
+                        <span asp-validation-for="ClientParticipation" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- Card Header - Accordion -->
+            <a href="#collapseMedications" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseMedications">
+                <h6 class="m-0 font-weight-bold text-primary">Medications</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="collapseMedications">
+                <div class="card-body shadow mb-2">
+
+                    <button type="button" onclick="AddEditElements(0, 'Medications', false, @Model.FkAppointments.FkClientsId)"
+                            class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text align-self-md-center">New Medication</span>
+                    </button>
+
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable" width="100%" cellspacing="0">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>MedicationName</th>
+                                    <th>
+                                        Dosage
+                                    </th>
+                                    <th>
+                                        Duration
+                                    </th>
+                                    <th>
+                                        Prescribing Physician
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th data-orderable="false" class="d-print-none"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.FkAppointments.FkClients.Medications)
+                                {
+                                    <tr ondblclick="AddEditElements(@item.MedicationsId, 'Medications')">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.MedicationName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Dosage)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Duration)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PrescribingPhysician)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td class="text-right d-print-none">
+                                            <button onclick="DeleteElement(@item.MedicationsId, 'Medications')" class="btn btn-outline-danger " type="button">
+                                                <span class="text">
+                                                    <i class="fa fa-trash"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            @* Add Environmentals *@
+            <!-- Card Header - Accordion -->
+            <a href="#collapseEnvironmental" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseEnvironmental">
+                <h6 class="m-0 font-weight-bold text-primary">Environmental Changes</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="collapseEnvironmental">
+                <div class="card-body shadow mb-2">
+                    <button type="button" onclick="AddEditElements(0, 'EnvironmentalChanges', false,@Model.BaProgressNotesId, 'FkBaProgressNotesId')"
+                            class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text align-self-md-center">New Environmental</span>
+                    </button>
+
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable1" width="100%" cellspacing="0">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th data-orderable="false" class="d-print-none"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.EnvironmentalChanges)
+                                {
+                                    <tr ondblclick="AddEditElements(@item.EnvironmentalChangesId, 'EnvironmentalChanges')">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DateOfOccurrence)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Category)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td class="text-right d-print-none">
+                                            <button onclick="DeleteElement(@item.EnvironmentalChangesId, 'EnvironmentalChanges')" class="btn btn-outline-danger " type="button">
+                                                <span class="text">
+                                                    <i class="fa fa-trash"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Card Header - Accordion -->
+            <a href="#collapsePreferences" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsePreferences">
+                <h6 class="m-0 font-weight-bold text-primary">Preferences</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="collapsePreferences">
+                <div class="card-body shadow mb-4">
+                    <div class="text-right d-print-none">
+                        <a onclick="AddEditElements(0, 'Preferences', false, @Model.FkAppointments.FkClients.ClientsId)" class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-plus fa-sm text-white-50"></i>
+                            </span>
+                            <span class="text">New Preference</span>
+                        </a>
+                    </div>
+
+                    @if (Model.FkAppointments.FkClients.Preferences != null)
+                    {
+                        var report = Model.FkAppointments.FkClients.Preferences;
+                        await Html.RenderPartialAsync("~/Views/Preferences/Details.cshtml", report);
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="button" onclick="AddEditElements(0, 'Preferences', false, @Model.FkAppointments.FkClientsId)"
+                                    class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-plus fa-sm text-white-50"></i>
+                                    </span>
+                                    <span class="text align-self-md-center">New Preference</span>
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @* Maladaptives *@
+            <div id="Maladaptives" class="card shadow p-3 mb-4 mt-4">
+                <h4>Maladaptive Behaviors & Replacements</h4>
+                <hr />
+
+                @foreach (var maladaptives in Model.FkAppointments.FkClients.Maladaptives)
+                {
+                    var mal = maladaptives.MaladaptiveMeasurements;
+                    if (mal != null)
+                    {
+                        @* Maladaptive *@
+                        await Html.RenderPartialAsync("~/Views/MaladaptiveMeasurements/Details.cshtml", mal);
+                    }
+                    else
+                    {
+                        <div class="card shadow">
+                            <div class="card-header py-3 bg-secondary">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6 class="m-0 font-weight-bold text-white datatitle">
+                                            @maladaptives.MaladaptiveName<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-6 text-right d-print-none">
+                                        <a onclick="AddEditElements(0, 'MaladaptiveMeasurements', false, @maladaptives.MaladaptivesId, @Model.BaProgressNotesId)" class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-plus fa-sm text-white-50"></i>
+                                            </span>
+                                            <span class="text">New Measurements</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    if (maladaptives.FkReplacements != null)
+                    {
+                        var item = maladaptives.FkReplacements;
+                        var measurements = item.ReplacementMeasurements;
+                        if (measurements != null)
+                        {
+                            @* Replacements *@
+                            await Html.RenderPartialAsync("~/Views/ReplacementMeasurements/Details.cshtml", measurements);
+                        }
+                        else
+                        {
+                            <div class="card shadow">
+                                <div class="card-header py-3 bg-danger">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6 class="m-0 font-weight-bold text-white datatitle">
+                                                @maladaptives.MaladaptiveName (Replacement)<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                                            </h6>
+                                        </div>
+                                        <div class="col-md-6 text-right d-print-none">
+                                            <a onclick="AddEditElements(0, 'ReplacementMeasurements', false, @item.ReplacementsId, @Model.BaProgressNotesId)" class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-plus fa-sm text-white-50"></i>
+                                                </span>
+                                                <span class="text">New Measurement</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IncidentReport" class="control-label"></label>
+                <textarea asp-for="IncidentReport" class="form-control"></textarea>
+                <span asp-validation-for="IncidentReport" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reinforcers" class="select-label">Reinforcers</label>
+                <select asp-for="Reinforcers" class="selectpicker" asp-items="ViewBag.FkReinforcersCatalogId" multiple data-live-search="true">
+                    <option disabled>Select Reinforcers</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReinforcerComments" class="control-label"></label>
+                <textarea asp-for="ReinforcerComments" class="form-control"></textarea>
+                <span asp-validation-for="ReinforcerComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CaregiverFeedback" class="select-label"></label>
+                <select asp-for="CaregiverFeedback" class="selectpicker" asp-items="ViewBag.CaregiverFeedback"
+                multiple data-live-search="true" data-selected-text-format="count > 1">
+                    <option disabled>Select Caregiver Feedback</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProgressNoteSummary" class="control-label"></label>
+                <textarea asp-for="ProgressNoteSummary" class="form-control"></textarea>
+                <span asp-validation-for="ProgressNoteSummary" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <input class="form-check-input" asp-for="AnalystPresent" />
+                    <label asp-for="AnalystPresent"></label>
+                </div>
+            </div>
+
+            @* Disclaimer *@
+            <div class="container"><div class="alert alert-warning text-center"><strong>Disclaimer:</strong> Applying the E-Signature will save the form and route the user to the Quality Asurrance page.</div></div>
+            @* E-Signature*@
+            <div class="d-flex justify-content-center">
+                <div style="padding: 1rem;">
+                    <span style="vertical-align: -webkit-baseline-middle;">
+                        @Model.FkAppointments.FkEmployees.EmployeesRoleNames.FirstOrDefault().FkRoleNames.RoleName:
+                        @Model.FkAppointments.FkEmployees.FullName
+                    </span>
+                </div>
+                <div style="border: dashed;padding: 1rem;">
+                    <input type="submit" value="Apply E-Sign" class="btn btn-outline-primary mb-0 mt-0">
+                </div>
+                <div style="padding: 1rem;">
+                    <span style="vertical-align: -webkit-baseline-middle;">
+                        @DateTime.Now.ToShortDateString()
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+<!-- Page level plugins -->
+<script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts starts -->
+<script src="~/js/demo/datatables-demo.js"></script>
+<script src="~/js/Cruds/BaProgressNotes.js"></script>
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

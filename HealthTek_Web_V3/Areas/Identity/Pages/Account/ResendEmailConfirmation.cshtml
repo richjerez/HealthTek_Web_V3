@@ -1,0 +1,63 @@
+﻿@page "~/ResendEmailConfirmation"
+@model ResendEmailConfirmationModel
+@{
+    ViewData["Title"] = "Resend email confirmation";
+}
+<div class="container pl-0 pr-0 cardlayout">
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900">RESEND EMAIL CONFIRMATION</h1>
+                                    <hr />
+                                </div>
+                                <form class="user" id="resendemail" method="post">
+                                    <div asp-validation-summary="All" class="text-danger"></div>
+                                    <div class="form-group">
+                                        <label asp-for="Input.Email"></label>
+                                        <input asp-for="Input.Email" class="form-control" />
+                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group" style="text-align: -webkit-center;">
+                                        <div class="g-recaptcha" data-sitekey="6LcljgodAAAAAOO0GSXW_JqWAk5hUeGKyKt1evkZ"></div>
+                                    </div>
+                                    <a onclick="document.getElementById('resendemail').submit()" class="btn btn-primary btn-user btn-block" href="#">
+                                        Resend
+                                    </a>
+                                </form>
+                                <hr />
+                                <div class="text-center">
+                                    <a class="label" asp-page="./Register">Create an Account!</a>
+                                </div>
+                                <div class="text-center">
+                                    <a class="label" asp-page="./Login">Already have an Account? Sign-In!</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Google ReCaptcha Api-->
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcljgodAAAAAOO0GSXW_JqWAk5hUeGKyKt1evkZ"></script>
+    <script>
+        grecaptcha.enterprise.ready(function () {
+            grecaptcha.enterprise.execute('6LcljgodAAAAAOO0GSXW_JqWAk5hUeGKyKt1evkZ', { action: 'login' }).then(function (token) { console.log("User logged in") });
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,115 @@
+﻿@model HealthTek_Shared_Libraries.Facilities
+
+@{
+    ViewData["Title"] = "Facility Profile";
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+<div class="card shadow mb-4">
+    <a class="d-block card-header py-3" onclick="LoadEdit('@Model.FacilitiesId', 'Facilities')" href="#">
+        <i class="fas fa-user-edit text-primary float-right"></i>
+        <h6 class="m-0 font-weight-bold text-primary">Facility Profile</h6>
+    </a>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-5">
+                <h6>Quick Facts</h6>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <img class="img-profile rounded-block m-auto d-block"
+                             src="@ViewBag.Avatar" style="width:30%">
+                        <span class="d-block font-weight-bold">
+                            @Model.FacilityName (@Model.FacilityInitials)
+                        </span>
+                        <hr />
+                    </div>
+                    <div class="col-lg-12">
+                        <small class="d-block font-weight-bold">Arrival Date</small>
+                        <span class="d-block">@Model.DateOfArrival.ToString("MMM dd @h:mm tt")</span>
+                        <small class="d-block font-weight-bold">Supervisor</small>
+                        <span class="d-block">@Model.Supervisor</span>
+                        <small class="d-block font-weight-bold">Main Phone</small>
+                        <span class="d-block">@Model.PhoneNumber</span>
+                        <small class="d-block font-weight-bold">Alternate Phone</small>
+                        <span class="d-block">@Model.AlternateNumber</span>
+                        <small class="d-block font-weight-bold">Address</small>
+                        <span class="d-block">@Model.Locations.FullPrimaryAddress</span>
+                        <small class="d-block font-weight-bold">Website</small>
+                        <a class="d-block" href="@Model.FacilityUrl">@Model.FacilityUrl</a>
+                        <small class="d-block font-weight-bold">Operating Counties</small>
+                        <span class="d-block">@Model.OperatingStartTime - @Model.OperatingEndTime @Model.Timezone</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div class="divider d-none d-sm-block"></div>
+            </div>
+            <div class="col-lg-6">
+                <h6>Facility Dashboard</h6>
+                <hr>
+                <div class="col-lg-12">
+                    <small class="d-block font-weight-bold">Operating Counties</small>
+                    <div>
+                        @foreach (var facility in Model.FacilitiesOperatingCounties)
+                        {
+                            <a class="d-inline-block status-success" style="vertical-align:middle"
+                               onclick="AddEditElements(@facility.FacilitiesOperatingCountiesId,'FacilitiesOperatingCounties')" href="#"><span>@facility.FkOperatingCounties.County</span></a>
+                        }
+                        <button onclick="AddEditElements(0, 'FacilitiesOperatingCounties', false,@Model.FacilitiesId)" class="btn btn-outline-primary d-print-none">
+                            <span class="text">
+                                <i class="fa fa-plus"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <small class="d-block font-weight-bold mt-2">Clients/Employees</small>
+                    <a class="d-inline-block status-danger" style="min-width: 40px;"><i class="fa fa-users"></i><span class="d-block">@ViewBag.ClientTotal</span></a>
+                    <a class="d-inline-block status-primary" style="min-width: 40px;"><i class="fa fa-id-badge"></i><span class="d-block">@ViewBag.EmployeeTotal</span></a>
+                    <small class="d-block font-weight-bold mt-2">Total Billing</small>
+                    <a class="d-inline-block status-danger"><small>Previous Month</small><span class="d-block">$@ViewData["PrevMonth"]</span></a>
+                    <a class="d-inline-block status-primary"><small>Current Month</small><span class="d-block">$@ViewData["CurrentMonth"]</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" id="myTab" role="tablist" style="float: none!important;">
+    @foreach (var item in ViewBag.Tabs)
+    {
+        <li class="nav-item">
+            <a class="nav-link @item.Active" asp-action="Details" asp-route-id="@Model.FacilitiesId" asp-route-table="@item.Name">@item.Name</a>
+        </li>
+    }
+</ul>
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="@ViewBag.TableName" role="tabpanel" aria-labelledby="home-tab">
+        <partial name="@ViewBag.TableName" model="@ViewBag.Table" />
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <!-- CSV Export scripts -->
+    <script type="text/javascript" src="~/js/Exports/CSVExport.js"></script>
+
+
+
+    <!-- Page level custom scripts starts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+
+}

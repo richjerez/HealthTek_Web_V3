@@ -1,0 +1,153 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Clients>
+@{
+    ViewData["Title"] = "Clients";
+    ViewData["ActivePage"] = "Clients";
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+<div class="">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                        @ViewData["Title"]<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;" onclick="AddEditElements(0, 'Clients')"></i>
+                    </h6>
+                </div>
+                <div class="col-md-8 text-right">
+                    <a asp-controller="Clients" asp-action="Create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">New @ViewData["Title"]</span>
+                    </a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="window.print()">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-print fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">Print</span>
+                    </a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" asp-controller="Report" asp-action="Get" asp-route-ClassName="Clients" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-pdf fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">PDF</span>
+                    </a>
+                    <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="ExportCSV('Clients',8)">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-csv fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">CSV</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>
+                                Facility
+                            </th>
+                            <th>
+                                Chart Number
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Phone Number
+                            </th>
+                            <th style="text-align: center; padding-right: 11px;">
+                                Status
+                            </th>
+                            <th>
+                                Auth Note
+                            </th>
+                            <th data-orderable="false" class="d-print-none"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="TableBody">
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr ondblclick="LoadEdit('@item.ClientsId','Clients')">
+
+                                    @if (item.ClientsFacilities.Count != 0)
+                                    {
+                                        <td>
+                                            <a asp-controller="Facilities" asp-action="Details" asp-route-id="@item.ClientsFacilities.FirstOrDefault().FkFacilitiesId">
+                                                @item.ClientsFacilities.FirstOrDefault().FkFacilities.FacilityName
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @item.ClientsFacilities.FirstOrDefault().ChartNumber
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+
+                                    }
+                                    <td>
+                                        <a asp-controller="Clients" asp-action="Details" asp-route-id="@item.ClientsId" class="FullName">@Html.DisplayFor(modelItem => item.FullName)</a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MainPhoneNumber)
+                                    </td>
+                                    <td>
+                                        <a class="status-@item.ClientStatus">@Html.DisplayFor(modelItem => item.ClientStatus)</a>
+                                    </td>
+                                    <td>
+                                        @if (item.Authorizations.Count != 0 && item.Authorizations.FirstOrDefault().AuthorizationNotes.Count != 0)
+                                        {
+                                            <small>@item.Authorizations.FirstOrDefault().AuthorizationNotes.FirstOrDefault().Notes</small>
+                                        }
+                                        else
+                                        {
+                                            <small>No Note To display</small>
+                                        }
+                                    </td>
+                                    <td class="text-right d-print-none">
+                                        <button onclick="DeleteElement('@item.ClientsId', 'Clients')" href="#" class="btn btn-outline-danger ">
+                                            <span class="text">
+                                                <i class="fa fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- CSV Export scripts -->
+    <script type="text/javascript" src="~/js/Exports/CSVExport.js"></script>
+    <!-- Page level custom scripts starts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <script>
+        $(document).ready(async function () {
+            await loadScript("/js/afterLoad.js");
+            // Do whatever you want to do after script is ready
+        });
+
+    </script>
+
+}

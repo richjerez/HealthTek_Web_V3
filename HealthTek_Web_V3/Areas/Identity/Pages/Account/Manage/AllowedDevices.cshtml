@@ -1,0 +1,61 @@
+﻿@page "~/Settings/ManageDevices"
+@model HealthTek_Web_V3.Areas.Identity.Pages.Account.Manage.AllowedDevicesModel
+@{
+    ViewData["Title"] = "Manage Devices";
+    ViewData["ActivePage"] = ManageNavPages.AllowedDevices;
+}
+<!-- Content Row -->
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-8 mb-4">
+        <div class="alert alert-success d-none"  id="toggleDeviceStatus">
+            <small id="DeviceStatus">
+            </small><button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" style="font-size:20px">×</span>
+            </button>
+        </div>
+        <div class="alert alert-warning"><small>To allow/block a device simply check/uncheck the corresponding checkbox.</small></div>
+        <div class="card border-left-primary shadow">
+            <div class="card-body">
+                <div class="text-xs font-weight-bold text-uppercase">
+                    Devices
+                </div>
+                <div class="row no-gutters align-items-center">
+                    @foreach (var info in Model.userInfo)
+                    {
+                        var check = "";
+                        if (info.Status)
+                        {
+                            check = "checked";
+                        }
+                        <div class="col-12">
+                            <hr />
+                            <div class="mb-0">
+                                <small>
+                                    <input class="mt-2 mr-2" type="checkbox" id="@info.Id" name="Status" @check onclick="ToggleDeviceAccess(@info.Id)">@info.Agent - @info.Browser [@info.LocalAddress]
+                                </small>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    function ToggleDeviceAccess(DeviceId) {
+        var url = "/Users/ToggleDeviceAccess/" + DeviceId;
+        fetch(url)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                var devicestatus = document.getElementById("DeviceStatus");
+                var alertdevice = document.getElementById("toggleDeviceStatus");
+                alertdevice.classList.remove("d-none");
+                devicestatus.innerText = data.device;
+            });
+        }
+</script>

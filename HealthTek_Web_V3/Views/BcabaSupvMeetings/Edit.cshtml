@@ -1,0 +1,66 @@
+﻿@model HealthTek_Shared_Libraries.BcabaSupvMeetings
+
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit" onsubmit="return jQueryAjaxPost(this);">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="BcabaSupvMeetingsId" />
+                <input type="hidden" asp-for="FkSupervisionsId" />
+                <input type="hidden" asp-for="FkBcabaSignatureId" />
+                <input type="hidden" asp-for="FkSupervisorSignatureId" />
+                <input type="hidden" asp-for="CreationDate" />
+                <input type="hidden" asp-for="FkSupervisorId" />
+                <h6>Supervisor Credential Type (select one):</h6>
+                <div class="form-group form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" asp-for="IsBcbaCredential" value="true" /> 
+                        BCBA
+                    </label>
+                </div>
+                <div class="form-group form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" asp-for="IsBcbaCredential" value="false" /> 
+                        ABPP/ABA
+                    </label>
+                </div>
+                <h6>Category of Supervision (select one):</h6>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" asp-for="IsFirstThousand" value="true" /> 
+                        5% of service delivery hours (first 1,000 service hours post-certification)
+                    </label>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" asp-for="IsFirstThousand" value="false" /> 
+                        2% of service delivery hours (after first 1,000 service hours)
+                    </label>
+                </div>
+                <h6>Service Observation Occurred (required quarterly):</h6>
+                <div class="form-group form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" asp-for="WasObserved" value="true" />
+                        Yes
+                    </label>
+                </div>
+                <div class="form-group form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" asp-for="WasObserved" value="false" />
+                        No
+                    </label>
+                </div>
+                <hr class="mt-0"/>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" name="Sign"
+                                   type="checkbox" onchange="this.value=this.checked" />
+                            Sign Form
+                        </label>
+                    </div>
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Save");}
+            </form>
+        </div>
+    </div>
+
+</div>

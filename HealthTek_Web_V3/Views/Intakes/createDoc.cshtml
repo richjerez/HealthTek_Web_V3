@@ -1,0 +1,52 @@
+﻿@model HealthTek_Shared_Libraries.Documents
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input asp-for="DocumentType" type="hidden" value="Client"/>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label asp-for="DocumentStatus" class="control-label"></label>
+            <select asp-for="DocumentStatus" class="form-control" asp-items="ViewBag.Status"></select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="DocumentEffectiveDate" class="control-label"></label>
+            <input asp-for="DocumentEffectiveDate" class="form-control" />
+            <span asp-validation-for="DocumentEffectiveDate" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="DocumentExpirationDate" class="control-label"></label>
+            <input asp-for="DocumentExpirationDate" class="form-control" />
+            <span asp-validation-for="DocumentExpirationDate" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label asp-for="DocumentTitle" class="control-label"></label>
+    <select asp-for="DocumentTitle" class="form-control" asp-items="ViewBag.DocName"></select>
+    <span asp-validation-for="DocumentTitle" class="text-danger"></span>
+</div>
+<label class="control-label" for="DocumentTitle">Document</label>
+<div class="custom-file mb-2">
+    <input type="file" class="custom-file-input" asp-for="customFiles">
+    <label class="custom-file-label" for="customFiles">Choose file</label>
+</div>
+<div class="form-group">
+    <label asp-for="DocumentDescription" class="control-label"></label>
+    <textarea asp-for="DocumentDescription" class="form-control"></textarea>
+    <span asp-validation-for="DocumentDescription" class="text-danger"></span>
+</div>
+@{
+    await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml", "Save");
+}
+
+<script>
+    var intakesId = document.getElementById("IntakesId").value;
+    var newIntakesId = document.getElementById("FkIntakesId");
+    newIntakesId.value = intakesId;
+</script>

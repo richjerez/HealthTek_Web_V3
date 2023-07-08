@@ -1,0 +1,28 @@
+﻿@model HealthTek_Shared_Libraries.IntakeDocsCatalog
+
+<div class="container">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Create" onsubmit="return jQueryAjaxPost(this);">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="IntakeDocName" class="control-label"></label>
+                            <input asp-for="IntakeDocName" class="form-control" />
+                            <span asp-validation-for="IntakeDocName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="IntakeDocDescription" class="control-label"></label>
+                            <textarea asp-for="IntakeDocDescription" class="form-control"></textarea>
+                            <span asp-validation-for="IntakeDocDescription" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary float-right" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

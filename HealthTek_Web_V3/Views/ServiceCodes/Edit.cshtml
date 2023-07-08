@@ -1,0 +1,59 @@
+﻿@model HealthTek_Shared_Libraries.ServiceCodes
+
+<div class="container">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Edit" onsubmit="return jQueryAjaxPost(this);">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ServiceCodesId" />
+                        <input type="hidden" asp-for="ServiceCodeType" />
+                        <input type="hidden" asp-for="CreationDate" />
+                        <div class="form-group">
+                            <label asp-for="ServiceCodeType" class="control-label"></label>
+                            <select asp-for="ServiceCodeType" class="ModalSelect" asp-items="ViewBag.Types"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CptCode" class="control-label"></label>
+                            <input asp-for="CptCode" class="form-control" />
+                            <span asp-validation-for="CptCode" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ModifierFirst" class="control-label"></label>
+                            <input asp-for="ModifierFirst" class="form-control" />
+                            <span asp-validation-for="ModifierFirst" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ModifierSecond" class="control-label"></label>
+                            <input asp-for="ModifierSecond" class="form-control" />
+                            <span asp-validation-for="ModifierSecond" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CodeTitle" class="control-label"></label>
+                            <input asp-for="CodeTitle" class="form-control" />
+                            <span asp-validation-for="CodeTitle" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CodeDescription" class="control-label"></label>
+                            <input asp-for="CodeDescription" class="form-control" />
+                            <span asp-validation-for="CodeDescription" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CodeRate" class="control-label"></label>
+                            <input asp-for="CodeRate" class="form-control" />
+                            <span asp-validation-for="CodeRate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CodeRateType" class="control-label"></label>
+                            <select asp-for="CodeRateType" class="ModalSelect" asp-items="ViewBag.CodeRateType"></select>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary float-right" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

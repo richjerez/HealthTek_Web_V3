@@ -1,0 +1,42 @@
+﻿@model HealthTek_Shared_Libraries.Medications
+
+<div class="card shadow p-3">
+    <div class="col-md-12">
+        <form asp-action="Create" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="FkClientsId" type="hidden"/>
+            <div class="form-group">
+                <label asp-for="MedicationName" class="control-label"></label>
+                <select asp-for="MedicationName" asp-items="ViewBag.Medications" class="ModalSelect" data-live-search="true">
+                    <option disabled selected>Select Medication</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Frequency" class="control-label"></label>
+                <input asp-for="Frequency" class="form-control" />
+                <span asp-validation-for="Frequency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dosage" class="control-label"></label>
+                <input asp-for="Dosage" class="form-control" />
+                <span asp-validation-for="Dosage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrescribingPhysician" class="control-label"></label>
+                <input asp-for="PrescribingPhysician" class="form-control" />
+                <span asp-validation-for="PrescribingPhysician" class="text-danger"></span>
+            </div>
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Create");}
+        </form>
+    </div>
+</div>

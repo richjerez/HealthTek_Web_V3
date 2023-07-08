@@ -1,0 +1,30 @@
+﻿@model HealthTek_Shared_Libraries.Dashboards
+
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit" onsubmit="return jQueryAjaxPost(this);">
+                <input type="hidden" asp-for="DashboardId" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="DashboardName" class="control-label"></label>
+                    <input asp-for="DashboardName" class="form-control" />
+                    <span asp-validation-for="DashboardName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Widgets" class="control-label"></label>
+                    <select asp-for="Widgets" class="ModalSelect" asp-items="ViewBag.Widgets" multiple data-selected-text-format="count > 1" data-live-search="true">
+                        <option disabled>Select Widgets</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <input asp-for="@Model.MainView" />
+                    <label asp-for="MainView" class="control-label"></label>
+                    <span asp-validation-for="MainView" class="text-danger"></span>
+                </div>
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Save");}
+            </form>
+        </div>
+    </div>
+</div>
+

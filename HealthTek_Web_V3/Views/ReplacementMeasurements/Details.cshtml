@@ -1,0 +1,57 @@
+﻿@model HealthTek_Shared_Libraries.ReplacementMeasurements
+
+@{
+    var item = Model.FkReplacements;
+    var name = new string(item.ReplacementName.Where(c => !char.IsWhiteSpace(c)).ToArray());
+    var measurements = item.ReplacementMeasurements;
+    var maladaptives = item.FkMaladaptives;
+}
+<!-- Card Header - Accordion -->
+<a href="#collapse-@name" class="d-block card-header py-3 collapsed bg-danger" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse-@name">
+    <h6 class="m-0 font-weight-bold text-white">@maladaptives.MaladaptiveName (Replacement)</h6>
+</a>
+<!-- Card Content - Collapse -->
+<div class="collapse" id="collapse-@name">
+    <div class="card-body shadow">
+        <button type="button" onclick="AddEditElements(@measurements.ReplacementMeasurementsId, 'ReplacementMeasurements', false, @item.ReplacementsId)"
+                class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+            <span class="icon text-white-50">
+                <i class="fas fa-edit fa-sm text-white-50"></i>
+            </span>
+            <span class="text align-self-md-center">Update Measurements</span>
+        </button>
+        <h5>@item.ReplacementName</h5>
+
+        @switch (item.CollectionMethod)
+        {
+            case "Trials":
+                <span class="d-block">Succesfull Trials/Total Tials: @measurements.SuccessfulTrials / @measurements.TotalTrials</span>
+                break;
+            case "Duration":
+                <span class="d-block">Duration: @measurements.Duration - @measurements.DurationUnit</span>
+                break;
+        }
+        @{
+            var sto = item.ShortTermObjectives.Where(m => m.IsCurrent).FirstOrDefault();
+            var lto = item.LongTermObjectives.Where(m => m.IsCurrent).FirstOrDefault();
+        }
+        @if (sto != null)
+        {
+            <div class="form-group">
+                <label class="control-label">Current Short Term Objective</label>
+                <span class="d-block">@sto.Description</span>
+            </div>
+        }
+        @if (lto != null)
+        {
+            <div class="form-group">
+                <label class="control-label">Current Long Term Objective</label>
+                <span class="d-block">@lto.Description</span>
+            </div>
+        }
+        <div class="form-group">
+            <label class="control-label">Comment</label>
+            <span class="d-block">@Model.ReplacementMeasureComment</span>
+        </div>
+    </div>
+</div>

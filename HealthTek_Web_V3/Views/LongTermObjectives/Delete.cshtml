@@ -1,0 +1,59 @@
+﻿@model HealthTek_Shared_Libraries.LongTermObjectives
+@{
+    var name = "";
+    var ModelName = "";
+    switch (Model.LtoType)
+    {
+        case "Maladaptive":
+            if (Model.FkMaladaptives != null) { name = Model.FkMaladaptives.MaladaptiveName;  }
+            ModelName = "maladaptive";
+            break;
+        case "Replacement":
+            if (Model.FkReplacements != null) { name = Model.FkReplacements.ReplacementName;  }
+            ModelName = "replacement";
+            break;
+        case "CTG-R":
+            if (Model.FkCaregiverTrainingGoals != null && Model.FkCaregiverTrainingGoals.FkReplacements != null )
+            { name = Model.FkCaregiverTrainingGoals.FkReplacements.ReplacementName;  }
+            ModelName = "caregiver in replacements";
+            break;
+        case "CTG-I":
+            if (Model.FkCaregiverTrainingGoals != null && Model.FkCaregiverTrainingGoals.FkBaAssessmentsInterventions != null && Model.FkCaregiverTrainingGoals.FkBaAssessmentsInterventions.FkInterventions != null)
+            { name = Model.FkCaregiverTrainingGoals.FkBaAssessmentsInterventions.FkInterventions.InterventionName;  }
+            ModelName = "caregiver in intervention";
+            break;
+        case "CTG-M":
+            if (Model.FkCaregiverTrainingGoals != null && Model.FkCaregiverTrainingGoals.FkMaladaptives != null)
+            { name = Model.FkCaregiverTrainingGoals.FkMaladaptives.MaladaptiveName; }
+            ModelName = "caregiver in maladaptive";
+            break;
+        case "Preferences":
+            if (Model.FkCaregiverTrainingGoals != null && Model.FkCaregiverTrainingGoals.FkPreferences != null)
+            { name = Model.FkCaregiverTrainingGoals.FkPreferences.Preference; }
+            ModelName = "caregiver in preference";
+            break;
+    }
+}
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: This will permanently delete LTO #@Html.DisplayFor(model => model.ObjectiveNumber). Are you sure you want to delete this objective for @ModelName: <code>@name</code> ?
+    </h5>
+    <hr />
+    <form asp-action="Delete" class="text-right row">
+        <input type="hidden" asp-for="LongTermObjectivesId" />
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="asName" placeholder="Enter @ModelName name..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = @Html.Raw(Json.Serialize(name));
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

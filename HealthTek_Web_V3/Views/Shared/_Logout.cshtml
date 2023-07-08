@@ -1,0 +1,23 @@
+﻿<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModallabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-white text-dark">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h5 class="modal-title mb-3" id="exampleModallabel">Ready to Leave?</h5>
+            </div>
+            <div class="modal-body text-center">
+                <img class="logout" src="~/img/undraw_departing_re_mlq3.svg" />
+                We are sad to see you go! Select "Logout" below if and when you are ready to end your current session.
+            </div>
+
+            <form class="modal-footer" asp-controller="Home" asp-action="Logout" method="post">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger text-light">Logout</button>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,139 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Caregivers>
+
+@{
+    ViewData["Title"] = "Caregivers";
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+<div class="container">
+    <div class="card shadow mb-12">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                        @ViewData["Title"]<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;" onclick="AddEditElements(0, 'Caregivers')"></i>
+                    </h6>
+                </div>
+                <div class="col-md-8 text-right">
+                    <button onclick="AddEditElements(0, 'Caregivers')" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">New @ViewData["SingularTitle"]</span>
+                    </button>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="window.print()">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-print fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">Print</span>
+                    </a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" asp-controller="Report" asp-action="Get" asp-route-ClassName="Caregivers" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-pdf fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">PDF</span>
+                    </a>
+                    <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="ExportCSV('Caregivers',9)">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-csv fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">CSV</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FullName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Relationship)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Gender)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Comments)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreationDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LastUpdateDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FkClients.FullName)
+                            </th>
+                            <th data-orderable="false"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr ondblclick="AddEditElements('@item.CaregiversId', 'Caregivers')">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Relationship)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Gender)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Comments)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreationDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastUpdateDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FkClients.FullName)
+                                </td>
+                                <td class="text-right">
+                                    <button id="sidebarToggleTop" class="btn btn-outline-danger rounded-block mr-3" onclick="DeleteElement('@item.CaregiversId', 'Caregivers')">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+
+    <!-- CSV Export scripts -->
+    <script type="text/javascript" src="~/js/Exports/CSVExport.js"></script>
+}

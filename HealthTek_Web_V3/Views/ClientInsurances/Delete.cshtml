@@ -1,0 +1,26 @@
+﻿@model HealthTek_Shared_Libraries.ClientInsurances
+
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: This will permanently delete this client Insurance and all information belonging to this policy will be lost.
+        Are you sure you want to delete the client Insurance <code>@Html.DisplayFor(model => model.PolicyName)</code> ?
+    </h5>
+    <hr />
+    <form asp-action="Delete" class="text-right row">
+        <input type="hidden" asp-for="ClientInsurancesId" />
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="asName" placeholder="Enter Insurance Name..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = @Html.Raw(Json.Serialize(Model.PolicyName));
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

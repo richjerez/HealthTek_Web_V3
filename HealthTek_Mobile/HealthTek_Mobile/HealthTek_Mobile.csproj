@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http" Version="4.3.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.4" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\Clients\" />
+    <Folder Include="ViewModels\Appointments\" />
+    <Folder Include="ViewModels\Meassurements\" />
+    <Folder Include="Views\Clients\" />
+    <Folder Include="Views\Appointments\" />
+    <Folder Include="Views\Meassurements\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\HealthTek_Shared_Libraries\HealthTek_Shared_Libraries.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Employees\EmployeesDetailPage.xaml.cs">
+      <DependentUpon>EmployeesDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Employees\EmployeesPage.xaml.cs">
+      <DependentUpon>EmployeesPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>

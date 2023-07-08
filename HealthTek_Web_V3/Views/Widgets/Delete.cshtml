@@ -1,0 +1,24 @@
+﻿@model HealthTek_Shared_Libraries.Widgets
+
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: This will permanently delete all of the information on this widget and users currently using the widget will not have access to this widget. Are you sure you want to delete the widget <code>@Model.WidgetName</code> ?
+</h5>
+<hr />
+<form asp-action="Delete" class="text-right row" asp-route-id="@Model.WidgetId">
+    <input type="text" class="form-control col-md-7 mt-1 ml-2" id="Name" placeholder="Enter User Name..." name="Name">
+    <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+</form>
+</div>
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = @Html.Raw(Json.Serialize(Model.WidgetName));
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

@@ -1,0 +1,58 @@
+﻿@model HealthTek_Shared_Libraries.Documents
+<div class="row">
+    <div class="col-lg-12">
+        <form asp-controller="Documents" asp-action="UploadDocuments" method="post" enctype="multipart/form-data"
+        onsubmit="return jQueryAjaxPost(this);">
+            <input type="hidden" asp-for="FkClientsId" />
+            <input type="hidden" asp-for="DocumentType" value="Client" />
+            <div class="text-center mb-4" id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                <img src="/img/undraw_going_up_ttm5.svg" style="margin: auto;width: 300px;">
+                <span style="font-size: 20px;display: block;"> Client Dropbox </span>
+                <span style="display: block;"> Drop files here to upload! Do not upload Intake Documentation here. </span>
+                    <span style="display: block;"> Formats allowed: .png, .jpg, .jpeg, .xls,.xlsx, .doc, .docx, .pdf </span>
+            </div>
+            <hr />
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" multiple asp-for="customFiles" onchange="displayFiles(this, true)"
+                       accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,.pdf,.docx" />
+                <span asp-validation-for="customFiles" class="text-danger"></span>
+                <label class="custom-file-label mb-0" for="customFile">Choose file</label>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocumentStatus" class="control-label">Status</label>
+                <select asp-for="DocumentStatus" id="FkStatus" class="form-control" asp-items="ViewBag.Status"></select>
+                <span asp-validation-for="DocumentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocumentTitle" class="control-label">Title</label>
+                <input asp-for="DocumentTitle" class="form-control"/>
+                <span asp-validation-for="DocumentTitle" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="DocumentEffectiveDate" class="control-label"></label>
+                        <input asp-for="DocumentEffectiveDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                        <span asp-validation-for="DocumentEffectiveDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="DocumentExpirationDate" class="control-label"></label>
+                        <input asp-for="DocumentExpirationDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                        <span asp-validation-for="DocumentExpirationDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocumentDescription" class="control-label"></label>
+                <textarea asp-for="DocumentDescription" class="form-control"></textarea>
+                <span asp-validation-for="DocumentDescription" class="text-danger"></span>
+            </div>
+            @{
+                await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml", "Upload");
+            }
+        </form>
+    </div>
+</div>

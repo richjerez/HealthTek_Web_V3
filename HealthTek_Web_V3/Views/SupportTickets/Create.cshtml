@@ -1,0 +1,29 @@
+﻿@model HealthTek_Shared_Libraries.SupportTickets
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create" onsubmit="return jQueryAjaxPost(this);">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="FkAssignedById" />
+                <input type="hidden" asp-for="TicketNumber" value="@Model.TicketId" />
+                <span>Ticket Number: @Model.TicketId</span>
+                <div class="form-group">
+                    <label asp-for="ViewsInError" class="select-label"></label>
+                    <select asp-for="ViewsInError" asp-items="ViewBag.Views" class="ModalSelect"
+                    multiple data-selected-text-format="count > 2">
+                        <option disabled>Select Views</option>
+                    </select>
+                    <span asp-validation-for="ViewsInError" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group text-right">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

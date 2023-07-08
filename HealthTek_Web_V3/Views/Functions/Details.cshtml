@@ -1,0 +1,29 @@
+﻿@model HealthTek_Shared_Libraries.Functions
+@{
+    var collapse = new string(Model.FunctionName.Where(c => !char.IsWhiteSpace(c)).ToArray());
+}
+<div class="card shadow">
+    <!-- Card Header - Accordion -->
+    <a href="#collapse-@collapse" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse-@collapse">
+        <h6 class="m-0 font-weight-bold text-primary">@Model.FunctionName</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapse-@collapse" style="">
+        <div class="card-body">
+            <a onclick="DeleteElement(@Model.FunctionsId,'Functions')"
+               class="btn btn-danger btn-xs float-right" style="width:35px">
+                <i class="fas fa-trash"></i>
+            </a>
+            <a onclick="AddEditElements(@Model.FunctionsId, 'Functions')"
+               class="btn btn-primary btn-xs mr-2 float-right" tabindex="0">
+                <i class="fas fa-edit"></i>
+            </a>
+            <small class="font-weight-bold">Preventive Strategies:</small>
+            <span class="d-block">@Model.PreventiveStrategies</span>
+            <small class="font-weight-bold">Management Strategies:</small>
+            <span class="d-block">@Model.ManagementStrategies</span>
+            <small class="font-weight-bold">Replacement Skills:</small>
+            <span class="d-block">@Model.ReplacementSkills</span>
+        </div>
+    </div>
+</div>

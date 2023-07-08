@@ -1,0 +1,35 @@
+﻿@model HealthTek_Shared_Libraries.Dashboards
+@{
+    ViewData["Title"] = "User Dashboard";
+    ViewData["ActivePage"] = "Dashboard";
+}
+
+@section Styles{
+    <!-- Page level plugins -->
+    <script src="~/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/js/Widgets/WidgetInit.js"></script>
+}
+<div class="row">
+    @foreach (var item in Model.FkDashboardWidgets.Where(m => m.FkWidget.ViewName == "card" && m.FkWidget.ClassName != "FlaggedAssignments").OrderBy(m => m.HierarchySlot))
+    {
+        <div class="col-lg-3" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+            <partial name="Widgets/@item.FkWidget.ViewName" model="@item.FkWidget" />
+        </div>
+    }
+</div>
+<div class="row">
+    @foreach (var item in Model.FkDashboardWidgets.Where(m => m.FkWidget.ClassName == "FlaggedAssignments"))
+    {
+        <div class="col-lg-12" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+            <partial name="Widgets/@item.FkWidget.ViewName" model="@item.FkWidget" />
+        </div>
+    }
+</div>
+<div class="row">
+    @foreach (var item in Model.FkDashboardWidgets.Where(m => m.FkWidget.ViewName != "card").OrderBy(m => m.HierarchySlot))
+    {
+        <div class="col-lg-6" ondrop="drop(event,this)" ondragover="allowDrop(event)">
+            <partial name="Widgets/@item.FkWidget.ViewName" model="@item.FkWidget" />
+        </div>
+    }
+</div>

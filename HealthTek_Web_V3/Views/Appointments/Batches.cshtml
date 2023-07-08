@@ -1,0 +1,67 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Appointments>
+<!-- Card Header - Accordion -->
+
+<div class="card shadow mb-4 p-3">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseAppoinments" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseAppoinments">
+        <h6 class="m-0 font-weight-bold text-primary">Batches</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseAppoinments" style="">
+        <div class="card-body p-0">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table" id="dataTable" width="100%" cellspacing="0">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FkBatches.BatchNumber)
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Code
+                        </th>
+                        <th>
+                            Clients
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="TableBody">
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FkBatches.BatchNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FkServiceCodes.CodeTitle)
+                                </td>
+                                <td>
+                                    <a asp-controller="Clients" asp-action="Details" asp-route-id="@item.FkClientsId">@Html.DisplayFor(modelItem => item.FkClients.FullName)</a>
+                                </td>
+                                <td>
+                                    @{
+                                        var rate = (int)(item.BillingUnits * item.FkEmployees.EmployeeRate);
+                                    }
+                                    $@Html.DisplayFor(modelItem => rate)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>

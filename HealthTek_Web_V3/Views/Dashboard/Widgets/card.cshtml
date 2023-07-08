@@ -1,0 +1,70 @@
+﻿@model HealthTek_Shared_Libraries.Widgets
+@{ 
+    var id = String.Concat(Model.WidgetName.Where(c => !Char.IsWhiteSpace(c)));
+    var idup = id+"gr";
+    var style = "";
+    var icon = "";
+    switch (Model.Style)
+    {
+        case "Authorizations":
+            style = "success";
+            icon = "fas fa-lock-open";
+            break;
+        case "Intakes":
+            style = "success";
+            icon = "fas fa-folder-open";
+            break;
+        case "Clients":
+            style = "primary";
+            icon = "fas fa-users";
+            break;
+        case "Employees":
+            style = "success";
+            icon = "fas fa-id-card";
+            break;
+        case "Assignments":
+            style = "success";
+            icon = "fas fa-map-marked-alt";
+            break;
+        case "Supervisions":
+            style = "success";
+            icon = "fas fa-sitemap";
+            break;
+        case "Policies":
+            style = "success";
+            icon = "fas fa-umbrella";
+            break;
+        case "Billing":
+            style = "success";
+            icon = "fas fa-dollar-sign";
+            break;
+        case "Files":
+            style = "success";
+            icon = "fas fa-inbox";
+            break;
+        case "Appointments":
+            style = "primary";
+            icon = "fas fa-calendar";
+            break;
+    }
+}
+<div class="row mb-4" draggable="true" ondragstart="drag(event)" id="@id">
+    <div class="col-xl-12">
+        <div class="card border-left-@style shadow h-100">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-@style text-uppercase mb-1">@Model.WidgetName</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="@idup">18</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="@icon fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    selectCard('@Model.ClassName','@idup');
+</script>

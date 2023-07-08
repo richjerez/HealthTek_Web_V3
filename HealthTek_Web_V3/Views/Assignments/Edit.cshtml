@@ -1,0 +1,50 @@
+﻿@model HealthTek_Shared_Libraries.Assignments
+<div class="card shadow p-4">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit" onsubmit="return jQueryAjaxPost(this);">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="AssignmentsId" />
+                <input asp-for="CreationDate" type="hidden" />
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="FkClientsId" class="control-label"></label>
+                            <select asp-for="FkClientsId" class="ModalSelect" asp-items="ViewBag.FkClientsId" data-live-search = "true"></select>
+                            <span asp-validation-for="FkClientsId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="FkFacilitiesId" class="control-label"></label>
+                            <select asp-for="FkFacilitiesId" class="ModalSelect" asp-items="ViewBag.FkFacilitiesId"></select>
+                            <span asp-validation-for="FkFacilitiesId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Due Date</label>
+                    <input id="DueDate" name="DueDate" class="form-control" type="date" />
+                    <span for="DueDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FkEmployeesId" class="control-label"></label>
+                    <select asp-for="FkEmployeesId" class="ModalSelect" asp-items="ViewBag.FkEmployeesId" data-live-search = "true"></select>
+                    <span asp-validation-for="FkEmployeesId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AssignmentNote" class="control-label"></label>
+                    <textarea asp-for="AssignmentNote" class="form-control"></textarea>
+                    <span asp-validation-for="AssignmentNote" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary float-right" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

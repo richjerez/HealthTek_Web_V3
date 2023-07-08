@@ -1,0 +1,8 @@
+﻿<ul class="nav nav-pills flex-column">
+    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index"><i class="fas fa-user fa-fw mr-2"></i>Profile</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword"><i class="fas fa-asterisk fa-fw mr-2"></i>Password</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email"><i class="fas fa-envelope fa-fw mr-2"></i>Email</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.AllowedDevicesNavClass(ViewContext)" id="allowed-devices" asp-page="./AllowedDevices"><i class="fas fa-laptop-house fa-fw mr-2"></i>Devices</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication"><i class="fas fa-lock fa-fw mr-2"></i>Two-factor authentication</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData"><i class="fas fa-id-card fa-fw mr-2"></i>Personal data</a></li>
+</ul>

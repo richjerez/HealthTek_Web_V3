@@ -1,0 +1,29 @@
+﻿@model HealthTek_Shared_Libraries.Replacements
+
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: You are about to delete a replacement. Are you sure you want to delete the replacement <code>@Html.DisplayFor(model => model.ReplacementName)</code> ?
+    </h5>
+    <hr />
+    <form asp-action="Delete" class="text-right row">
+        <input type="hidden" asp-for="ReplacementsId" />
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="Name" placeholder="Enter Replacement Name..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var walletName = @Html.Raw(Json.Serialize(Model.ReplacementName));
+        var name = $(this).val();
+        if (walletName == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+
+        }
+
+    });
+
+
+</script>

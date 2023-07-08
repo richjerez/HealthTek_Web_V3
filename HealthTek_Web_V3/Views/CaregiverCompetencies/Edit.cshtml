@@ -1,0 +1,114 @@
+﻿@model HealthTek_Shared_Libraries.CaregiverCompetencies
+<style>
+    datalist {
+        display: flex;
+        justify-content: space-between;
+        color: red;
+        width: 100%;
+    }
+
+    .range {
+        width: 100%;
+    }
+</style>
+
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Edit", "CaregiverCompetencies", FormMethod.Post, new { onsubmit = "return jQueryAjaxPost(this);" }))
+            {
+                var step = 0;
+                var border = "";
+                <input type="hidden" asp-for="CaregiverCompetenciesId" />
+                <input type="hidden" asp-for="FkBaProgressNotesId" />
+                <input type="hidden" asp-for="CreationDate" />
+                <input type="hidden" asp-for="CompetencyDate" />
+                <div class="row">
+                    @for (int i = 0; i < Model.CaregiverCompChecks.Count; i++)
+                    {
+                        var Instructions = Model.CaregiverCompChecks[i].FkCaregiverComptChecksCatalog.TrainingInstructions;
+                        switch (step)
+                        {
+                            case 0:
+                                border = "border-right pr-4";
+                                step++;
+                                break;
+                            default:
+                                border = "pl-4";
+                                step = 0;
+                                break;
+                        }
+                        <div class="col-lg-6 @border">
+                            <input type="hidden" asp-for="@Model.CaregiverCompChecks[i].CaregiverCompChecksId" />
+                            <input type="hidden" asp-for="@Model.CaregiverCompChecks[i].CreationDate" />
+                            <input type="hidden" asp-for="@Model.CaregiverCompChecks[i].FkCaregiverCompetenciesId" />
+                            <input type="hidden" asp-for="@Model.CaregiverCompChecks[i].FkCaregiverComptChecksCatalogId" />
+                            <input type="hidden" asp-for="@Model.CaregiverCompChecks[i].FkClientsId" />
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <span>@Model.CaregiverCompChecks[i].FkCaregiverComptChecksCatalog.TrainingItem</span>
+                                    @if (Instructions.Contains("maladaptive"))
+                                    {
+                                        <div class="form-group">
+                                            <select asp-for="@Model.CaregiverCompChecks[i].FkMaladaptivesId" class="ModalSelect" asp-items="ViewBag.Maladaptives"></select>
+                                        </div>
+                                    }
+                                    @if (Instructions.Contains("replacement"))
+                                    {
+                                        <div class="form-group">
+                                            <select asp-for="@Model.CaregiverCompChecks[i].FkReplacementsId" class="ModalSelect" asp-items="ViewBag.Replacements"></select>
+                                        </div>
+                                    }
+                                    @if (Instructions.Contains("intervention"))
+                                    {
+                                        <div class="form-group">
+                                            <select asp-for="@Model.CaregiverCompChecks[i].FkInterventionsId" class="ModalSelect" asp-items="ViewBag.Interventions"></select>
+                                        </div>
+                                    }
+                                    @if (Instructions.Contains("Reinforcer"))
+                                    {
+                                        <div class="form-group">
+                                            <select asp-for="@Model.CaregiverCompChecks[i].FkReinforcersId" class="ModalSelect" asp-items="ViewBag.Reinforcers"></select>
+                                        </div>
+                                    }
+
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CaregiverCompChecks[i].CompetencyBaseline)
+                                        @Html.TextBoxFor(m => m.CaregiverCompChecks[i].CompetencyBaseline, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            @Html.LabelFor(m => m.CaregiverCompChecks[i].CompetencyLevel)
+                            @Html.TextBoxFor(m => m.CaregiverCompChecks[i].CompetencyLevel,
+                    new { @class = "range", @list="tickmarks-" + i, @type="range", @step="25"})
+                            <datalist id="tickmarks-@i">
+                                <option value="0" label="0%"></option>
+                                <option value="25" label="25%"></option>
+                                <option value="50" label="50%"></option>
+                                <option value="75" label="75%"></option>
+                                <option value="100" label="100%"></option>
+                            </datalist>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CaregiverCompChecks[i].CompetencySummary)
+                                @Html.TextAreaFor(m => m.CaregiverCompChecks[i].CompetencySummary, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    }
+                    <div class="col-lg-12">
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" name="Sign"
+                                   type="checkbox" onchange="this.value=this.checked" />
+                                Sign Form
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml", "Save");
+            }
+        </div>
+    </div>
+
+</div>

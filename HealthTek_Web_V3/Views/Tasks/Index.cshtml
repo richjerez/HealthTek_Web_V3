@@ -1,0 +1,169 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Tasks>
+
+@{
+    ViewData["Title"] = "Employee Tasks";
+    ViewData["SingularTitle"] = "Task";
+}
+
+@section Styles{
+<!-- Custom styles for this page -->
+<link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+            <div class="col-md-4">
+                <h6 class="m-0 font-weight-bold text-primary datatitle">
+                    @ViewData["Title"]<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                </h6>
+            </div>
+            <div class="col-md-8 text-right">
+                <button onclick="AddEditElements(0, 'Tasks')" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus fa-sm text-white-50"></i>
+                    </span>
+                    <span class="text">New @ViewData["SingularTitle"]</span>
+                </button>
+                <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="window.print()">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-print fa-sm text-white-50"></i>
+                    </span>
+                    <span class="text">Print</span>
+                </a>
+                <a id="ExportPdf" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none"
+                        style="margin:0" asp-controller="Report" asp-action="Get" asp-route-ClassName="Tasks" asp-route-EmployeeId="GETEMPFROMCONTROLLER">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-file-pdf fa-sm text-white-50"></i>
+                    </span>
+                    <span class="text">PDF</span>
+                </a>
+                <a type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none"
+                        style="margin:0" asp-controller="Tasks" asp-action="ExportTasksData">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-file-csv fa-sm text-white-50"></i>
+                    </span>
+                    <span class="text">CSV</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table" id="dataTable" width="100%" cellspacing="0">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>
+                            Due Date
+                        </th>
+                        <th>
+                            Subject
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Assigned By
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th class="text-center">
+                            Status
+                        </th>
+                        <th data-orderable="false" class="d-print-none"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    var date = "";
+                                    if (date == null || date == string.Empty)
+                                    {
+                                        date = "No Due Date";
+                                    }
+                                    else
+                                    {
+                                        date = item.DueDate.Value.ToShortDateString();
+                                    }
+                                }
+                                <span>@date</span>
+                            </td>
+                            <td>
+                                @Html.Raw(item.TaskSubject)
+                            </td>
+                            <td>
+                                @Html.Raw(item.TaskDescription)
+                            </td>
+                            <td>
+                                <a asp-controller="Employees" asp-action="Details" asp-route-id="@item.FkAssignedBy.EmployeesId">
+                                    @Html.DisplayFor(modelItem => item.FkAssignedBy.EmployeeLabel)
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TaskType)
+                            </td>
+                            <td class="text-center">
+                                <div class="dropdown d-inline-block">
+                                    <button class="btn btn-primary btn-xs dropdown-toggle" type="button"
+                                        id="dropdownMenu-@item.TasksId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        @item.TaskStatus
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenu-@item.TasksId">
+                                        @foreach (var status in ViewBag.Status)
+                                        {
+                                            <a class="dropdown-item" onclick="changeStatus(@item.TasksId,'@status.Text')">@status.Text</a>
+                                        }
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-right d-print-none">
+                                @if (!item.TaskStatus.Contains("Completed") && item.TaskType.Contains("Assignment"))
+                                {
+                                    <a style="text-decoration:none" asp-controller="Tasks" 
+                                    asp-action="UpdateTask" asp-route-assignment="@item.TaskIdentifier" asp-route-taskId="@item.TasksId" 
+                                    asp-route-taskaction="accepted" class="btn btn-outline-success d-print-none">
+                                        <span class="text">
+                                            <i class="fa fa-check fa-sm"></i>
+                                        </span>
+                                    </a>
+                                    <a style="text-decoration:none" asp-controller="Tasks" 
+                                    asp-action="UpdateTask" asp-route-assignment="@item.TaskIdentifier" asp-route-taskId="@item.TasksId" 
+                                    asp-route-taskaction="rejected" class="btn btn-outline-danger d-print-none">
+                                        <span class="text">
+                                            <i class="fa fa-times fa-sm"></i>
+                                        </span>
+                                    </a>
+                                }
+                                <button onclick="AddEditElements(@item.TasksId, 'Tasks', true)" class="btn btn-outline-info">
+                                    <span class="text">
+                                        <i class="fa fa-server"></i>
+                                    </span>
+                                </button>
+                                <button onclick="DeleteElement(@item.TasksId, 'Tasks')" class="btn btn-outline-danger">
+                                    <span class="text">
+                                        <i class="fa fa-trash"></i>
+                                    </span>
+                                </button>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+<!-- Page level plugins -->
+<script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="~/js/demo/datatables-demo.js"></script>
+<script src="~/js/Tasks.js"></script>
+}

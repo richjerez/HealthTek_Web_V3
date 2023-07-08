@@ -1,0 +1,25 @@
+﻿@model HealthTek_Shared_Libraries.Locations
+
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: This will permanently delete this address. Are you sure you want to delete this address for client <code>@Html.DisplayFor(model => model.FkClients.FullName)</code> ?
+    </h5>
+    <hr />
+    <form asp-action="Delete" class="text-right row">
+        <input type="hidden" asp-for="LocationsId" />
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="asName" placeholder="Enter Client Name..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = @Html.Raw(Json.Serialize(Model.FkClients.FullName));
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

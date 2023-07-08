@@ -1,0 +1,137 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Diagnosis>
+@{
+    ViewData["Title"] = "Diagnosis";
+    ViewData["ActivePage"] = "Diagnosis";
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+
+}
+
+<div class="">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                        Service Codes<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                    </h6>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button onclick="AddEditElements(0, 'Diagnosis')" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">Create Service Code</span>
+                    </button>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="window.print()">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-print fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">Print</span>
+                    </a>
+                    <button id="ExportPdf" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-pdf fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">Export Pdf</span>
+                    </button>
+                    <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="exportData('Clients')">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-csv fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">Export CSV</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>
+                                Diagnosis Code
+                            </th>
+                            <th>
+                                Diagnosis Name
+                            </th>
+                            <th data-orderable="false" class="d-print-none"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="TableBody">
+                        @foreach (var item in Model)
+                        {
+                            <tr ondblclick="LoadEdit('@item.DiagnosisId','Diagnosis')">
+                                <td>
+                                    @item.DiagnosisCode
+                                </td>
+                                <td>
+                                    @item.DiagnosisName
+                                </td>
+                                <td class="text-right d-print-none">
+                                    <button id="sidebarToggleTop" class="btn btn-outline-danger rounded-block mr-3 d-print-none" onclick="DeleteElement('@item.DiagnosisId', 'Diagnosis')">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <script>
+        function LoadEdit(id, itemclass) {
+            window.location = "/" + itemclass + "/Edit/" + id;
+        }
+        $(document).ready(async function () {
+            await loadScript("/js/afterLoad.js");
+            // Do whatever you want to do after script is ready
+        });
+
+    </script>
+    <script type="text/javascript" src="~/js/ExportTable.js"></script>
+    <script type="text/javascript">
+        $("body").on("click", "#ExportPdf", function () {
+            var x = document.getElementById("dataTable").querySelectorAll(".sorting");
+            for (i = 0; i < x.length; i++) {
+                x[i].classList.remove("sorting");
+                x[i].classList.remove("sorting_asc");
+                x[i].classList.remove("sorting_desc");
+            }
+            $('a').css({
+                "color": "black"
+            });
+
+            html2canvas($('#dataTable')[0], {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 600
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("Clients.pdf", function () {
+                        $('a').css({
+                            "color": "white"
+                        });
+                    });
+                }
+            });
+
+        });
+    </script>
+}

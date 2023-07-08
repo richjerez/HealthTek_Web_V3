@@ -1,0 +1,166 @@
+﻿@model HealthTek_Shared_Libraries.Replacements
+
+@{
+    var replacementname = new string(Model.ReplacementName.Where(c => !char.IsWhiteSpace(c)).ToArray());
+}
+                                            
+
+<a href="#collapseReplacement-@replacementname" class="d-block card-header py-3 collapsed bg-danger"
+data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseReplacement-@replacementname">
+    <h6 class="m-0 font-weight-bold text-white">@Model.FkMaladaptives.MaladaptiveName (Replacement)</h6>
+</a>
+<!-- Card Content - Collapse -->
+<div class="collapse" id="collapseReplacement-@replacementname">
+    <div class="card-body shadow mb-4">
+        <div>
+            <button type="button" onclick="DeleteElement(@Model.ReplacementsId, 'Replacements')"
+                    class="d-none d-sm-inline-block btn btn-xs btn-danger shadow-sm btn-icon-split d-print-none float-right ml-2">
+                <span class="icon text-white-50">
+                    <i class="fas fa-trash fa-sm text-white-50"></i>
+                </span>
+            </button>
+            <button type="button" onclick="AddEditElements(@Model.ReplacementsId, 'Replacements')"
+                    class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                <span class="icon text-white-50">
+                    <i class="fas fa-edit fa-sm text-white-50"></i>
+                </span>
+            </button>
+            <h5 class="font-weight-bold">@Model.ReplacementName</h5>
+            <p>Description?</p>
+            <hr />
+            <div class="row">
+                <div class="col-lg-6 border-right">
+                    <small>Collection Method</small>
+                    <span class="d-block">@Model.CollectionMethod</span>
+                    <small>Baseline Average</small>
+                    <span class="d-block">@Model.BaselineAverage</span>
+                    <small>@Html.DisplayNameFor(m => Model.Baseline1)</small>
+                    <span class="d-block">
+                        @Model.Baseline1
+                    </span>
+                    <small>@Html.DisplayNameFor(m => Model.Baseline2)</small>
+                    <span class="d-block">
+                        @Model.Baseline2
+                    </span>
+                    <small>@Html.DisplayNameFor(m => Model.Baseline3)</small>
+                    <span class="d-block">
+                        @Model.Baseline3
+                    </span>
+                    <small>Baseline Duration</small>
+                    @if (Model.BaselineDuration.HasValue)
+                    {
+                        <span class="d-block">@Model.BaselineDuration.Value - @Model.BaselineDurationUnit</span>
+                    }
+                    <small>Prompt Level</small>
+                    <span class="d-block">@Model.PromptLevel</span>
+
+                </div>
+                <div class="col-lg-6">
+                    @if (Model.FkCaregiverTrainingGoals != null)
+                    {
+                        var report = Model.FkCaregiverTrainingGoals;
+                        report.GoalType = "CTG-R";
+                        await Html.RenderPartialAsync("~/Views/CaregiverTrainingGoals/Details.cshtml", report);
+
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="button" onclick="AddEditElements(0, 'CaregiverTrainingGoals', false, @Model.ReplacementsId,'Replacements')"
+                                    class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-plus fa-sm text-white-50"></i>
+                                    </span>
+                                    <span class="text align-self-md-center">Add Training Goal</span>
+                                </button>
+                                <h5 class="font-weight-bold">Caregiver Training Goals</h5>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-6 border-right">
+                    <div class="form-group">
+                        <label asp-for="@Model.ReplacementComment"></label>
+                        <textarea class="form-control" asp-for="@Model.ReplacementComment" disabled>@Model.ReplacementComment</textarea>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label asp-for="@Model.Barrier"></label>
+                        <textarea class="form-control" asp-for="@Model.Barrier" style="height:100%" disabled>@Model.Barrier</textarea>
+                    </div>
+                </div>
+            </div>
+
+            @* Objectives *@
+            <!-- Card Header - Accordion -->
+            <a href="#collapseObjective-@replacementname" class="d-block card-header py-3 collapsed" data-toggle="collapse"
+               role="button" aria-expanded="false" aria-controls="collapseObjective-@replacementname">
+                <h6 class="m-0 font-weight-bold text-primary">Objectives</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="collapseObjective-@replacementname">
+                <div class="card-body shadow mb-4" style="padding:0">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                                        Short Term Objectives<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                                    </h6>
+                                </div>
+                                <div class="col-md-6 text-right d-print-none">
+                                    <a onclick="AddEditElements(0, 'ShortTermObjectives', false, @Model.ReplacementsId, 'Replacement')"
+                                       class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                                        </span>
+                                        <span class="text">New Objective</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @foreach (var sto in Model.ShortTermObjectives.Where(m => m.StoType == "Replacement"))
+                            {
+                                await Html.RenderPartialAsync("~/Views/ShortTermObjectives/Details.cshtml", sto);
+                            }
+                        </div>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                                        Long Term Objectives<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                                    </h6>
+                                </div>
+                                <div class="col-md-6 text-right d-print-none">
+                                    <a onclick="AddEditElements(0,'LongTermObjectives', false, @Model.ReplacementsId, 'Replacement')"
+                                       class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                                        </span>
+                                        <span class="text">New Objective</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @foreach (var lto in Model.LongTermObjectives.Where(m => m.LtoType == "Replacement"))
+                            {
+                                await Html.RenderPartialAsync("~/Views/LongTermObjectives/Details.cshtml", lto);
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

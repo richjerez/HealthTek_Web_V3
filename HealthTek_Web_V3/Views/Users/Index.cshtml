@@ -1,0 +1,220 @@
+﻿@model IEnumerable<AppUser>
+@{
+    ViewData["Title"] = "Application Users";
+    ViewData["ActivePage"] = "Users";
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+<div class="container">
+    <partial name="_StatusMessage" for="FirstOrDefault().StatusMessage" />
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Manage Users
+                    </h6>
+                </div>
+                <div class="col-md-6">
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive d-none d-md-block">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PhoneNumber)
+                            </th>
+                            <th data-orderable="false"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            <tr ondblclick="AddEditElements('@item.Id', 'Users')">
+                                <td style="vertical-align: middle;">
+                                    <img class="img-profile rounded-block" src="@item.Avatar" style="width: 40px;">
+                                    <a asp-controller="Employees" asp-action="Details" asp-route-id="@item.FkEmployeesId">@Html.DisplayFor(modelItem => item.UserName)</a>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @if (item.EmailConfirmed)
+                                    {
+                                        <a href="#" class="btn btn-success btn-icon-split disabled">
+                                            <span class="text">
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </span>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="btn btn-danger btn-icon-split disabled">
+                                            <span class="text">
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </span>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @if (item.PhoneNumberConfirmed)
+                                    {
+                                        <a href="#" class="btn btn-success btn-icon-split disabled">
+                                            <span class="text">
+                                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                            </span>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="btn btn-danger btn-icon-split disabled">
+                                            <span class="text">
+                                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                            </span>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </td>
+                                <td class="text-right" style="vertical-align: middle;">
+                                    <button onclick="ShowRoles('@item.Id', 'Users', '@item.UserName')" class="btn btn-outline-info ">
+                                        <span class="text">
+                                            <i class="fa fa-server"></i>
+                                        </span>
+                                    </button>
+                                    <button onclick="DeleteElement('@item.Id', 'Users')" class="btn btn-outline-danger ">
+                                        <span class="text">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive d-md-none d-sm-block">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th data-orderable="false">User Info</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var ImageSrc = "../img/undraw_profile.svg";
+
+                            if (item.Avatar != null && item.Avatar != string.Empty)
+                            {
+                                ImageSrc = "../files/" + item.UserName + "/" + item.Avatar;
+                            }
+
+                            <tr style="display:grid">
+                                <td style="padding:2px 2px 5px">
+                                    <img class="img-profile rounded-block" src="/files/@ImageSrc" style="width: 40px;">
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td style="padding:0">
+                                    @if (item.EmailConfirmed)
+                                    {
+                                        <a href="#" class="btn btn-success btn-icon-split disabled">
+                                            <span class="text">
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </span>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="btn btn-danger btn-icon-split disabled">
+                                            <span class="text">
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </span>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </td>
+                                <td style="padding:0">
+                                    @if (item.PhoneNumberConfirmed)
+                                    {
+                                        <a href="#" class="btn btn-success btn-icon-split disabled">
+                                            <span class="text">
+                                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                            </span>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="btn btn-danger btn-icon-split disabled">
+                                            <span class="text">
+                                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                            </span>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </a>
+                                    }
+                                </td>
+                                <td class="text-right" style="padding:0">
+                                    <div class="d-md-none d-lg-block">
+                                        <a onclick="ShowRoles('@item.Id', 'Users', '@item.UserName')" href="#" class="btn btn-outline-info ">
+                                            <span class="text">
+                                                <i class="fa fa-server"></i>
+                                            </span>
+                                        </a>
+                                        <a onclick="DeleteElement('@item.Id', 'Users')" href="#" class="btn btn-outline-danger ">
+                                            <span class="text">
+                                                <i class="fa fa-trash"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <!-- Toogle active class for sidebar navigation -->
+    <script src="~/js/Cruds/UserRoleHandler.js" type="text/javascript"></script>
+
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+}
+
+

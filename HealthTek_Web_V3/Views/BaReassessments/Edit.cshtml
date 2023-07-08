@@ -1,0 +1,598 @@
+﻿@using System.ComponentModel
+@using System.Reflection
+@model HealthTek_Shared_Libraries.BaReassessments
+@{
+    var InitialAssessment = Model.InitialAssessment;
+}
+@section Styles {
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+    <div class="card shadow mb-4">
+        <div class="card-header pt-3 sticky-top pb-0">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="m-0 font-weight-bold text-primary datatitle">
+                        Behavior Analysis Assessment<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                    </h4>
+                </div>
+                <div class="col-md-6 text-right">
+                    <small>Service Code:</small>
+                    <p>@InitialAssessment.FkAppointments.FkServiceCodes.CodeTitle</p>
+                </div>
+            </div>
+            <hr class="mt-0" />
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <small>Client:</small>
+                <a class="d-block" asp-controller="Clients" asp-action="Details" asp-route-id="@InitialAssessment.FkAppointments.FkClientsId">@InitialAssessment.FkAppointments.FkClients.FullName</a>
+                <span>@InitialAssessment.FkAppointments.FkClients.ClientsFacilities.FirstOrDefault().ChartNumber</span>
+            </div>
+            <div class="col-md-3 border-right">
+                <small>From - To:</small>
+                <span class="d-block">@InitialAssessment.FkAppointments.StartTime</span>
+                <span>@InitialAssessment.FkAppointments.EndTime</span>
+            </div>
+            <div class="col-md-3 border-right">
+                <small>Location Start:</small>
+                <span class="d-block">@InitialAssessment.FkAppointments.FkStartLocation.Address</span>
+                <span>@InitialAssessment.FkAppointments.FkStartLocation.CityState,@InitialAssessment.FkAppointments.FkStartLocation.Zipcode</span>
+            </div>
+            <div class="col-md-3">
+                <small>Location End:</small>
+                <span class="d-block">@InitialAssessment.FkAppointments.FkEndLocation.Address</span>
+                <span>@InitialAssessment.FkAppointments.FkEndLocation.CityState,@InitialAssessment.FkAppointments.FkEndLocation.Zipcode</span>
+            </div>
+        </div>
+
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Edit" id="MyForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="@InitialAssessment.BaAssessmentsId" type="hidden" />
+                        <input asp-for="BaReassessmentsId" type="hidden" />
+                        <input asp-for="CreationDate" type="hidden" />
+                        <input asp-for="@InitialAssessment.FkAppointmentsId" type="hidden" />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="TextAreaWrapper">
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.ReviewedDocuments" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.ReviewedDocuments" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.ReviewedDocuments" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.BackgroundInformation" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.BackgroundInformation" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.BackgroundInformation" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.RelevantFamilyHistory" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.RelevantFamilyHistory" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.RelevantFamilyHistory" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.MajorAreasOfConcern" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.MajorAreasOfConcern" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.MajorAreasOfConcern" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.PreviousTreatments" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.PreviousTreatments" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.PreviousTreatments" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.CurrentTreatments" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.CurrentTreatments" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.CurrentTreatments" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.EducationStatus" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.EducationStatus" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.EducationStatus" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.PysicalMedicalStatus" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.PysicalMedicalStatus" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.PysicalMedicalStatus" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.Medications" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.Medications" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.Medications" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.AssessmentsConducted" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.AssessmentsConducted" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.AssessmentsConducted" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.StrengthsWeaknesses" class="control-label"></label>
+                                        <textarea asp-for="InitialAssessment.StrengthsWeaknesses" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.StrengthsWeaknesses" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.IndirectResultsAndObservations"></label>
+                                        <textarea asp-for="InitialAssessment.IndirectResultsAndObservations" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.IndirectResultsAndObservations" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.GeneralizationMaintenance"></label>
+                                        <textarea asp-for="InitialAssessment.GeneralizationMaintenance" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.GeneralizationMaintenance" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.RiskAssessment"></label>
+                                        <textarea asp-for="InitialAssessment.RiskAssessment" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.RiskAssessment" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.GeneralizationMaintenance"></label>
+                                        <textarea asp-for="InitialAssessment.MedicalNecessity" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.MedicalNecessity" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.SummaryRecommendations"></label>
+                                        <textarea asp-for="InitialAssessment.SummaryRecommendations" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.SummaryRecommendations" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="InitialAssessment.ConsentToTreatment"></label>
+                                        <textarea asp-for="InitialAssessment.ConsentToTreatment" class="form-control"></textarea>
+                                        <span asp-validation-for="InitialAssessment.ConsentToTreatment" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                @* ABC Reports *@
+                                <!-- ABC Reports - Card Header - Accordion -->
+                                <a href="#collapseABCReports" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseABCReports">
+                                    <h6 class="m-0 font-weight-bold text-primary">ABC Reports</h6>
+                                </a>
+                                <!-- Interventions Content -->
+                                <div class="collapse" id="collapseABCReports">
+                                    <div class="card-body shadow mb-4 ">
+                                        <div class="text-right">
+                                            <button type="button" onclick="AddEditElements(0, 'AbcReports', false, @InitialAssessment.BaAssessmentsId)"
+                                                class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-plus fa-sm text-white-50"></i>
+                                                </span>
+                                                <span class="text align-self-md-center">New A.B.C.</span>
+                                            </button>
+                                        </div>
+                                        <div class="row">
+                                            @foreach (var report in InitialAssessment.AbcReports)
+                                        {
+                                            <div class="col-lg-6">
+                                                <div style="border-radius: 5px;" class="status status-purple pt-2 pl-3 pr-3">
+                                                    <button type="button" onclick="DeleteElement(@report.AbcReportsId, 'AbcReports')" class="d-none d-sm-inline-block btn btn-xs btn-danger shadow-sm btn-icon-split d-print-none float-right ml-2">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-trash fa-sm text-white-50"></i>
+                                                        </span>
+                                                    </button><button type="button" onclick="AddEditElements(@report.AbcReportsId, 'AbcReports', false, @InitialAssessment.BaAssessmentsId)" class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-edit fa-sm text-white-50"></i>
+                                                        </span>
+                                                    </button>
+                                                    @{
+                                                        await Html.RenderPartialAsync("~/Views/AbcReports/Details.cshtml", report);
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                            @* Maladaptives *@
+                            <!-- Maladaptives - Card Header - Accordion -->
+                            <a href="#collapseMaladaptives" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseMaladaptives">
+                                <h6 class="m-0 font-weight-bold text-primary">Maladaptives</h6>
+                            </a>
+                            <!-- Maladaptives Content -->
+                            <div class="collapse" id="collapseMaladaptives">
+                                <div class="card-body shadow mb-4 ">
+                                    <div class="text-right">
+                                        <button type="button" onclick="AddEditElements(0, 'Maladaptives', false, @InitialAssessment.BaAssessmentsId)"
+                                                class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right mr-3 mt-0">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-plus fa-sm text-white-50"></i>
+                                            </span>
+                                            <span class="text align-self-md-center">New Maladaptives</span>
+                                        </button>
+                                    </div>
+                                    @foreach (var item in InitialAssessment.Maladaptives)
+                                    {
+                                        await Html.RenderPartialAsync("~/Views/Maladaptives/Details.cshtml", item);
+
+                                        <!-- Replacement -->
+                                        @if (item.FkReplacements != null)
+                                        {
+                                            var replacement = item.FkReplacements;
+                                            await Html.RenderPartialAsync("~/Views/Replacements/Details.cshtml", replacement);
+                                        }
+                                        else
+                                        {
+                                            <div class="card shadow">
+                                                <div class="card-header py-3 bg-danger">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <h6 class="m-0 font-weight-bold text-white datatitle">
+                                                                Replacement<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                                                            </h6>
+                                                        </div>
+                                                        <div class="col-md-6 text-right d-print-none">
+                                                            <a onclick="AddEditElements(0, 'Replacements', false, @item.MaladaptivesId)" class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                                                <span class="icon text-white-50">
+                                                                    <i class="fas fa-plus fa-sm text-white-50"></i>
+                                                                </span>
+                                                                <span class="text">New Replacement</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+
+                            @* Interventions *@
+                            <!-- Interventions - Card Header - Accordion -->
+                            <a href="#collapseInterventions" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseInterventions">
+                                <h6 class="m-0 font-weight-bold text-primary">Interventions</h6>
+                            </a>
+                            <!-- Interventions Content -->
+                            <div class="collapse" id="collapseInterventions">
+                                <div class="card-body shadow mb-4 ">
+                                    <div class="text-right">
+                                        <button type="button" onclick="AddEditElements(0, 'BaAssessmentsInterventions', false, @InitialAssessment.BaAssessmentsId)"
+                                                class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-plus fa-sm text-white-50"></i>
+                                            </span>
+                                            <span class="text align-self-md-center">New Interventions</span>
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        @foreach (var report in InitialAssessment.BaAssessmentsInterventions)
+                                        {
+                                            <div class="col-lg-4">
+                                                <div class="status status-blue p-3" style="border-radius:5px">
+                                                    <a onclick="DeleteElement(@report.BaAssessmentsInterventionsId, 'BaAssessmentsInterventions')"
+                                                   class="btn btn-danger btn-xs float-right">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                    <a onclick="AddEditElements(@report.BaAssessmentsInterventionsId, 'BaAssessmentsInterventions', false,@InitialAssessment.BaAssessmentsId)"
+                                                   class="btn btn-primary btn-xs mr-1 float-right" tabindex="0">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+
+                                                    <small class="font-weight-bold">Intervention</small>
+                                                    <span class="d-block">@report.FkInterventions.InterventionName</span>
+                                                    <small class="font-weight-bold">Description</small>
+                                                    <span class="d-block">@report.FkInterventions.InterventionDescription</span>
+                                                    <small class="font-weight-bold">Comment</small>
+                                                    <span class="d-block">@report.InterventionComment</span>
+                                                    <hr />
+                                                    @if (report.FkCaregiverTrainingGoals != null)
+                                                    {
+                                                        var item = report.FkCaregiverTrainingGoals;
+                                                        item.GoalType = "CTG-I";
+                                                        await Html.RenderPartialAsync("~/Views/CaregiverTrainingGoals/Details.cshtml", item);
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <button type="button" onclick="AddEditElements(0,'CaregiverTrainingGoals', false, @report.BaAssessmentsInterventionsId, 'Interventions')"
+                                                                class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                                                    <span class="icon text-white-50">
+                                                                        <i class="fas fa-plus fa-sm text-white-50"></i>
+                                                                    </span>
+                                                                    <span class="text align-self-md-center">New Training Goal</span>
+                                                                </button>
+                                                                <h5 class="font-weight-bold">Caregiver Training Goals</h5>
+                                                            </div>
+                                                        </div>
+
+                                                    }
+
+                                                </div>
+
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            @* Preference *@
+                            <!-- Preference - Card Header - Accordion -->
+                            <a href="#collapsePreferences" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsePreferences">
+                                <h6 class="m-0 font-weight-bold text-primary">Preferences</h6>
+                            </a>
+                            <!-- Preference Content -->
+                            <div class="collapse" id="collapsePreferences">
+                                <div class="card-body shadow mb-4 ">
+                                    <div class="text-right d-print-none">
+                                        <a onclick="AddEditElements(0, 'Preferences', false, @InitialAssessment.FkAppointments.FkClients.ClientsId)" class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-plus fa-sm text-white-50"></i>
+                                            </span>
+                                            <span class="text">New Preference</span>
+                                        </a>
+                                    </div>
+                                    @if (InitialAssessment.FkAppointments.FkClients.Preferences != null)
+                                    {
+                                        var report = InitialAssessment.FkAppointments.FkClients.Preferences;
+                                        await Html.RenderPartialAsync("~/Views/Preferences/Details.cshtml", report);
+                                    }
+                                    else
+                                    {
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <button type="button" onclick="AddEditElements(0, 'Preferences', false, @InitialAssessment.FkAppointments.FkClients.ClientsId)"
+                                                    class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-plus fa-sm text-white-50"></i>
+                                                    </span>
+                                                    <span class="text align-self-md-center">New Preference</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                            @* RBT Rationale Accordion Header *@
+                            <a href="#rbtRationaleContent" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="rbtRationaleContent">
+                                <h6 class="m-0 font-weight-bold text-primary">RBT Rationale</h6>
+                            </a>
+                            @* RBT Rationale Accordion Content *@
+                            <div id="rbtRationaleContent" class="collapse show">
+                                <div class="card-body mb-4 shadow">
+                                    <p>
+                                        Specific duties and responsibilities: Collect data on target behaviors identified for reduction/acquisition/replacement, implement the behavior program and train the caregivers on data collection and implementation of the procedures outline within the plan.
+                                    </p>
+                                    <p>
+                                        Work Schedule and Schedule of activities: Behavior assistant will work with consumer <input type="text" class="form-control" id="dateRange" name="dateRange" value="Monday - Friday" style="width: 160px;display: initial;" /> from <input asp-for="InitialAssessment.EmployeeScheduledStartTime" type="time" asp-format="{0:HH:mm:ss}" style="width: 160px;display: initial;" class="form-control" /> to <input type="time" asp-for="InitialAssessment.EmployeeScheduledEndTime" asp-format="{0:HH:mm:ss}" style="width: 160px;display: initial;" class="form-control" /> and during that time all programs will be implemented. This schedule is subject to change as per caregiver request making sure that amount of hours of services needed to implement the plan does not change.
+                                    </p>
+                                    <p>
+                                        Ongoing Assessment Responsibilities: RBT will be responsible for collection of ongoing ABC data that will be used to assess the continued efficacy of the program/ interventions. Behavior Assistant will also record data sheets provided and attached to the program.
+                                    </p>
+                                    <p>
+                                        Training Procedures for Caregivers: Following competency-based training by the behavior analyst of the caregivers with regards to the interventions outline within the behavior program, the behavior assistant will complete competency checks of the caregivers’ ability to collect data, implement replacement programs and follow through on the interventions. Competency checks will include demonstration/InitialAssessmenting of  procedures, observation of  caregiver implementing replacement/acquisition programs, as well as corrective feedback when warranted
+                                    </p>
+                                </div>
+                            </div>
+                            @* Ba Crisis Plan *@
+                            <div class="card shadow p-3 mt-4">
+                                @if (InitialAssessment.BaCrisisPlan != null)
+                                {
+                                    foreach (var plans in InitialAssessment.BaCrisisPlan)
+                                    {
+                                        await Html.RenderPartialAsync("~/Views/BaCrisisPlans/Details.cshtml", plans);
+                                    }
+                                }
+                                else
+                                {
+                                    <button type="button" onclick="AddEditElements(0, 'BaCrisisPlans', false, @InitialAssessment.BaAssessmentsId)"
+                                        class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                                        </span>
+                                        <span class="text align-self-md-center">New Crisis Plan</span>
+                                    </button>
+                                    <h4>Crisis Plan</h4>
+                                }
+                            </div>
+                            @* Communication with other providers *@
+                            <div class="shadow p-3 mt-4 mb-4">
+                                <h4>Communication with other providers</h4>
+                                <hr />
+                                <div class="form-group">
+                                    <label>Have you communicated with the recipient's prescriber of psychotropic drugs?</label>
+                                    <select asp-for="InitialAssessment.OtherProviderDrugPrescriber" asp-items="ViewBag.Communication" class="form-control"></select>
+                                    <span asp-validation-for="InitialAssessment.OtherProviderDrugPrescriber" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Have you communicated with the recipient's PCP?</label>
+                                    <select asp-for="InitialAssessment.OtherProviderPcp" asp-items="ViewBag.Communication" class="form-control"></select>
+                                    <span asp-validation-for="InitialAssessment.OtherProviderPcp" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Have you documented the communication or recipient declination?</label>
+                                    <select asp-for="InitialAssessment.OtherProviderDocumentedComm" asp-items="ViewBag.Communication" class="form-control"></select>
+                                    <span asp-validation-for="InitialAssessment.OtherProviderDocumentedComm" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Have you been in communication with other Behavior Health (BH) providers for this recipient?
+                                    </label>
+                                    <select asp-for="InitialAssessment.OtherProviderBhComm" asp-items="ViewBag.Communication" class="form-control"></select>
+                                    <span asp-validation-for="InitialAssessment.OtherProviderBhComm" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>If yes, please indicate the type of BH provider</label>
+                                    <input asp-for="InitialAssessment.OtherProviderBhComm" class="form-control" />
+                                    <span asp-validation-for="InitialAssessment.OtherProviderBhCommType" class="text-danger"></span>
+                                </div>
+                            </div>
+                            @* Authorizations *@
+                            <div class="">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h6 class="m-0 font-weight-bold text-primary datatitle">
+                                                    Authorizations<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-6 text-right d-print-none">
+                                                <a onclick="AddEditElements(0, 'Authorizations', false, @InitialAssessment.BaAssessmentsId)" class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-plus fa-sm text-white-50"></i>
+                                                    </span>
+                                                    <span class="text">New Authorization</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="timeline-content " id="activity">
+                                            <div class="timeline-content" style="float: right;margin-right: 5px;">
+                                                <div class="status-legend status-pink" style="border-radius: 5px;overflow: hidden;"></div>
+                                                <small style="display: inline-block;margin-left: 5px;">Units &lt; 20%</small>
+                                            </div><div class="timeline-content " style="float: right;margin-right: 5px;">
+                                                <div class="status-legend status-orange" style="border-radius: 5px;overflow: hidden;"></div>
+                                                <small style="margin-left: 5px;">Units Left</small>
+                                            </div>
+                                            <div class="timeline-content " style="margin-right: 5px;float: right;">
+                                                <div class="status-legend status-blue" style="border-radius: 5px;"></div>
+                                                <small style="margin-left: 5px;">Units Used</small>
+                                            </div><div class="timeline-content " style="margin-right: 5px;float: right;">
+                                                <div class="status-legend status-Closed"></div>
+                                                <small style="margin-left: 5px;">Total Units</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                                <thead class="bg-primary text-white">
+                                                    <tr>
+                                                        <th class="text-center">
+                                                            Status
+                                                        </th>
+                                                        <th>
+                                                            Code
+                                                        </th>
+                                                        <th>
+                                                            PA Number
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Units
+                                                        </th>
+                                                        <th>
+                                                            Effective Date
+                                                        </th>
+                                                        <th>
+                                                            Expiration Date
+                                                        </th>
+                                                        <th data-orderable="false"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in InitialAssessment.Authorizations)
+                                                    {
+
+                                                        <tr ondblclick="AddEditElements(@item.AuthorizationsId, 'Authorizations')">
+                                                            <td class="text-center" style="vertical-align: middle;">
+                                                                <a class="status-@item.AuthorizationStatus">
+                                                                    @Html.DisplayFor(InitialAssessmentItem => item.AuthorizationStatus)
+                                                                </a>
+                                                            </td>
+                                                            <td style="vertical-align: middle;">
+                                                                @Html.DisplayFor(InitialAssessmentItem => item.FkServiceCodes.FullCode)
+                                                            </td>
+                                                            <td style="vertical-align: middle;">
+                                                                @Html.DisplayFor(InitialAssessmentItem => item.AuthorizationNumber)
+                                                            </td>
+                                                            <td style="vertical-align: middle;">
+                                                                @{
+                                                                    var clasSstyle = "custom-badge status-orange";
+                                                                    var used = "0";
+                                                                    if (item.UnitsUsed != null) { used = item.UnitsUsed.ToString(); }
+                                                                    var unitsleft = item.UnitAmount.ToString();
+                                                                    if (item.UnitsLeft != null) { unitsleft = item.UnitsLeft.ToString(); }
+                                                                    if (item.UnitsLeft < (item.UnitAmount * 20 / 100))
+                                                                    {
+
+                                                                        clasSstyle = "custom-badge status-pink";
+                                                                    }
+                                                                }
+                                                                <div style="text-align:center">
+                                                                    <span class="custom-badge status-purple">@item.UnitAmount</span>
+                                                                    <span class="custom-badge status-blue">@used</span>
+                                                                    <span class="@clasSstyle">@unitsleft</span>
+                                                                </div>
+                                                            </td>
+                                                            <td style="vertical-align: middle;">
+                                                                @Html.DisplayFor(InitialAssessmentItem => item.EffectiveDate)
+                                                            </td>
+                                                            <td style="vertical-align: middle;">
+                                                                @Html.DisplayFor(InitialAssessmentItem => item.ExpirationDate)
+                                                            </td>
+                                                            <td class="text-right d-print-none" style="vertical-align: middle;">
+                                                                <button type="button" onclick="AddEditElements(@item.AuthorizationsId, 'Authorizations', true, @InitialAssessment.BaAssessmentsId)" href="#" class="btn btn-outline-info ">
+                                                                    <span class="text">
+                                                                        <i class="fa fa-server"></i>
+                                                                    </span>
+                                                                </button>
+                                                                <button type="button" onclick="DeleteElement(@item.AuthorizationsId, 'Authorizations')" href="#" class="btn btn-outline-danger ">
+                                                                    <span class="text">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </span>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                @foreach(var reassessments in Model.Reassessments)
+                                {
+                                    <label>Summary: @reassessments.CreationDate.ToShortDateString()</label>
+                                    <p>@reassessments.Summary</p>
+                                }
+                                <div class="form-group">
+                                    <label asp-for="Summary" class="control-label"></label>
+                                    <textarea asp-for="Summary" class="form-control"></textarea>
+                                    <span asp-validation-for="Summary" class="text-danger"></span>
+                                </div>
+                            </div>
+                            @* Disclaimer *@
+                            <div class="container"><div class="alert alert-warning text-center"><strong>Disclaimer:</strong> Applying the E-Signature will save the form and route the user to the Quality Asurrance page.</div></div>
+                            @* Signatures *@
+                            <div class="d-flex justify-content-center">
+                                <div style="padding: 1rem;">
+                                    <span style="vertical-align: -webkit-baseline-middle;">
+                                        @InitialAssessment.FkAppointments.FkEmployees.EmployeesRoleNames.FirstOrDefault().FkRoleNames.RoleName:
+                                        @InitialAssessment.FkAppointments.FkEmployees.FullName
+                                    </span>
+                                </div>
+                                <div style="border: dashed;padding: 1rem;">
+                                    <input type="submit" value="Apply E-Sign" class="btn btn-outline-primary mb-0 mt-0">
+                                </div>
+                                <div style="padding: 1rem;">
+                                    <span style="vertical-align: -webkit-baseline-middle;">
+                                        @DateTime.Now.ToShortDateString()
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts starts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

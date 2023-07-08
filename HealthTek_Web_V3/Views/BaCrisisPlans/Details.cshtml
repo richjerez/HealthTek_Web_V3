@@ -1,0 +1,48 @@
+﻿@using System.Reflection
+@using System.ComponentModel
+@model HealthTek_Shared_Libraries.BaCrisisPlan
+@{
+    var plan = Model.GetType().GetProperties().Where(p => p.PropertyType == typeof(bool)
+    && (bool)p.GetValue(Model, null));
+    List<string> il = new List<string>();
+}
+<button type="button" onclick="DeleteElement(@Model.BaCrisisPlanId, 'BaCrisisPlans')"
+        class="d-none d-sm-inline-block btn btn-xs btn-danger shadow-sm btn-icon-split d-print-none float-right ml-2">
+    <span class="icon text-white-50">
+        <i class="fas fa-trash fa-sm text-white-50"></i>
+    </span>
+</button>
+<button type="button" onclick="AddEditElements(@Model.BaCrisisPlanId, 'BaCrisisPlans')"
+        class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+    <span class="icon text-white-50">
+        <i class="fas fa-edit fa-sm text-white-50"></i>
+    </span>
+</button>
+
+<h4>Crisis Plan</h4>
+@foreach (PropertyInfo pi in plan)
+{
+    var dp = pi.GetCustomAttributes(typeof(DisplayNameAttribute), true).Cast<DisplayNameAttribute>
+        ().SingleOrDefault();
+    if (dp != null)
+    {
+        il.Add(dp.DisplayName);
+    }
+}
+<hr />
+<small>Crisis Plan</small>
+<span class="d-block">
+    @Model.CrisisPlan
+</span>
+<ul>
+    @foreach (var i in il)
+    {
+
+        <li>@i.Replace("?", "")</li>
+    }
+    @if (Model.OtherRisks)
+    {
+        <li>@Model.OtherRiskFactor</li>
+    }
+</ul>
+

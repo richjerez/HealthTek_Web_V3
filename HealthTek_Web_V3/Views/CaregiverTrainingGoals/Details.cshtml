@@ -1,0 +1,56 @@
+﻿@model HealthTek_Shared_Libraries.CaregiverTrainingGoals
+
+<div class="row">
+    <div class="col-lg-9 border-right">
+        <h5 class="font-weight-bold mb-0">Caregiver Training Goals</h5>
+        <small>Baseline</small>
+        <span class="d-block">@Model.Baseline</span>
+        <small>Baseline Collected Start</small>
+        <span class="d-block">@Model.BaselineCollectedStart.ToShortDateString()</span>
+        <small>Baseline Collected End</small>
+        <span class="d-block">@Model.BaselineCollectedEnd.ToShortDateString()</span>
+    </div>
+    <div class="col-lg-3 text-right">
+        <a onclick="AddEditElements(@Model.CaregiverTrainingGoalsId, 'CaregiverTrainingGoals')"
+           class="btn btn-primary btn-xs d-inline-flex">
+            <i class="fas fa-edit"></i>
+        </a>
+        <a onclick="DeleteElements(@Model.CaregiverTrainingGoalsId, 'CaregiverTrainingGoals')"
+           class="btn btn-danger btn-xs d-inline-flex">
+            <i class="fas fa-trash"></i>
+        </a>
+        <hr />
+        <button type="button" onclick="AddEditElements(0, 'ShortTermObjectives', false, @Model.CaregiverTrainingGoalsId, '@Model.GoalType')"
+                class="d-none d-sm-inline-flex btn btn-xs btn-primary shadow-sm btn-icon-split">
+            <span class="icon text-white-50" style="margin: auto;">
+                <i class="fas fa-plus fa-sm text-white-50"></i>
+            </span>
+            <span class="text align-self-md-center">New STO</span>
+        </button>
+
+        <button type="button" onclick="AddEditElements(0,'LongTermObjectives', false, @Model.CaregiverTrainingGoalsId, '@Model.GoalType')"
+                class="d-none d-sm-inline-flex btn btn-xs btn-primary  shadow-sm btn-icon-split">
+            <span class="icon text-white-50" style="margin: auto;">
+                <i class="fas fa-plus fa-sm text-white-50"></i>
+            </span>
+            <span class="text align-self-md-center">New LTO</span>
+        </button>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-lg-12">
+        @foreach (var sto in Model.ShortTermObjectives.Where(m => m.StoType == Model.GoalType && m.IsCurrent == true).ToList())
+        {
+            await Html.RenderPartialAsync("~/Views/ShortTermObjectives/Details.cshtml", sto);
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        @foreach (var lto in Model.LongTermObjectives.Where(m => m.LtoType == Model.GoalType && m.IsCurrent == true))
+        {
+            await Html.RenderPartialAsync("~/Views/LongTermObjectives/Details.cshtml", lto);
+        }
+    </div>
+</div>

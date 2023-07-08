@@ -1,0 +1,115 @@
+﻿@model HealthTek_Shared_Libraries.Tasks
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> _userManger;
+@{
+    var user = await _userManger.GetUserAsync(User);
+}
+<div class="d-flex w-100 justify-content-between">
+    <small class="d-block">From: </small>
+    <small>@Model.CreationDate.ToString("MMM dd @h:mm tt")</small>
+</div>
+<span class="d-block">@Html.DisplayFor(model => model.FkAssignedBy.FullName)</span>
+<hr />
+@Html.Raw(Model.TaskSubject)
+<span class="d-block">@Html.Raw(Model.TaskDescription)</span>
+
+@if (Model.TaskStatus != "Completed" && Model.TaskStatus != "Archived")
+{
+    @if (Model.Assignment != null)
+    {
+        if (Model.DueDate.HasValue)
+        {
+            <span class="d-block">Due Date: @Model.DueDate.Value.ToShortDateString()</span>
+        }
+        <p class="mb-1">
+            <div>
+                Position @Model.Assignment.AssignmentPosition
+            </div>
+            @Model.TaskNote
+        </p>
+        @if (Model.Assignment != null && Model.Assignment.AssignmentStatus != "Accepted" && Model.Assignment.AssignmentStatus != "Rejected")
+        {
+            <div class="text-right">
+                <a asp-controller="Tasks" asp-action="UpdateTask" asp-route-assignment="@Model.TaskIdentifier" asp-route-taskId="@Model.TasksId"
+       asp-route-taskaction="accepted" class="btn btn-primary mr-2">
+                    <span class="text">
+                        <i class="fa fa-check mr-2"></i>Accept
+                    </span>
+                </a>
+                <a asp-controller="Tasks" asp-action="UpdateTask" asp-route-assignment="@Model.TaskIdentifier" asp-route-taskId="@Model.TasksId"
+       asp-route-taskaction="rejected" class="btn btn-outline-danger ">
+                    <span class="text">
+                        <i class="fa fa-ban mr-2"></i>Deny
+
+                    </span>
+                </a>
+            </div>
+
+        }
+    }
+}
+else
+{
+    @if (Model.Assignment != null)
+    {
+        <span class="d-block">Due Date: @Model.DueDate.Value.ToShortDateString()</span>
+        <p class="mb-1">
+            <div>
+                Position @Model.Assignment.AssignmentPosition
+            </div>
+            @Model.TaskNote
+        </p>
+        <p>Status: @Model.Assignment.AssignmentStatus </p>
+    }
+}
+
+<hr />
+@foreach (var notes in Model.Notes)
+{
+    if (notes.FkEmployeesId == user.FkEmployeesId)
+    {
+        <small>Me</small>
+    }
+    else
+    {
+        <small>@notes.FkEmployees.FullName</small>
+
+    }
+    <div>
+        @notes.Notes
+    </div>
+    <hr />
+}
+<div class="text-right"><a onclick="Reply()" href="#">Reply <i class="fas fa-share"></i></a></div>
+
+<div id="shareShowHide" style="display:none">
+    <form asp-controller="TaskNotes" asp-action="Create" method="post">
+        <input id="FkTasksId" name="FkTasksId" value="@Model.TasksId" type="hidden" />
+        <input id="FkAssignmentsId" name="FkAssignmentsId" value="@Model.TaskIdentifier" type="hidden" />
+        <input id="FkEmployeesId" name="FkEmployeesId" value="@Model.FkAssignedById" type="hidden" />
+        <hr>
+        <div class="form-group">
+            <label class="control-label" for="Notes">Reply</label>
+            <textarea class="form-control valid" style="height: 150px;"
+                      data-val-required="The Notes field is required."
+                      data-val-maxlength-max="5000"
+                      data-val-maxlength="The field reply must be a string or array type with a maximum length of '5000'."
+                      data-val="true" name="Notes" id="Notes" placeholder="Enter your reply here..."></textarea>
+        </div>
+        <div class="text-right">
+            <button onclick="" href="#" class="btn btn-success mr-2">
+                <span class="text">
+                    <i class="fa fa-paper-plane mr-2"></i>Send
+                </span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    task.id = @Html.Raw(Json.Serialize(Model.TasksId));
+    function Reply() {
+        var element = document.getElementById("shareShowHide");
+        element.style.display = "block";
+    }
+</script>

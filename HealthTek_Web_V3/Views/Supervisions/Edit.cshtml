@@ -1,0 +1,149 @@
+﻿@model HealthTek_Shared_Libraries.Supervisions
+
+@{
+    ViewData["Title"] = "Create Supervision";
+    ViewData["ActivePage"] = "Supervisions";
+}
+
+<div class="container">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                        Edit Supervision<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="card-body bg-white">
+            <form asp-action="Edit" id="myForm">
+                <input type="hidden" asp-for="SupervisionsId" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="card-box">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label asp-for="FkAppointmentsId" class="control-label"></label>
+                                <select asp-for="FkAppointmentsId" class="selectpicker" asp-items="ViewBag.FkAppointmentsId" data-live-search="true"><option disabled selected>Select Appointment</option></select>
+                                <span asp-validation-for="FkAppointmentsId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="SupervisionStatus" class="control-label"></label>
+                                <select asp-for="SupervisionStatus" class="selectpicker" asp-items="ViewBag.Status" data-live-search="false"><option disabled selected>Select Status</option></select>
+                                <span asp-validation-for="SupervisionStatus" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="StartTime" class="control-label"></label>
+                                <input asp-for="StartTime" class="form-control" />
+                                <span asp-validation-for="StartTime" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="EndTime" class="control-label"></label>
+                                <input asp-for="EndTime" class="form-control" />
+                                <span asp-validation-for="EndTime" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="SupervisionMode" class="control-label"></label>
+                                <select asp-for="SupervisionMode" class="selectpicker" asp-items="ViewBag.Modes" data-live-search="false"><option disabled selected>Select Mode</option></select>
+                                <span asp-validation-for="SupervisionMode" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label asp-for="SupervisorName" class="control-label"></label>
+                                <select asp-for="SupervisorName" class="selectpicker" 
+                                onchange="getSupervisorNumber()"
+                                asp-items="ViewBag.Supervisors" data-live-search="true">
+                                <option disabled selected>Select Supervisor</option></select>
+                                <span asp-validation-for="SupervisorName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="SupervisorNumber" class="control-label"></label>
+                                <input asp-for="SupervisorNumber" class="form-control" />
+                                <span asp-validation-for="SupervisorNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PerformanceRating" class="control-label"></label>
+                                <select asp-for="PerformanceRating" class="selectpicker" data-live-search="false" asp-items="ViewBag.Ratings"><option selected disabled>Select Rating</option></select>
+                                <span asp-validation-for="PerformanceRating" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="SupervisionCharacteristics" class="control-label"></label>
+                                <select asp-for="SupervisionCharacteristics" class="selectpicker" data-live-search="false" asp-items="ViewBag.Characteristics"><option disabled selected>Select Characteristic</option></select>
+                                <span asp-validation-for="SupervisionCharacteristics" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="SupervisionComment" class="control-label"></label>
+                                <textarea asp-for="SupervisionComment" class="form-control"></textarea>
+                                <span asp-validation-for="SupervisionComment" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group form-check-inline">
+                                <label>
+                                    <input asp-for="@Model.ObservedWithClient" type="checkbox" />
+                                    @Html.DisplayNameFor(i => i.ObservedWithClient)
+                                </label>
+                            </div>
+                            <div class="form-group form-check-inline">
+                                <label>
+                                    <input asp-for="@Model.IsGroup" type="checkbox" />
+                                    @Html.DisplayNameFor(i => i.IsGroup)
+                                </label>
+                            </div>
+                            <div class="form-group form-check-inline">
+                                <label asp-for="@Model.HasRcc">
+                                    <input asp-for="@Model.HasRcc" type="checkbox" onchange="this.value=this.checked" />
+                                    @Html.DisplayNameFor(i => i.HasRcc)
+                                </label>
+                            </div>
+                            <div class="form-group form-check-inline">
+                                <label>
+                                    <input asp-for="@Model.HasBcabaSupvMeeting" type="checkbox" onchange="this.value=this.checked" />
+                                    @Html.DisplayNameFor(i => i.HasBcabaSupvMeeting)
+                                </label>
+                            </div>
+                            <div class="form-group float-right">
+                                <input type="button" value="Cancel" class="btn btn-outline-cancel float-end"
+                                       onclick="location.href='@Url.Action("Index", "Supervisions")';" />
+                                <input type="submit" value="Update Supervision" class="btn btn-outline-primary float-right" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+    <script src="~/js/Cruds/Supervisions.js"></script>
+}

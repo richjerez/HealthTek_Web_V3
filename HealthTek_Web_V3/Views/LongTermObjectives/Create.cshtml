@@ -1,0 +1,74 @@
+﻿@model HealthTek_Shared_Libraries.LongTermObjectives
+
+<div class="card shadow p-3">
+    <form asp-action="Create"  onsubmit="return jQueryAjaxPost(this);">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="FkMaladaptivesId" />
+        <input type="hidden" asp-for="FkReplacementsId" />
+        <input type="hidden" asp-for="FkCaregiverTrainingGoalsId" />
+        <input type="hidden" asp-for="ObjectiveNumber" />
+        <input type="hidden" asp-for="IsCurrent" />
+        <input type="hidden" asp-for="LtoType" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ObjectiveNumber" class="control-label"></label>
+                    <input asp-for="ObjectiveNumber" class="form-control " disabled />
+                    <span asp-validation-for="ObjectiveNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="LtoStatus" class="control-label"></label>
+                    <select asp-for="LtoStatus" class="ModalSelect" asp-items="ViewBag.Status"></select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LtoGoal" class="control-label"></label>
+            <input asp-for="LtoGoal" class="form-control" />
+            <span asp-validation-for="LtoGoal" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Duration" class="control-label"></label>
+                    <input asp-for="Duration" class="form-control" />
+                    <span asp-validation-for="Duration" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Timeframe" class="control-label"></label>
+                    <select asp-for="Timeframe" class="ModalSelect" asp-items="ViewBag.TimeFrame">
+                        <option disabled selected>Select TimeFrame</option>
+                    </select>
+                    <span asp-validation-for="Timeframe" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="InitiateDate" class="control-label"></label>
+                    <input asp-for="InitiateDate" type="date" asp-format="{0:yyy-MM-dd}" class="form-control" />
+                    <span asp-validation-for="InitiateDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="MasteryDate" class="control-label"></label>
+                    <input asp-for="MasteryDate" type="date" asp-format="{0:yyy-MM-dd}" class="form-control" />
+                    <span asp-validation-for="MasteryDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Create");}
+    </form>
+</div>

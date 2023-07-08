@@ -1,0 +1,284 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Supervisions>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> userManager
+@{
+    ViewData["Title"] = "Supervisions";
+    ViewData["ActivePage"] = "Supervisions";
+    var user = userManager.GetUserAsync(User).Result;
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+<div class="">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                        @ViewData["Title"]<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;" onclick="AddEditElements(0, 'Supervisions')"></i>
+                    </h6>
+                </div>
+                <div class="col-md-8 text-right">
+                    <a asp-controller="Supervisions" asp-action="Create" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">New @ViewData["Title"]</span>
+                    </a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="window.print()">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-print fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">Print</span>
+                    </a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" asp-controller="Report" asp-action="Get" asp-route-ClassName="Supervisions" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-pdf fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">PDF</span>
+                    </a>
+                    <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="ExportCSV('Supervisions',5)">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-csv fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">CSV</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table shadow" cellspacing="0" style="width: 30%!important;border: dashed currentColor .012rem;background-color: white;margin: auto;" border="1">
+                    <tbody>
+                        <tr>
+                            <td style="border-style: dashed; border-style: dashed;">
+                                <small>Supervision Month</small>
+                                <input id="superdate" name="superdate" class="form-control" type="month" onchange="submitFilterForm()" />
+                            </td>
+                            <td style="text-align: center; border-style: dashed;">
+                                <small style="display: block;">Total Hours</small>
+                                <span id="totalHours"># Hours</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-style: dashed;">
+                                <small>Employee</small>
+                                <select id="employee" name="employee" class="selectpicker" data-live-search="true" asp-items="ViewBag.Employees" onchange="submitFilterForm()"><option disabled selected>Select Employee</option></select>
+                            </td>
+                            <td style="text-align: center; border-style: dashed;">
+                                <small style="display: block;">Percentage Hours</small>
+                                <span id="percentageHours"># Hours</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-style: dashed;">
+                                <small>Client</small>
+                                <select id="client" name="client" class="selectpicker" data-live-search="true" asp-items="ViewBag.Clients" onchange="submitFilterForm()"><option disabled selected>Select Client</option></select>
+                            </td>
+                            <td style="text-align: center; border-style: dashed;">
+                                <small style="display: block;">Group Hours</small>
+                                <span id="groupHours"># Hours</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th style="display:none"></th>
+                            <th class="text-center">
+                                @Html.DisplayNameFor(modelItem => modelItem.SupervisionStatus)
+                            </th>
+                            <th>DOS</th>
+                            <th>
+                                @Html.DisplayNameFor(modelItem => modelItem.FkAppointments.FkFacilities.ClientsFacilities.FirstOrDefault().ClientChartLabel)
+                            </th>
+@*                            <th>Role</th>
+*@                            <th>
+                                Employee
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(modelItem => modelItem.StartTime) - @Html.DisplayNameFor(modelItem => modelItem.EndTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(modelItem => modelItem.SupervisionDuration)
+                            </th>
+                            <th style="text-align:center">
+                                <small class="d-block">E-Signature</small>
+                                Supervisor
+                            </th>
+                            <th style="text-align:center">
+                                <small class="d-block">E-Signature</small>
+                                Supervisee
+                            </th>
+                            <th data-orderable="false"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr ondblclick="LoadEdit('@item.SupervisionsId', 'Supervisions')">
+                                <td style="display:none">@item.FkAppointments.EndTime.Value.ToString("MMMM")</td>
+                                <td>
+                                    <a class="status-@String.Concat(item.SupervisionStatus.Where(c => !Char.IsWhiteSpace(c)))">@Html.DisplayFor(modelItem => item.SupervisionStatus)</a>
+                                </td>
+                                <td>
+                                    @item.FkAppointments.StartTime.ToShortDateString()
+                                </td>
+                                <td>
+                                    <a asp-controller="Supervisions" asp-action="Details" asp-route-id="@item.FkAppointments.FkClientsId">@item.FkAppointments.FkClients.ClientsFacilities.FirstOrDefault().ClientChartLabel</a>
+                                </td>
+@*                                <td>
+                                    @{var role = item.FkAppointments.FkServiceCodes.CodeTitle;}
+                                    @item.FkAppointments.FkEmployees.EmployeesRoleNames.Where(m => m.FkRoleNames.RoleName.Contains(role)).FirstOrDefault()
+                                </td>
+*@                                <td>
+                                    <a asp-controller="Employees" asp-action="Details" asp-route-id="@item.FkAppointments.FkEmployees.EmployeesId">
+                                        @Html.DisplayFor(modelItem => item.FkAppointments.FkEmployees.EmployeeLabel)
+                                    </a>
+                                </td>
+                                <td>
+                                    @item.StartTime.Value.ToShortTimeString() - @item.EndTime.Value.ToShortTimeString()
+                                </td>
+                                <td>
+                                    @item.SupervisionDuration
+                                </td>
+                                @if (item.SupervisionStatus != "Submitted")
+                                {
+                                    <td style="text-align:center" class=" d-print-none">
+                                        @{
+                                            if (userManager.IsInRoleAsync(user, "supervisor").Result)
+                                            {
+                                                if (item.FkSupervisorSignaturesId != null)
+                                                {
+                                                    <button onclick="UpdateSignature(@item.SupervisionsId, 'removeSupvSign')" class="btn btn-outline-danger d-print-none mr-4">
+                                                        <span class="text">
+                                                            <i class="fa fa-ban"></i>
+                                                        </span>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button onclick="UpdateSignature(@item.SupervisionsId, 'addSupvSign')" class="btn btn-outline-primary d-print-none mr-4">
+                                                        <span class="text">
+                                                            <i class="fas fa-file-signature"></i>
+                                                        </span>
+                                                    </button>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (item.FkSupervisorSignaturesId == null)
+                                                {
+                                                    <a class="status-MissingSignature">Missing Signature</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="status-Completed">Signed</a>
+                                                }
+
+                                            }
+                                        }
+                                    </td>
+                                    <td style="text-align:center" class=" d-print-none">
+                                        @if (item.FkAppointments.FkEmployeesId == user.FkEmployeesId)
+                                        {
+                                            if (item.FkUserSignaturesId != null)
+                                            {
+                                                <button onclick="UpdateSignature(@item.SupervisionsId, 'removeUserSign')" class="btn btn-outline-danger d-print-none mr-4">
+                                                    <span class="text">
+                                                        <i class="fa fa-ban"></i>
+                                                    </span>
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button onclick="UpdateSignature(@item.SupervisionsId, 'addUserSign')" class="btn btn-outline-primary d-print-none mr-4">
+                                                    <span class="text">
+                                                        <i class="fas fa-file-signature"></i>
+                                                    </span>
+                                                </button>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.FkUserSignaturesId == null)
+                                            {
+                                                <a class="status-MissingSignature">Missing Signature</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="status-Completed">Signed</a>
+                                            }
+                                        }
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a class="status-Completed">Signed</a>
+                                    </td>
+                                    <td>
+                                        <a class="status-Completed">Signed</a>
+                                    </td>
+                                }
+                                <td class="text-right d-print-none">
+                                    @if (item.HasRcc)
+                                    {
+                                        <button onclick="AddEditElements(@item.FkRbtCompetenciesId, 'RbtCompetencies')" class="btn btn-info d-print-none">
+                                            <span class="text">
+                                                Fill RCC
+                                            </span>
+                                        </button>
+                                    }
+                                    @if (item.HasBcabaSupvMeeting)
+                                    {
+                                        <button onclick="AddEditElements(@item.FkBcabaSupvMeetingsId, 'BcabaSupvMeetings')" class="btn btn-info d-print-none">
+                                            <span class="text">
+                                                Fill BcabaSupv Form
+                                            </span>
+                                        </button>
+                                    }
+                                    
+                                    <button onclick="DeleteElement('@item.SupervisionsId', 'Supervisions')" class="btn btn-outline-danger d-print-none">
+                                        <span class="text">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+
+    <!-- CSV Export scripts -->
+    <script type="text/javascript" src="~/js/Exports/CSVExport.js"></script>
+
+    <!-- Page level custom scripts starts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <script src="~/js/Cruds/Supervisions.js"></script>
+    <script>
+        $(document).ready(async function () {
+            await loadScript("/js/afterLoad.js");
+            // Do whatever you want to do after script is ready
+        });
+    </script>
+}

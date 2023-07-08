@@ -1,0 +1,211 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.BaCrisisPlan>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DoesApply)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAssaultive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSelfInjurious)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFireSetting)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsImpulsive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSelfMutilating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFamilyViolence)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPriorPsychiatric)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsElopement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSexuallyOffending)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSubstanceAbuse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPsychotic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCaringForIllFamily)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCopingWithLoss)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CrisisPlan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OtherRiskFactor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SuicidalityNotPresent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SuicidalityIdeation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SuicidalityPlan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SuicidalityMeans)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SuicidalityPriorAttempt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomicidalityNotPresent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomicidalityIdeation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomicidalityPlan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomicidalityMeans)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomicidalityPriorAttempt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FkBaAssessments)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DoesApply)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAssaultive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSelfInjurious)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFireSetting)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsImpulsive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSelfMutilating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFamilyViolence)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPriorPsychiatric)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsElopement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSexuallyOffending)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSubstanceAbuse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPsychotic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCaringForIllFamily)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCopingWithLoss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CrisisPlan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OtherRiskFactor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SuicidalityNotPresent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SuicidalityIdeation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SuicidalityPlan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SuicidalityMeans)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SuicidalityPriorAttempt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomicidalityNotPresent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomicidalityIdeation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomicidalityPlan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomicidalityMeans)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomicidalityPriorAttempt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkBaAssessments.BaAssessmentsId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BaCrisisPlanId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BaCrisisPlanId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BaCrisisPlanId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,153 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Appointments>
+@{
+    ViewData["Title"] = "Billing";
+    ViewData["ActivePage"] = "Billing";
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="m-0 font-weight-bold text-primary datatitle">
+                    @ViewData["Title"]<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                </h6>
+            </div>
+            <div class="col-md-6 text-right">
+                <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" 
+                style="margin:0" onclick="window.print()">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-print fa-sm text-white-50"></i>
+                    </span>
+                    <span class="text">Print</span>
+                </a>
+                <a asp-controller="Report" asp-action="Get" asp-route-ClassName="Billing"
+                class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none"
+                         style="margin:0">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-file-pdf fa-sm text-white-50"></i>
+                    </span>
+                    <span class="text">PDF</span>
+                </a>
+                <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" 
+                asp-controller="Billing" asp-action="ExportBillingData">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-file-csv fa-sm text-white-50"></i>
+                    </span>
+                    <span class="text">CSV</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table" id="dataTable" width="100%" cellspacing="0">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th class="text-center">
+                            Service
+                        </th>
+                        <th>
+                            DOS
+                        </th>
+                        <th>
+                            <span class="d-block">Client</span>
+                            <span class="text-success">MR# <span class="text-danger">DX</span></span>
+                        </th>
+                        <th>
+                            <span class="d-block">Employee</span>
+                            <span class="text-success">NPI <span class="text-danger">ID</span></span>
+                        </th>
+                        <th>
+                            <span class="d-block">PA Number</span>
+                            <span class="text-danger">Code</span>
+                        </th>
+                        <th>
+                            <span class="d-block">Units</span>
+                            <span class="text-success">Min/<span class="text-danger">Hrs</span></span>
+                        </th>
+                        <th>
+                            <span class="text-success">Start-<span class="text-danger">End</span></span>
+                        </th>
+                        <th class="text-center">
+                            Status
+                        </th>
+
+                        <th data-orderable="false"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Where(m => m.AppointmentType.Contains("Service") && m.FkServiceCodes != null
+                    && m.FkClients.Authorizations != null))
+                    {
+                        <tr>
+                            <td>
+                                <a class="status-@String.Concat(item.QaStatus.Where(c => !Char.IsWhiteSpace(c))) mr-2">
+                                    @Html.DisplayFor(modelItem => item.QaStatus)
+                                </a>
+                            </td>
+                            <td>
+                                @item.StartTime.ToShortDateString()
+                            </td>
+                            <td>
+                                <a class="d-block" asp-controller="Clients" asp-action="Details" asp-route-id="@item.FkClientsId">@item.FkClients.FullName</a>
+                                <span class="text-success">@item.FkClients.ClientsFacilities.FirstOrDefault().ChartNumber/<span class="text-danger">@Html.DisplayFor(m => item.FkClients.Diagnosis.FirstOrDefault().DiagnosisCode)</span></span>
+                            </td>
+                            <td>
+                                <a class="d-block" asp-controller="Employees" asp-action="Details" asp-route-id="@item.FkEmployeesId">@item.FkEmployees.EmployeeLabel</a>
+                                <span class="text-success">@item.FkEmployees.EmployeeIdentifier <span class="text-danger">@item.FkEmployees.ProviderNumber</span></span>
+                            </td>
+                            <td>
+                                @{ var auth = item.FkClients.Authorizations.Where(m => m.FkServiceCodesId == item.FkServiceCodesId).FirstOrDefault();}
+                                @if(auth != null)
+                                {
+                                    <span class="d-block">@auth.AuthorizationNumber</span>
+                                }
+                                <span class="text-danger">@item.FkServiceCodes.FullCode</span>
+                            </td>
+                            <td>
+                                @if(auth != null){
+                                    <span class="text-primary d-block">@auth.UnitAmount</span>
+                                    <span class="text-success">@auth.WeeklyUnits/<span class="text-danger">@auth.WeeklyHours</span></span>
+                                }
+                            </td>
+                            <td>
+                                <span class="text-success">@item.FkStartLocation.LocationName-<span class="text-danger">@item.FkEndLocation.LocationName</span></span>
+                            </td>
+                            <td>
+                                <a class="status-@String.Concat(item.BillingStatus.Where(c => !Char.IsWhiteSpace(c))) mr-2">
+                                    @Html.DisplayFor(modelItem => item.BillingStatus)
+                                </a>
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <!-- CSV Export scripts -->
+    <script type="text/javascript" src="~/js/Exports/CSVExport.js"></script>
+
+    <!-- Page level custom scripts starts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <script>
+        $(document).ready(async function () {
+            await loadScript("/js/afterLoad.js");
+            // Do whatever you want to do after script is ready
+        });
+    </script>
+
+}

@@ -1,0 +1,24 @@
+﻿@model HealthTek_Shared_Libraries.AbcReports
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: You are about delete an Abc report, information on this report will be lost. To enable the delete button below type Abc report in the text box. 
+        Are you sure you want to delete the Abc report?
+    </h5>
+    <hr />
+    <form asp-action="Delete" asp-route-id="@Model.AbcReportsId" class="text-right row">
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="asName" placeholder="Enter Abc report..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = 'Abc report';
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

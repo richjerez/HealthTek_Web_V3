@@ -1,0 +1,30 @@
+﻿@model HealthTek_Shared_Libraries.MaladaptiveDischarges
+
+<div>
+    <button type="button" onclick="DeleteElement(@Model.MaladaptiveDischargesId, 'MaladaptiveDischarges')"
+            class="d-none d-sm-inline-block btn btn-xs btn-danger shadow-sm btn-icon-split d-print-none float-right ml-2">
+        <span class="icon text-white-50">
+            <i class="fas fa-trash fa-sm text-white-50"></i>
+        </span>
+    </button>
+    <button type="button" onclick="AddEditElements(@Model.MaladaptiveDischargesId, 'MaladaptiveDischarges')"
+            class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+        <span class="icon text-white-50">
+            <i class="fas fa-edit fa-sm text-white-50"></i>
+        </span>
+    </button>
+
+    <h4>Discharge Criteria</h4>
+    <hr />
+    <p>Once the above criteria have been achieved for each target behavior/goal specified above, behavior analysis services will be reduced by:</p>
+    <p>
+        Percent/Frequency: Near zero incidents sustained in @Model.DischargeFrequency months.
+        Expected @Model.ExpectedDate.Value.ToShortDateString(), Time (month/weeks)
+    </p>
+
+    <h5>All Short-Term Objectives</h5>
+    <hr />
+    <p>Percent/Frequency & Time: @Model.DischargeAllStos</p>
+    <p>Service to Fade: Services will be discontinued for both providers if replacement goals are at the same time reduced to 95%.</p>
+    <p><strong>Parent competency checks</strong> will also be assessed at the time of termination and are expected to meet at least 95% criteria on the competency check designed for this program for 3 consecutive months.</p>
+</div>

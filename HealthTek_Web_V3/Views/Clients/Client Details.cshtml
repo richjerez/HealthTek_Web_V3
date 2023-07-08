@@ -1,0 +1,314 @@
+﻿@model HealthTek_Shared_Libraries.Clients
+@{
+    var id = ViewData["ID"];
+}
+
+<div class="card shadow mb-4 p-3">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseAddresses" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseAddresses">
+        <h6 class="m-0 font-weight-bold text-primary">Addresses</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseAddresses" style="">
+        <div class="card-body">
+            <button class="btn btn-primary float-right" onclick="AddEditElements(0, 'Locations', false,@id)">
+                New Address
+            </button>
+            <div class="table-responsive">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Address</th>
+                            <th>
+                                City
+                            </th>
+                            <th>
+                                State
+                            </th>
+                            <th>
+                                Zip Code
+                            </th>
+                            <th>
+                                County
+                            </th>
+                            <th>
+                                Region
+                            </th>
+                            <th>
+                                Country
+                            </th>
+                            <th data-orderable="false" class="d-print-none"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Locations)
+                        {
+                            <tr ondblclick="AddEditElements(@item.LocationsId,'Locations')">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Address)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.City)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Zipcode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.County)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Region)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Country)
+                                </td>
+                                <td class="text-right d-print-none">
+                                    <button onclick="DeleteElement('@item.LocationsId', 'Locations')" href="#" class="btn btn-outline-danger ">
+                                        <span class="text">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Header - Accordion -->
+    <a href="#collapsePersonalDetails" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsePersonalDetails">
+        <h6 class="m-0 font-weight-bold text-primary">Personal Details</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapsePersonalDetails" style="">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <small class="d-block font-weight-bold">Referring Physician</small>
+                            <span class="d-block">@Model.ReferringPhysician</span>
+                            <small class="d-block font-weight-bold">Referring Npi</small>
+                            <span class="d-block">@Model.ReferringNpi</span>
+                            <small class="d-block font-weight-bold">Referral Date</small>
+                            <span class="d-block">@Model.ReferralDate</span>
+                            <small class="d-block font-weight-bold">Originator</small>
+                            <span class="d-block">@Model.Originator</span>
+                            <small class="d-block font-weight-bold">Originator Info</small>
+                            <span class="d-block">@Model.OriginatorContactInfo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <div class="divider d-none d-sm-block"></div>
+                </div>
+                <div class="col-lg-6">
+                    <small class="d-block font-weight-bold">SSN</small>
+                    @if (!string.IsNullOrEmpty(Model.Ssn))
+                    {
+                        <span class="text">XXX-XX-@Model.Ssn.Substring(7)</span>
+                    }
+                    <small class="d-block font-weight-bold">Date of Birth</small>
+                    <span class="d-block">@Model.Dob.Value.ToShortDateString()</span>
+                    <small class="d-block font-weight-bold">Gender</small>
+                    <span class="d-block">@Model.Gender</span>
+                    <small class="d-block font-weight-bold">Ethnicity</small>
+                    <span class="d-block">@Model.Ethnicity</span>
+                    <small class="d-block font-weight-bold">Religion</small>
+                    <span class="d-block">@Model.Religion</span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Header - Accordion -->
+    <a href="#collapseAdditionalContacts" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseAdditionalContacts">
+        <h6 class="m-0 font-weight-bold text-primary">Additional Contacts</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapseAdditionalContacts" style="">
+        <div class="card-body">
+            <button class="btn btn-primary float-right" onclick="AddEditElements(0, 'ClientContacts', false,@id)">
+                New Contact
+            </button>
+            <div class="table-responsive">
+                <table class="table" id="dataTable1" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Relationship</th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Phone
+                            </th>
+                            <th>
+                                Alternate Phone
+                            </th>
+                            <th width="100">
+                                Address
+                            </th>
+                            <th data-orderable="false" class="d-print-none"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ClientContacts)
+                        {
+                            <tr ondblclick="AddEditElements(@item.ClientContactsId,'ClientContacts')">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Relationship)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ContactName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AlternateNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FkLocations.FullPrimaryAddress)
+                                </td>
+                                <td class="text-right d-print-none">
+                                    <button onclick="DeleteElement(@item.ClientContactsId, 'ClientContacts')" href="#" class="btn btn-outline-danger ">
+                                        <span class="text">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Header - Accordion -->
+    <a href="#collapseDiagnosis" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseDiagnosis">
+        <h6 class="m-0 font-weight-bold text-primary">Diagnosis</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapseDiagnosis">
+        <div class="card-body shadow">
+            <button class="btn btn-primary float-right" onclick="AddEditElements(0, 'Diagnosis', false, @id)">
+                New Diagnosis
+            </button>
+            <div class="table-responsive">
+                <table class="table" id="dataTable4" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Type</th>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th data-orderable="false" class="d-print-none"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Diagnosis)
+                        {
+                            <tr ondblclick="AddEditElements(@item.DiagnosisId, 'Diagnosis')">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiagnosisType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiagnosisCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiagnosisName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td class="text-right d-print-none">
+                                    <button onclick="DeleteElement(@item.DiagnosisId, 'Diagnosis')" class="btn btn-outline-danger " type="button">
+                                        <span class="text">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Card Header - Accordion -->
+    <a href="#collapseMedications" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseMedications">
+        <h6 class="m-0 font-weight-bold text-primary">Medications</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapseMedications">
+        <div class="card-body shadow mb-2">
+            <button class="btn btn-primary float-right" onclick="AddEditElements(0, 'Medications', false, @id)">
+                New Medication
+            </button>
+            <div class="table-responsive">
+                <table class="table" id="dataTable2" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Name</th>
+                            <th>
+                                Dosage
+                            </th>
+                            <th>
+                                Duration
+                            </th>
+                            <th>
+                                Prescribing Physician
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th data-orderable="false" class="d-print-none"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Medications)
+                        {
+                            <tr ondblclick="AddEditElements(@item.MedicationsId, 'Medications')">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MedicationName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Dosage)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Duration)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PrescribingPhysician)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td class="text-right d-print-none">
+                                    <button onclick="DeleteElement(@item.MedicationsId, 'Medications')" class="btn btn-outline-danger " type="button">
+                                        <span class="text">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

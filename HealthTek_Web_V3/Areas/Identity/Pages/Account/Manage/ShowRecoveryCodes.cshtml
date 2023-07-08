@@ -1,0 +1,36 @@
+﻿@page "~/Settings/RecoveryCodes"
+@model ShowRecoveryCodesModel
+@{
+    ViewData["Title"] = "Recovery codes";
+    ViewData["ActivePage"] = "TwoFactorAuthentication";
+}
+
+<div class="row">
+    <div class="row">
+        <div class="col-xl-8">
+            <partial name="_StatusMessage" for="StatusMessage" />
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@ViewData["Title"]</h6>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <strong>Put these codes in a safe place.</strong>
+                    </p>
+                    <p>
+                        If you lose your device and don't have the recovery codes you will lose access to your account. These are multiple codes, but only one at a time should be used rather than all with or without spaces.
+                    </p>
+                    <div class="row">
+                        <div class="col-md-12" id="codes">
+                            @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)
+                            {
+                                <code class="recovery-code">@Model.RecoveryCodes[row]</code><text>&nbsp;</text><code class="recovery-code">@Model.RecoveryCodes[row + 1]</code><br />
+                            }
+                        </div>
+                        <button class="btn btn-danger mt-3 ml-2" type="submit" onclick="copyToClipboard('RecoveryCodes')">Copy Recovery Codes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

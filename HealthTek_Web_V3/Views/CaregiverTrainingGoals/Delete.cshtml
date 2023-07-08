@@ -1,0 +1,40 @@
+﻿@model HealthTek_Shared_Libraries.CaregiverTrainingGoals
+@{
+    var name = "";
+    var ModelName = "";
+    if (Model.FkMaladaptivesId != null)
+    {
+        name = Model.FkMaladaptives.MaladaptiveName;
+        ModelName = "maladaptive";
+    }
+    if (Model.FkBaAssessmentsInterventions != null && Model.FkBaAssessmentsInterventions.FkInterventions != null)
+    {
+        name = Model.FkBaAssessmentsInterventions.FkInterventions.InterventionName;
+        ModelName = "intervention";
+    }
+}
+
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: Deleting this Training Goal can cause the application to not display certain views. Are you sure you want to delete the Training Goal for <code>@name</code> @ModelName?
+    </h5>
+    <hr />
+    <form asp-action="Delete" class="text-right row">
+        <input type="hidden" asp-for="CaregiverTrainingGoalsId" />
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="walletName" placeholder="Enter @ModelName Name..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = @Html.Raw(Json.Serialize(name));
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

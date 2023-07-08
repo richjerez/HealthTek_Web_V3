@@ -1,0 +1,51 @@
+﻿@model HealthTek_Shared_Libraries.RoleDocsCatalog
+
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create" method="post" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Expiration" class="control-label"></label>
+                    <select asp-for="Expiration" class="ModalSelect" asp-items="ViewBag.DocumentExpiration">
+                        <option disabled>Select Expiration</option>
+                    </select>
+                    <span asp-validation-for="Expiration" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" asp-for="TemplateUrl"></label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="customFiles"
+                               accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,image/*,.pdf,.docx">
+                        <label class="custom-file-label mb-0" for="customFile">Choose file</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="HrRoles" class="control-label">Employees Roles</label>
+                    <select asp-for="HrRoles" class="ModalSelect" asp-items="ViewBag.RoleNames" multiple data-live-search="true">
+                        <option disabled>Select Employee Roles</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsRequired" /> @Html.DisplayNameFor(model => model.IsRequired)
+                    </label>
+                </div>
+
+                <div class="form-group text-right mb-0">
+                    <input type="submit" value="Create" class="btn btn-primary float-right" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Preferences>
+@{
+    var id = ViewData["ClientId"];
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4">
+            <div class="status-green p-3" style="border-radius: 5px;">
+                <button type="button" onclick="DeleteElement(@item.PreferencesId, 'Preferences')" class="d-none d-sm-inline-block btn btn-xs btn-danger shadow-sm btn-icon-split d-print-none float-right ml-2">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-trash fa-sm text-white-50"></i>
+                    </span>
+                </button><button type="button" onclick="AddEditElements(@item.PreferencesId, 'Preferences')" class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-edit fa-sm text-white-50"></i>
+                    </span>
+                </button>
+
+                <small>Preference</small>
+                <span class="d-block">@Html.DisplayFor(modelItem => item.Preference)</span>
+                <small>Source</small>
+                <span class="d-block">@Html.DisplayFor(modelItem => item.Source)</span>
+                <small>Reinforcer</small>
+                <span class="d-block">@Html.DisplayFor(modelItem => item.FkReinforcersCatalog.ReinforcerName)</span>
+                <small>Description</small>
+                <span class="d-block">@Html.DisplayFor(modelItem => item.FkReinforcersCatalog.ReinforcerDescription)</span>
+                <hr />
+                @if (item.FkCaregiverTrainingGoals != null)
+                {
+                    var report = item.FkCaregiverTrainingGoals;
+                    report.GoalType = "Preferences";
+                    await Html.RenderPartialAsync("~/Views/CaregiverTrainingGoals/Details.cshtml", report);
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="button" onclick="AddEditElements(0, 'CaregiverTrainingGoals',false, @item.PreferencesId, 'Preferences')"
+                            class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-plus fa-sm text-white-50"></i>
+                                </span>
+                                <span class="text align-self-md-center">New Training Goal</span>
+                            </button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    }
+</div>

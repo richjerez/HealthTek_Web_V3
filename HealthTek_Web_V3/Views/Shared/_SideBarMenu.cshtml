@@ -1,0 +1,177 @@
+﻿@using HealthTek_Web_V3.Controllers
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@inject SignInManager<AppUser> SignInManager
+@{
+    string cookieValueFromContext = this.Context.Request.Cookies["SidebarMenu"];
+}
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion @cookieValueFromContext d-print-none pb-5" id="accordionSidebar">
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-medkit"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">healthtek<sup>3</sup></div>
+        </a>
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item @ManageSideBarMenu.DashboardNavClass(ViewContext)" id="Dashboard">
+            <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <!-- Nav Item - Authorizations -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "AuthorizationViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.AuthorizationsNavClass(ViewContext)" id="Authorizations">
+                <a class="nav-link" asp-controller="Authorizations" asp-action="Index">
+                    <i class="fas fa-fw fa-lock-open"></i>
+                    <span>Authorizations</span>
+                </a>
+            </li>
+        }
+        <!-- Nav Item - Intakes -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "IntakeViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.IntakesNavClass(ViewContext)" id="Intakes">
+                <a class="nav-link" asp-controller="Intakes" asp-action="Index">
+                    <i class="fas fa-fw fa-folder-open"></i>
+                    <span>Intakes</span>
+                </a>
+            </li>
+        }
+        <!-- Nav Item - Employees -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "EmployeeViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.EmployeesNavClass(ViewContext)" id="Employees">
+                <a class="nav-link" asp-controller="Employees" asp-action="Index">
+                    <i class="fas fa-fw fa-id-badge"></i>
+                    <span>Employees</span>
+                </a>
+            </li>
+        }
+        <!-- Nav Item - Clients -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "ClientViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.ClientsNavClass(ViewContext)" id="Clients">
+                <a class="nav-link" asp-controller="Clients" asp-action="Index">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Clients</span>
+                </a>
+            </li>
+        }
+        <!-- Nav Item - Assignments -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "AssingmentViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.AssignmentsNavClass(ViewContext)" id="Assignments">
+                <a class="nav-link" asp-controller="Assignments" asp-action="Index">
+                    <i class="fas fa-fw fa-map-marked-alt"></i>
+                    <span>Assignments</span>
+                </a>
+            </li>
+        }
+        <!-- Nav Item - Supervisions -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "SupervisionViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.SupervisionsNavClass(ViewContext)" id="Supervisions">
+                <a class="nav-link" asp-controller="Supervisions" asp-action="Index">
+                    <i class="fas fa-sitemap"></i>
+                    <span>Supervisions</span>
+                </a>
+            </li>
+        }
+        <!-- Nav Item - ClientInsurances -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "InsuranceViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.ClientInsurancesNavClass(ViewContext)" id="ClientInsurances">
+                <a class="nav-link" asp-controller="ClientInsurances" asp-action="Index">
+                    <i class="fas fa-fw fa-umbrella"></i>
+                    <span>Insurance Checks</span>
+                </a>
+            </li>
+        }
+        <!-- Nav Item - QualityAssurance -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "QAViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.QualityAssuranceNavClass(ViewContext)" id="QualityAssurance">
+                <a class="nav-link" asp-controller="QualityAssurance" asp-action="Index">
+                    <i class="fab fa-searchengin"></i>
+                    <span>Quality Assurance</span>
+                </a>
+            </li>
+        }
+        <hr class="sidebar-divider my-0">
+        <li class="nav-item @ManageSideBarMenu.BillingNavClass(ViewContext)" id="Billing">
+            <a class="nav-link" asp-controller="Billing" asp-action="Index">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Billing</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - FileInbox -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "FileInboxViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.FileInboxNavClass(ViewContext)" id="FileInbox">
+                <a class="nav-link" asp-controller="Documents" asp-action="Index">
+                    <i class="fas fa-inbox"></i>
+                    <span>File Inbox</span>
+                </a>
+            </li>
+        }
+        <!-- Nav Item - FileDropbox -->
+        @if ((await AuthorizationService.AuthorizeAsync(User, "FileDropboxViews")).Succeeded)
+        {
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item @ManageSideBarMenu.FileDropboxNavClass(ViewContext)" id="FileDropbox">
+                <a class="nav-link" asp-controller="Documents" asp-action="Create">
+                    <i class="fab fa-dropbox"></i>
+                    <span>File Dropbox</span>
+                </a>
+            </li>
+        }
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+        <!-- Footer -->
+        <small class="sticky-footer bg-white p-2 d-none d-md-block">
+            <div class="my-auto">
+                <div class="copyright text-center my-auto">
+                    <small style="display:block">
+                        Copyright &copy; HealthTek
+                        <script>document.write(new Date().getFullYear());</script>
+                    </small>
+                    <small style="display:contents">
+                        <a asp-controller="Home" asp-action="Terms">Terms | </a>
+                    </small>
+                    <small style="display:contents">
+                        <a asp-controller="Home" asp-action="Privacy">Privacy |</a>
+                    </small>
+                    <small style="display:contents">
+                        <a onclick="AddEditElements(0,'Messages')" href="#">Contact Us</a>
+                    </small>
+                </div>
+            </div>
+        </small>
+        <!-- End of Footer -->
+
+    </ul>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+}

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Appointments>
+@{
+    var id = ViewData["ID"];
+    var calendar = ViewData["Calendar"];
+}
+<script>
+        var data = @Html.Raw(Json.Serialize(calendar));
+        document.addEventListener('DOMContentLoaded', function () {
+            getEntityCalendar(data,@id);
+        });
+
+</script>
+
+<div class="card shadow mb-4 p-3">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseAppoinments" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseAppoinments">
+        <h6 class="m-0 font-weight-bold text-primary">Appointments</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseAppoinments" style="">
+        <div class="card-body p-0">
+            <div id='calendar' class="shadow"></div>
+        </div>
+    </div>
+</div>

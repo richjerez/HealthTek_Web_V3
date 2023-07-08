@@ -1,0 +1,103 @@
+﻿@model HealthTek_Shared_Libraries.ShortTermObjectives
+
+<div class="card shadow p-3">
+    <form asp-action="Edit" onsubmit="return jQueryAjaxPost(this);">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="FkMaladaptivesId" />
+        <input type="hidden" asp-for="FkReplacementsId" />
+        <input type="hidden" asp-for="FkCaregiverTrainingGoalsId" />
+        <input type="hidden" asp-for="ShortTermObjectivesId" />
+        <input type="hidden" asp-for="ObjectiveNumber" />
+        <input type="hidden" asp-for="CreationDate" />
+        <input type="hidden" asp-for="LastUpdateDate" />
+        <input type="hidden" asp-for="StoType" />
+        <input type="hidden" asp-for="IsCurrent" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ObjectiveNumber" class="control-label"></label>
+                    <input asp-for="ObjectiveNumber" class="form-control" disabled />
+                    <span asp-validation-for="ObjectiveNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="StoStatus" class="control-label"></label>
+                    <select asp-for="StoStatus" class="ModalSelect" asp-items="ViewBag.Status"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Duration" class="control-label"></label>
+                    <input asp-for="Duration" class="form-control" />
+                    <span asp-validation-for="Duration" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Timeframe" class="control-label"></label>
+                    <select asp-for="Timeframe" class="ModalSelect" asp-items="ViewBag.TimeFrame">
+                        <option disabled selected>Select TimeFrame</option>
+                    </select>
+                    <span asp-validation-for="Timeframe" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="InitiateDate" class="control-label"></label>
+                    <input asp-for="InitiateDate" type="date" asp-format="{0:yyy-MM-dd}" class="form-control" />
+                    <span asp-validation-for="InitiateDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="MasteryDate" class="control-label"></label>
+                    <input asp-for="MasteryDate" type="date" asp-format="{0:yyy-MM-dd}" class="form-control" />
+                    <span asp-validation-for="MasteryDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label" style="float: left;width: 100%;">Incident Reduction</label>
+
+                    <div class="form-check" style="float: left;margin-bottom: 10px;">
+                        <input class="form-check-input" type="radio" asp-for="IsReductionPercentage" id="stor" value="false">
+                        <label class="form-check-label" asp-for="IsReductionPercentage" for="stor">
+                            Numbers
+                        </label>
+                    </div>
+                    <div class="form-check" style="float: left;margin-bottom: 10px;margin-left: 10px;">
+                        <input class="form-check-input" type="radio" asp-for="IsReductionPercentage" id="stor1" value="true">
+                        <label class="form-check-label" asp-for="IsReductionPercentage" for="stor1">
+                            Percentage
+                        </label>
+                    </div>
+                    <input asp-for="ReductionNumber" class="form-control" />
+                    <span asp-validation-for="ReductionNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-0">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" asp-for="IsAutomatic" onchange="this.value=this.checked"> Automatic Calculation
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label alert alert-warning" style="float: left;width: 100%;"><span class="badge badge-warning"></span>Warning changing the Incident Reduction field will automatically change all  incidents for all short term objectives on this behavior. To prevent this from happening, you can change them manually by unchecking Automatic Calculation.</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Save");}
+    </form>
+</div>

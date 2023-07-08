@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:viewmodels="clr-namespace:HealthTek_Mobile.ViewModels" 
+             x:DataType="viewmodels:LoginViewModel"
+             mc:Ignorable="d"
+             x:Class="HealthTek_Mobile.Views.LoginPage"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Content>
+        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
+            <Label Text="Username"></Label>
+            <Entry Text="{Binding username}"></Entry>
+            <Label Text="Password"></Label>
+            <Entry Text="{Binding password}"></Entry>
+            <Entry Text="{Binding success}"></Entry>
+            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

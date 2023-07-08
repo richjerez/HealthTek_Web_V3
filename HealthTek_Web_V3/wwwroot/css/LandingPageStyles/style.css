@@ -1,0 +1,1110 @@
+/*
+Theme Name: Medbloc HTML Template
+Author: Htmlbeans
+Author URI: https://themeforest.net/user/arklogics
+Version: 1
+Description: Base theme for HTML5
+Text Domain: base
+Tags: one-column, two-columns, three-columns
+Theme URI: http://www.htmlbeans.com/html/medbloc/
+*/
+/*------------------------------------------------------------------
+1. import files / import files
+2. Body / body
+3. Btn Primary / .btn-primary
+4. Heading / .heading
+5. Heading2 / .heading2
+6. Heading3 / .heading3
+7. Heading4 / .heading4
+8. Heading5 / .heading5
+9. F Heading / .f-heading
+10. Header / .header
+11. Wrapper / #wrapper
+12. Header / #header
+13. Logo / .logo
+14. Nav / #nav
+15. Nav Active / .nav-active
+16. Main / #main
+17. Banner Sec / .banner-sec
+18. Feature Sec / .feature-sec
+19. Content Sec / .contect-sec
+20. Progress Bar / .progress-bar
+21. Application Sec / .application-sec
+22. Partner Sec / .partner-sec
+23. Contact Sec / .contact-sec
+24. Footer / #footer
+25. Back Top / #back-top
+26. Loader Holder / .loader-holder
+
+-------------------------------------------------------------------*/
+/*------------------------------------------------------------------
+1. import files / import files
+-------------------------------------------------------------------*/
+#wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.clearfix:after, #header:after, .banner-sec .caption:after, .banner-sec .btn-holder:after, .feature-sec:after, .feature-sec .tabset:after, .content-sec:after, .content-sec .content-holder:after, #footer .txt-holder:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+a, .heading2:after, .f-heading:after, .feature-sec .tabset2 a:after, .partner-sec .partner-slider img, .partner-sec .slick-prev,
+.partner-sec .slick-next {
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  /* 1 */
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  /* 2 */
+  overflow: hidden;
+}
+
+/*------------------------------------------------------------------
+2. Body / body
+-------------------------------------------------------------------*/
+body {
+  font-weight: 400;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+a:hover, a:focus, a.active {
+  text-decoration: none;
+  outline: none;
+}
+
+.bg-full {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-img {
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.fwExtra-Light {
+  font-weight: 200;
+}
+
+.fwLight {
+  font-weight: 300;
+}
+
+.fwRegular {
+  font-weight: 400;
+}
+
+.fwMedium {
+  font-weight: 500;
+}
+
+.fwSemi-bold {
+  font-weight: 600;
+}
+
+.fwbold {
+  font-weight: 700;
+}
+
+.round {
+  border-radius: 5px;
+}
+
+.md-round {
+  border-radius: 45px;
+}
+
+.lg-round {
+  border-radius: 100%;
+}
+
+/*------------------------------------------------------------------
+3. Btn Primary / .btn-primary
+-------------------------------------------------------------------*/
+.btn-primary {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 15px;
+  line-height: 18px;
+  background: none;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 12px 10px;
+}
+
+.btn-primary.bdr {
+  border: none;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  color: #fff;
+  background: #7af1ff;
+  border-color: #7af1ff;
+}
+
+.btn-primary.btn-grey {
+  border-color: #d7d7d7;
+  background: #f7f7f7;
+  color: #515252;
+}
+
+.btn-primary.btn-grey:hover {
+  color: #fff;
+  background: #7af1ff;
+  border-color: #7af1ff;
+}
+
+.btn-primary.bdr-skyblue {
+  border-color: #a6d5f5;
+}
+
+.btn-primary.bdr-skyblue:hover {
+  border-color: #7af1ff;
+}
+
+.btn-primary.bg-blue {
+  background: #7af1ff;
+}
+
+.btn-primary.bg-blue:hover {
+  background: none;
+}
+
+.btn-primary.bdr-blue {
+  border-color: #7af1ff;
+}
+
+.btn-primary.bdr-blue:hover {
+  border-color: #fff;
+}
+
+.btn-primary.shadow {
+  -webkit-box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.2);
+}
+
+/*------------------------------------------------------------------
+4. Heading / .heading
+-------------------------------------------------------------------*/
+.heading {
+  font-size: 54px;
+  line-height: 60px;
+  color: #fff;
+  margin: 0 0 36px;
+}
+
+/*------------------------------------------------------------------
+5. Heading2 / .heading2
+-------------------------------------------------------------------*/
+.heading2 {
+  font-size: 45px;
+  line-height: 50px;
+  padding: 0 0 22px;
+  margin: 0 0 30px;
+  position: relative;
+}
+
+.heading2:after {
+  position: absolute;
+  content: "";
+  z-index: -1;
+  left: 0;
+  top: auto;
+  bottom: 0;
+  right: auto;
+  z-index: 0;
+  width: 51px;
+  height: 2px;
+  background: #7af1ff;
+}
+
+/*------------------------------------------------------------------
+6. Heading3 / .heading3
+-------------------------------------------------------------------*/
+.heading3 {
+  font-size: 18px;
+  line-height: 20px;
+  margin: 0;
+}
+
+/*------------------------------------------------------------------
+7. Heading4 / .heading4
+-------------------------------------------------------------------*/
+.heading4 {
+  font-size: 24px;
+  line-height: 27px;
+  color: #515252;
+  margin: 0 0 26px;
+}
+
+/*------------------------------------------------------------------
+8. Heading5 / .heading5
+-------------------------------------------------------------------*/
+.heading5 {
+  font-size: 22px;
+  line-height: 24px;
+  margin: 0 0 27px;
+  color: #333333;
+}
+
+/*------------------------------------------------------------------
+9. F Heading / .f-heading
+-------------------------------------------------------------------*/
+.f-heading {
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  padding: 0 0 17px;
+  margin: 0 0 9px;
+  position: relative;
+}
+
+.f-heading:after {
+  position: absolute;
+  content: "";
+  z-index: -1;
+  left: 0;
+  top: auto;
+  bottom: 0;
+  right: auto;
+  background: #fff;
+  width: 0;
+  height: 1px;
+  z-index: 0;
+}
+
+/*------------------------------------------------------------------
+10. Header / .header
+-------------------------------------------------------------------*/
+.header {
+  font-size: 16px;
+  line-height: 30px;
+  color: #aaaaaa;
+}
+
+.js-tab-hidden {
+  display: block !important;
+  left: -9999px !important;
+  position: absolute !important;
+  top: -9999px !important;
+}
+
+/*------------------------------------------------------------------
+11. Wrapper / #wrapper
+-------------------------------------------------------------------*/
+/*------------------------------------------------------------------
+12. Header / #header
+-------------------------------------------------------------------*/
+#header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: 29px;
+}
+
+#header.sticky {
+  position: fixed;
+  z-index: 9;
+  background: -webkit-linear-gradient(45deg, #1c80df 0%, #7cd1f5 80%, #7cd1f5 100%);
+  background: -o-linear-gradient(45deg, #1c80df 0%, #7cd1f5 80%, #7cd1f5 100%);
+  background: linear-gradient(45deg, #1c80df 0%, #7cd1f5 80%, #7cd1f5 100%);
+  padding: 15px 0;
+}
+
+#header .menu-holder {
+  overflow: hidden;
+  float: right;
+}
+
+#header .btn-holder {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+#header .btn-holder a {
+  color: #fff;
+}
+
+#header .btn-holder a:first-child:hover {
+  color: #7af1ff;
+}
+
+#header .btn-holder .btn-primary {
+  margin: 0 0 0 26px;
+}
+
+#header .nav-opener {
+  font-size: 30px;
+  line-height: 40px;
+  color: #fff;
+  margin: 6px 0 0;
+  float: left;
+}
+
+/*------------------------------------------------------------------
+13. Logo / .logo
+-------------------------------------------------------------------*/
+.logo {
+  overflow: hidden;
+  width: 168px;
+  margin: 0 10px 0 0;
+}
+
+/*------------------------------------------------------------------
+14. Nav / #nav
+-------------------------------------------------------------------*/
+#nav {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 52px 0 0;
+  font-size: 15px;
+  line-height: 17px;
+}
+
+#nav ul {
+  margin: 0;
+}
+
+#nav ul li {
+  float: left;
+  margin: 0 33px 0 0;
+}
+
+#nav ul a {
+  color: #fff;
+}
+
+#nav ul a.anchor-active, #nav ul a:hover {
+  color: #7af1ff;
+}
+
+/*------------------------------------------------------------------
+15. Nav Active / .nav-active
+-------------------------------------------------------------------*/
+.nav-active #nav {
+  opacity: 1;
+  left: 0;
+  visibility: visible;
+}
+
+/*------------------------------------------------------------------
+16. Main / #main
+-------------------------------------------------------------------*/
+#main {
+  overflow: hidden;
+}
+
+/*------------------------------------------------------------------
+17. Banner Sec / .banner-sec
+-------------------------------------------------------------------*/
+.banner-sec {
+  overflow: hidden;
+  padding: 255px 0 252px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.banner-sec .caption {
+  padding-top: 78px;
+  font-size: 18px;
+  line-height: 28px;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.banner-sec .caption .heading {
+  letter-spacing: 0;
+}
+
+.banner-sec .caption p {
+  margin: 0 0 54px;
+}
+
+.banner-sec .btn-primary {
+  padding: 12px 24px;
+  margin: 0 18px 0 0;
+}
+
+.banner-sec .btn-primary:first-child {
+  padding: 12px 37px;
+}
+
+.banner-sec .btn-primary:nth-child(2):hover {
+  -webkit-box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.2);
+}
+
+.banner-sec .img-holder {
+  overflow: hidden;
+  width: 992px;
+  margin: 0 0 0 -108px;
+  padding: 39px 119px 57px;
+}
+
+/*------------------------------------------------------------------
+18. Feature Sec / .feature-sec
+-------------------------------------------------------------------*/
+.feature-sec {
+  padding-top: 92px;
+  padding-bottom: 52px;
+}
+
+.feature-sec:hover .heading2:after {
+  width: 70px;
+}
+
+.feature-sec .heading2 {
+  margin: 0 0 86px;
+}
+
+.feature-sec .tabset {
+  margin: 0 0 79px;
+}
+
+.feature-sec .tabset li {
+  width: 270px;
+  float: left;
+  margin: 0 0 0 30px;
+  -webkit-box-shadow: 0px 20px 30px 0px #dde7ee;
+  box-shadow: 0px 20px 30px 0px #dde7ee;
+  border-radius: 15px;
+}
+
+.feature-sec .tabset li:first-child {
+  margin: 0;
+}
+
+.feature-sec .tabset li.active {
+  background: -webkit-linear-gradient(45deg, #1c80df 0%, #7cd1f5 100%);
+  background: -o-linear-gradient(45deg, #1c80df 0%, #7cd1f5 100%);
+  background: linear-gradient(45deg, #1c80df 0%, #7cd1f5 100%);
+}
+
+.feature-sec .tabset li.active .heading3 {
+  color: #fff;
+}
+
+.feature-sec .tabset li.active svg path {
+  stroke: #fff;
+}
+
+.feature-sec .tabset li.active svg path:nth-child(12),
+.feature-sec .tabset li.active svg path:nth-child(11),
+.feature-sec .tabset li.active svg path:nth-child(14),
+.feature-sec .tabset li.active svg path:nth-child(27),
+.feature-sec .tabset li.active svg path:nth-child(28),
+.feature-sec .tabset li.active svg path:nth-child(29),
+.feature-sec .tabset li.active svg path:nth-child(30),
+.feature-sec .tabset li.active svg path:nth-child(31),
+.feature-sec .tabset li.active svg path:nth-child(32) {
+  fill: #fff;
+}
+
+.feature-sec .tabset li.active svg.v2 path:nth-child(14),
+.feature-sec .tabset li.active svg.v2 path:nth-child(27),
+.feature-sec .tabset li.active svg.v2 path:nth-child(28),
+.feature-sec .tabset li.active svg.v2 path:nth-child(29),
+.feature-sec .tabset li.active svg.v2 path:nth-child(30),
+.feature-sec .tabset li.active svg.v2 path:nth-child(31),
+.feature-sec .tabset li.active svg.v2 path:nth-child(32) {
+  fill: transparent;
+}
+
+.feature-sec .tabset li:nth-child(4) svg path:nth-child(12) {
+  fill: none;
+}
+
+.feature-sec .tabset svg {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 14px;
+  display: block;
+}
+
+.feature-sec .tabset a {
+  display: block;
+  padding: 70px 0 72px;
+  border-radius: 15px;
+}
+
+.feature-sec .tabset2 {
+  margin: 0 0 97px;
+}
+
+.feature-sec .tabset2 li {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 20px;
+}
+
+.feature-sec .tabset2 li.active a {
+  color: #333333;
+}
+
+.feature-sec .tabset2 li.active a:after {
+  width: 50px;
+}
+
+.feature-sec .tabset2 a {
+  color: #dddddd;
+  text-transform: capitalize;
+  position: relative;
+}
+
+.feature-sec .tabset2 a:after {
+  position: absolute;
+  content: "";
+  z-index: -1;
+  left: 0;
+  top: auto;
+  bottom: -19px;
+  right: auto;
+  height: 2px;
+  background: #7af1ff;
+}
+
+.feature-sec .tab-content {
+  overflow: hidden;
+}
+
+.feature-sec .tab-content2 {
+  overflow: hidden;
+}
+
+.feature-sec .tab-content2 li {
+  width: 50%;
+  float: left;
+  margin: 0 0 56px;
+  padding: 0 25px 0 0;
+}
+
+/*------------------------------------------------------------------
+19. Content Sec / .contect-sec
+-------------------------------------------------------------------*/
+.content-sec {
+  position: relative;
+  padding-top: 116px;
+  padding-bottom: 116px;
+}
+
+.content-sec:before {
+  position: absolute;
+  content: "";
+  z-index: -1;
+  left: 0;
+  top: 0;
+  bottom: -530px;
+  right: 0;
+  background: #f3f3f3;
+}
+
+.content-sec:hover .heading2:after {
+  width: 70px;
+}
+
+.content-sec .heading2 {
+  letter-spacing: -2px;
+}
+
+.content-sec .content-holder {
+  margin: 0 0 197px;
+}
+
+.content-sec .content-holder .content-block {
+  overflow: hidden;
+  padding: 52px 47px 0 41px;
+  color: #4c4c4c;
+  width: 50%;
+  float: left;
+}
+
+.content-sec .content-holder .content-block p {
+  margin: 0 0 30px;
+}
+
+.content-sec .content-holder:nth-child(3) .content-block {
+  padding: 30px 47px 0 64px;
+}
+
+.content-sec .content-holder:nth-child(3) .img-holder {
+  padding: 0 78px 0 0;
+}
+
+.content-sec .content-holder:nth-child(4) .img-holder {
+  padding: 0;
+}
+
+.content-sec .content-holder:nth-child(4) .content-block {
+  padding: 0 47px 0 49px;
+}
+
+.content-sec .content-holder .heading4 {
+  position: relative;
+}
+
+.content-sec .content-holder .heading4:after {
+  position: absolute;
+  content: attr(data-heading);
+  font-size: 24px;
+  line-height: 26px;
+  color: #cccccc;
+  left: -50px;
+  top: 0;
+}
+
+.content-sec .content-holder .btn-primary {
+  padding: 14px 38px;
+  letter-spacing: 3px;
+}
+
+.content-sec .img-holder {
+  width: 50%;
+  float: left;
+  padding: 0 60px 0 20px;
+}
+
+.content-sec .img-holder img {
+  margin: 0 auto;
+}
+
+/*------------------------------------------------------------------
+20. Progress Bar / .progress-bar
+-------------------------------------------------------------------*/
+.progress-bar {
+  overflow: hidden;
+  width: 72.3%;
+  float: left;
+  padding: 7px 0 0;
+}
+
+.progress-bar li {
+  overflow: hidden;
+  width: 463px;
+  margin: 0 0 49px 53px;
+  -webkit-box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 20px 30px 0px rgba(0, 0, 0, 0.2);
+  background: -webkit-linear-gradient(45deg, #1c80df 0%, #7cd1f5 100%);
+  background: -o-linear-gradient(45deg, #1c80df 0%, #7cd1f5 100%);
+  background: linear-gradient(45deg, #1c80df 0%, #7cd1f5 100%);
+}
+
+.progress-bar li:nth-child(1) .over {
+  background: #5bda8c;
+}
+
+.progress-bar li:nth-child(2) {
+  margin: 0 0 48px 156px;
+}
+
+.progress-bar li:nth-child(2) .txt-holder .persont {
+  color: #ee6b8d;
+}
+
+.progress-bar li:nth-child(2) .over {
+  background: #ee6b8d;
+}
+
+.progress-bar li:nth-child(3) {
+  margin: 0 0 49px 253px;
+}
+
+.progress-bar li:nth-child(3) .txt-holder .persont {
+  color: #9c7df7;
+}
+
+.progress-bar li:nth-child(4) {
+  margin: 0 0 49px 355px;
+}
+
+.progress-bar li:nth-child(4) .txt-holder .persont {
+  color: #9c7df7;
+}
+
+.progress-bar li .txt-holder {
+  overflow: hidden;
+  width: 72.6%;
+  padding: 20px 22px 31px 20px;
+  background: #fff;
+  font-size: 20px;
+  line-height: 22px;
+}
+
+.progress-bar li .txt-holder .text {
+  color: #7e8eaa;
+  display: block;
+  font-size: 10px;
+  line-height: 12px;
+  margin: 0 0 13px;
+}
+
+.progress-bar li .txt-holder .title {
+  color: #151c2a;
+}
+
+.progress-bar li .txt-holder .persont {
+  float: right;
+  color: #5bda8c;
+}
+
+.progress-bar li .icon-holder {
+  overflow: hidden;
+  width: 27.4%;
+  padding: 15px 15px 18px;
+  text-align: center;
+}
+
+.progress-bar li .icon-holder svg {
+  width: 67px;
+  height: 69px;
+  margin: -3px auto 3px;
+}
+
+.progress-bar li .icon-holder .text {
+  color: #fff;
+  font-size: 15px;
+  line-height: 17px;
+  display: block;
+}
+
+.progress-bar .bar {
+  overflow: hidden;
+  width: 295px;
+  height: 5px;
+  display: inline-block;
+  background: #eaeef4;
+  margin: 23px 0 0;
+  position: relative;
+  border-radius: 5px;
+}
+
+.progress-bar .over {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: #9c7df7;
+  position: absolute;
+  -webkit-transition: all .25s linear;
+  -o-transition: all .25s linear;
+  transition: all .25s linear;
+  border-radius: 5px;
+}
+
+/*------------------------------------------------------------------
+21. Application Sec / .application-sec
+-------------------------------------------------------------------*/
+.application-sec {
+  min-height: 1577px;
+  background-position: 140px 0;
+  margin: -425px 0 0;
+  padding: 547px 0 0;
+}
+
+.application-sec .img-holder {
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 27.7%;
+  float: left;
+  padding: 73px 12px 73px 13px;
+}
+
+/*------------------------------------------------------------------
+22. Partner Sec / .partner-sec
+-------------------------------------------------------------------*/
+.partner-sec {
+  overflow: hidden;
+  padding-top: 63px;
+  padding-bottom: 67px;
+}
+
+.partner-sec .heading2 {
+  margin: 0 0 10px;
+}
+
+.partner-sec:hover .heading2:after {
+  width: 70px;
+}
+
+.partner-sec .partner-slider {
+  padding: 81px 0;
+}
+
+.partner-sec .partner-slider img {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  margin: 0 auto;
+}
+
+.partner-sec .partner-slider img:hover {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
+}
+
+.partner-sec .slick-prev,
+.partner-sec .slick-next {
+  position: absolute;
+  background: #f7f7f7;
+  border: none;
+  text-indent: -9999px;
+  width: 61px;
+  height: 60px;
+  top: -69px;
+  color: #dddddd;
+  border-radius: 5px;
+}
+
+.partner-sec .slick-prev:after,
+.partner-sec .slick-next:after {
+  position: absolute;
+  content: "";
+  z-index: -1;
+  left: 0;
+  top: 18px;
+  bottom: 0;
+  right: 0;
+  font: 22px/24px 'Font Awesome 5 Free';
+  font-weight: 900;
+  text-indent: 0;
+  z-index: 0;
+}
+
+.partner-sec .slick-prev:hover,
+.partner-sec .slick-next:hover {
+  background: #2290ff;
+  color: #fff;
+}
+
+.partner-sec .slick-prev {
+  right: 65px;
+}
+
+.partner-sec .slick-prev:after {
+  content: "\f053";
+}
+
+.partner-sec .slick-next {
+  right: 0;
+}
+
+.partner-sec .slick-next:after {
+  content: "\f054";
+}
+
+/*------------------------------------------------------------------
+23. Contact Sec / .contact-sec
+-------------------------------------------------------------------*/
+.contact-sec {
+  overflow: hidden;
+  position: relative;
+}
+
+.contact-sec .contact-block {
+  position: absolute;
+  right: 19.6%;
+  top: 97px;
+  overflow: hidden;
+  width: 370px;
+  background: -webkit-linear-gradient(45deg, #1c80df 0%, #7cd1f5 100%);
+  background: -o-linear-gradient(45deg, #1c80df 0%, #7cd1f5 100%);
+  background: linear-gradient(45deg, #1c80df 0%, #7cd1f5 100%);
+  padding: 50px 56px 21px 42px;
+}
+
+.contact-sec .contact-block .heading4 {
+  margin: 0 0 39px;
+  color: #fff;
+}
+
+.contact-sec .contact-list {
+  overflow: hidden;
+  margin: 0 0 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.contact-sec .contact-list li {
+  overflow: hidden;
+  margin: 0 0 15px;
+}
+
+.contact-sec .contact-list .icon {
+  font-size: 20px;
+  line-height: 22px;
+  color: #fff;
+  width: 12.6%;
+  padding: 5px 0 0 1px;
+}
+
+.contact-sec .contact-list address {
+  line-height: 26px;
+  margin: 0;
+}
+
+.contact-sec .contact-list .tell,
+.contact-sec .contact-list address,
+.contact-sec .contact-list .email {
+  width: 87.4%;
+  overflow: hidden;
+}
+
+.contact-sec .contact-list a,
+.contact-sec .social-networks a {
+  color: #fff;
+}
+
+.contact-sec .contact-list a:hover,
+.contact-sec .social-networks a:hover {
+  color: #7af1ff;
+}
+
+.contact-sec .social-networks {
+  overflow: hidden;
+  margin: 0;
+  font-size: 15px;
+}
+
+.contact-sec .social-networks li {
+  overflow: hidden;
+  float: left;
+  margin: 0 25px 0 0;
+}
+
+/*------------------------------------------------------------------
+24. Footer / #footer
+-------------------------------------------------------------------*/
+#footer {
+  overflow: hidden;
+  background: -webkit-linear-gradient(45deg, #1c80df 0%, #7cd1f5 80%, #7cd1f5 100%);
+  background: -o-linear-gradient(45deg, #1c80df 0%, #7cd1f5 80%, #7cd1f5 100%);
+  background: linear-gradient(45deg, #1c80df 0%, #7cd1f5 80%, #7cd1f5 100%);
+  padding: 136px 0 53px;
+}
+
+#footer .logo {
+  margin: -10px 0 53px;
+}
+
+#footer .txt-holder {
+  line-height: 22px;
+  color: #fff;
+}
+
+#footer a {
+  color: #fff;
+}
+
+#footer a:hover {
+  color: #7af1ff;
+}
+
+#footer .col {
+  width: 25%;
+  float: left;
+}
+
+#footer .col:hover .f-heading:after {
+  width: 50px;
+}
+
+#footer .f-nav {
+  overflow: hidden;
+  font-size: 15px;
+}
+
+#footer .f-nav li {
+  overflow: hidden;
+  padding: 22px 0 0;
+}
+
+#footer .social-networks {
+  overflow: hidden;
+  padding: 30px 0 63px;
+  margin: 0;
+}
+
+#footer .social-networks li {
+  float: left;
+  margin: 0 26px 0 0;
+}
+
+#footer .txt {
+  font-size: 14px;
+  line-height: 16px;
+  color: #fff;
+  display: block;
+}
+
+#footer .txt p {
+  margin: 0;
+}
+
+#footer .txt a {
+  font-size: 15px;
+}
+
+/*------------------------------------------------------------------
+25. Back Top / #back-top
+-------------------------------------------------------------------*/
+#back-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  font-size: 18px;
+  line-height: 20px;
+  color: #fff;
+  cursor: pointer;
+  float: right;
+  width: 50px;
+  height: 50px;
+  padding: 14px 0;
+  z-index: 9;
+  opacity: 0;
+  visibility: hidden;
+  background: #a6d5f5;
+  -webkit-transition: all 0.25s linear;
+  -o-transition: all 0.25s linear;
+  transition: all 0.25s linear;
+}
+
+#back-top.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/*------------------------------------------------------------------
+26. Loader Holder / .loader-holder
+-------------------------------------------------------------------*/
+.loader-holder {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.loader-holder .block {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

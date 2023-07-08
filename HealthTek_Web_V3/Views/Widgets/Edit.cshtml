@@ -1,0 +1,35 @@
+﻿@model HealthTek_Shared_Libraries.Widgets
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="WidgetId" />
+                <div class="form-group">
+                    <label asp-for="WidgetName" class="control-label"></label>
+                    <input asp-for="WidgetName" class="form-control" />
+                    <span asp-validation-for="WidgetName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ViewName" class="control-label"></label>
+                    <select asp-for="ViewName" class="ModalSelect" asp-items="ViewBag.WidgetViews"><option></option></select>
+                    <span asp-validation-for="ViewName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Style" class="control-label"></label>
+                    <select asp-for="Style" class="ModalSelect" asp-items="ViewBag.WidgetStyles"><option></option></select>
+                    <span asp-validation-for="Style" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ClassName" class="control-label"></label>
+                    <input asp-for="ClassName" class="form-control" />
+                    <span asp-validation-for="ClassName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary float-right" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

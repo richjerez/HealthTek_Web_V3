@@ -1,0 +1,100 @@
+﻿@model HealthTek_Shared_Libraries.ClientContacts
+
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit" onsubmit="return jQueryAjaxPost(this);">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ClientContactsId" />
+                <input type="hidden" asp-for="FkClientsId" />
+                <input type="hidden" asp-for="FkLocationsId" />
+                <input asp-for="CreationDate" type="hidden" />
+                <div class="form-group">
+                    <label asp-for="ContactName" class="control-label"></label>
+                    <input asp-for="ContactName" class="form-control" />
+                    <span asp-validation-for="ContactName" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="PhoneNumber" class="control-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="AlternateNumber" class="control-label"></label>
+                            <input asp-for="AlternateNumber" class="form-control" />
+                            <span asp-validation-for="AlternateNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Relationship" class="control-label"></label>
+                    <input asp-for="Relationship" class="form-control" />
+                    <span asp-validation-for="Relationship" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FkLocations.LocationName" class="control-label"></label>
+                    <input asp-for="FkLocations.LocationName" class="form-control" />
+                    <span asp-validation-for="FkLocations.LocationName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FkLocations.Address" class="control-label"></label>
+                    <input asp-for="FkLocations.Address" class="form-control" />
+                    <span asp-validation-for="FkLocations.Address" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label asp-for="FkLocations.City" class="control-label"></label>
+                            <select asp-for="FkLocations.City" asp-items="ViewBag.Cities" class="ModalSelect" data-live-search="true">
+                                <option disabled selected>Select City</option>
+                            </select>
+                            <span asp-validation-for="FkLocations.City" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label asp-for="FkLocations.State" class="control-label"></label>
+                            <select asp-for="FkLocations.State" asp-items="ViewBag.States" class="ModalSelect" data-live-search="true">
+                                <option disabled selected>Select State</option>
+                            </select>
+                            <span asp-validation-for="FkLocations.State" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label asp-for="FkLocations.Zipcode" class="control-label"></label>
+                            <input asp-for="FkLocations.Zipcode" class="form-control" />
+                            <span asp-validation-for="FkLocations.Zipcode" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="FkLocations.County" class="control-label"></label>
+                            <select asp-for="FkLocations.County" class="ModalSelect" asp-items="ViewBag.OperatingCounties" data-live-search="true">
+                                <option disabled selected>Select County</option>
+                            </select>
+                            <span asp-validation-for="FkLocations.County" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="FkLocations.Region" class="control-label"></label>
+                            <input asp-for="FkLocations.Region" class="form-control" />
+                            <span asp-validation-for="FkLocations.Region" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group float-right mb-0">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

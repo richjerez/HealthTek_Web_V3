@@ -1,0 +1,25 @@
+﻿@model HealthTek_Shared_Libraries.Facilities
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: This will permanently delete all of the facilities and its employee and client tables and all information will be lost.
+        Users will not have access to previously used views and application features.
+        Are you sure you want to delete the facility <code>@Html.DisplayFor(model => model.FacilityName)</code> ?
+    </h5>
+    <hr />
+    <form asp-action="Delete" class="text-right row"  asp-route-id="@Model.FacilitiesId">
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="asName" placeholder="Enter Facility Name..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = @Html.Raw(Json.Serialize(Model.FacilityName));
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

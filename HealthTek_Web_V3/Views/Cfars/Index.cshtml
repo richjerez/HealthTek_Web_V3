@@ -1,0 +1,299 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Cfars>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FkAppointmentsId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DcfOutcomesReport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProgramEvaluation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubstanceAbuseHistory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EducationalCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CfarsRatersNote)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepressionRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HyperAffectRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CognitivePerformanceRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TraumaticStressRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InterpersonalRelationshipsRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FamilyEnvironmentRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkSchoolRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AbilityToCareForSelfRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DangerToOthersRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnxietyRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ThoughtProcessRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicalPhysicalRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubstanceAbuseRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FamilyRelationshipsRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SocioLegalRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdlFunctioningRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DangerToSelfRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SecurityManagementNeedsRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Depression)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HyperAffect)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CognitivePerformance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TraumaticStress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InterpersonalRelationships)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FamilyEnvironment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkSchool)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AbilityToCareForSelf)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DangerToOthers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Anxiety)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ThoughtProcess)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicalPhysical)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubstanceAbuse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FamilyRelationships)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SocioLegal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdlFunctioning)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DangerToSelf)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SecurityManagementNeeds)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FkEmployeeSignature)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkAppointmentsId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DcfOutcomesReport)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProgramEvaluation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubstanceAbuseHistory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EducationalCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CfarsRatersNote)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepressionRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HyperAffectRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CognitivePerformanceRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TraumaticStressRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterpersonalRelationshipsRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FamilyEnvironmentRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkSchoolRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AbilityToCareForSelfRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DangerToOthersRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnxietyRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThoughtProcessRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedicalPhysicalRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubstanceAbuseRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FamilyRelationshipsRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SocioLegalRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdlFunctioningRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DangerToSelfRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecurityManagementNeedsRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Depression)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HyperAffect)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CognitivePerformance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TraumaticStress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterpersonalRelationships)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FamilyEnvironment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkSchool)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AbilityToCareForSelf)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DangerToOthers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Anxiety)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThoughtProcess)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedicalPhysical)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubstanceAbuse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FamilyRelationships)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SocioLegal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdlFunctioning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DangerToSelf)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecurityManagementNeeds)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkEmployeeSignature.ESignaturesId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CfarsId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CfarsId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CfarsId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

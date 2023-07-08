@@ -1,0 +1,320 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Appointments>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> userManager
+@{
+    ViewData["Title"] = "Quality Assurance";
+    ViewData["ActivePage"] = "QualityAssurance";
+    var user = userManager.GetUserAsync(User).Result;
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" id="myTab" role="tablist" style="float: none!important;">
+    @foreach (var item in ViewBag.Services)
+    {
+        var active = "";
+        if (ViewBag.ActiveTab == item.CodeTitle)
+        {
+            active = "active";
+        }
+        <li class="nav-item">
+            <a class="nav-link @active" asp-controller="QualityAssurance" asp-action="Index" asp-route-id="@item.ServiceCodesId">@item.CodeTitle</a>
+        </li>
+    }
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="dataTable" width="100%" cellspacing="0">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th class="text-center">
+                                    Status
+                                </th>
+                                <th class="text-center">
+                                    <small class="d-block">E-Sign</small> Supervisor
+                                </th>
+                                <th class="text-center">
+                                    <small class="d-block">E-Sign</small> Supervisee
+                                </th>
+                                <th>
+                                    Client
+                                </th>
+                                <th>
+                                    Employee
+                                </th>
+                                <th>
+                                    <small class="d-block">Service</small> Date
+                                </th>
+                                <th>
+                                    Units
+                                </th>
+                                <th data-orderable="false"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr ondblclick="AddEditElements(@item.AppointmentsId, 'Appointments')">
+                                    <td>
+                                        <a class="status-@String.Concat(item.QaStatus.Where(c => !Char.IsWhiteSpace(c))) mr-2">
+                                            @Html.DisplayFor(modelItem => item.QaStatus)
+                                        </a>
+                                    </td>
+                                    @if (item.QaStatus != "Approved")
+                                    {
+                                        <td class="text-center">
+                                            @switch (ViewBag.ActiveTab)
+                                            {
+                                                case "BA Assessment":
+                                                    if (await userManager.IsInRoleAsync(user, "supervisor"))
+                                                    {
+                                                        if (item.BaAssessments.FkSupervisorSignatureId != null)
+                                                        {
+                                                            <a class="btn btn-outline-danger d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaAssessmentsId" asp-route-status="@ViewBag.ActiveTab" asp-route-who="Super" asp-route-toggleAction="RemoveSignature">
+                                                                <span class="text">
+                                                                    <i class="fa fa-ban"></i>
+                                                                </span>
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-outline-primary d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaAssessmentsId" asp-route-status="@ViewBag.ActiveTab" asp-route-who="Super" asp-route-toggleAction="Sign">
+                                                                <span class="text">
+                                                                    <i class="fa fa-file-signature"></i>
+                                                                </span>
+                                                            </a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item.BaAssessments.FkSupervisorSignatureId != null)
+                                                        {
+                                                            <a class="status-Completed mr-4">Signed</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="status-MissingSignature mr-4">Missing Signature</a>
+                                                        }
+                                                    }
+                                                    break;
+                                                case "BA Note ABA":
+                                                case "BA Note Grp":
+                                                case "BA Note LA":
+                                                case "BA Note RBT":
+                                                    if (userManager.IsInRoleAsync(user, "supervisor").Result)
+                                                    {
+                                                        if (item.BaProgressNotes != null && item.BaProgressNotes.FkSupervisorSignature != null)
+                                                        {
+                                                            <a class="btn btn-outline-danger d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaProgressNotesId" asp-route-status="@ViewBag.ActiveTab" asp-route-who="Super" asp-route-action="RemoveSignature">
+                                                                <span class="text">
+                                                                    <i class="fa fa-ban"></i>
+                                                                </span>
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-outline-primary d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaProgressNotesId" asp-route-status="@ViewBag.ActiveTab" asp-route-who="Super" asp-route-action="Sign">
+                                                                <span class="text">
+                                                                    <i class="fa fa-file-signature"></i>
+                                                                </span>
+                                                            </a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item.BaProgressNotes.FkSupervisorSignature != null)
+                                                        {
+                                                            <a class="status-Completed mr-4">Signed</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="status-MissingSignature mr-4">Missing Signature</a>
+                                                        }
+                                                    }
+                                                    break;
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            @switch (ViewBag.ActiveTab)
+                                            {
+                                                case "BA Assessment":
+                                                    if (item.FkEmployeesId == user.FkEmployeesId)
+                                                    {
+                                                        if (item.BaAssessments.FkAnalystSignatureId != null)
+                                                        {
+                                                            <a class="btn btn-outline-danger d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaAssessmentsId" asp-route-status="@ViewBag.ActiveTab" asp-route-who="User" asp-route-toggleAction="RemoveSignature">
+                                                                <span class="text">
+                                                                    <i class="fa fa-ban"></i>
+                                                                </span>
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-outline-primary d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaAssessmentsId" asp-route-status="@ViewBag.ActiveTab" asp-route-who="User" asp-route-toggleAction="Sign">
+                                                                <span class="text">
+                                                                    <i class="fa fa-file-signature"></i>
+                                                                </span>
+                                                            </a>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item.BaAssessments.FkAnalystSignatureId != null)
+                                                        {
+                                                            <a class="status-Completed mr-4">Signed</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="status-MissingSignature mr-4">Missing Signature</a>
+                                                        }
+                                                    }
+                                                    break;
+                                                case "BA Note ABA":
+                                                case "BA Note Grp":
+                                                case "BA Note LA":
+                                                case "BA Note RBT":
+                                                    @if (item.BaProgressNotes != null && item.BaProgressNotes.FkEmployeeSignatureId != null)
+                                                    {
+                                                        <a class="status-Completed mr-4">Signed</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item.FkEmployeesId == user.FkEmployeesId)
+                                                        {
+                                                            <a class="btn btn-outline-primary d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaProgressNotesId" asp-route-status="@ViewBag.ActiveTab" asp-route-who="User" asp-route-toggleAction="Sign">
+                                                                <span class="text">
+                                                                    <i class="fa fa-file-signature"></i>
+                                                                </span>
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-outline-danger d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaProgressNotesId" asp-route-status="@ViewBag.ActiveTab" asp-route-who="User" asp-route-toggleAction="RemoveSignature">
+                                                                <span class="text">
+                                                                    <i class="fa fa-ban"></i>
+                                                                </span>
+                                                            </a>
+                                                        }
+                                                    }
+                                                    break;
+                                            }
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <a class="status-Completed mr-4">Signed</a>
+                                        </td>
+                                        <td>
+                                            <a class="status-Completed mr-4">Signed</a>
+                                        </td>
+                                    }
+                                    <td>
+                                        <a asp-controller="Clients" asp-action="Details" asp-route-id="@item.FkClientsId">
+                                            @Html.DisplayFor(modelItem => item.FkClients.FullName)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Employees" asp-action="Details" asp-route-id="@item.FkEmployeesId">
+                                            @Html.DisplayFor(modelItem => item.FkEmployees.EmployeeLabel)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @item.StartTime.ToShortDateString()
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Units)
+                                    </td>
+                                    <td class="text-right">
+                                        @{
+                                            if (item.QaStatus != "Approved")
+                                            {
+                                                            <a style="text-decoration:none" asp-controller="QualityAssurance" asp-action="ChangeQAStatus" asp-route-id="@item.AppointmentsId" asp-route-status="Accept" class="btn btn-outline-success d-print-none">
+                                                                <span class="text">
+                                                                    <i class="fa fa-check fa-sm"></i>
+                                                                </span>
+                                                            </a>
+                                            }
+                                            switch (ViewBag.ActiveTab)
+                                            {
+
+                                                case "BA Assessment":
+                                                                <a class="btn btn-outline-primary d-print-none" asp-controller="BaAssessments" asp-action="Edit" asp-route-id="@item.FkBaAssessmentsId">
+                                                                    <span class="text">
+                                                                        <i class="fa fa-eye"></i>
+                                                                    </span>
+                                                                </a>
+                                                    break;
+                                                case "BA Monthly Report":
+                                                                <a class="btn btn-outline-primary d-print-none" asp-controller="BaMonthlyReports" asp-action="Edit" asp-route-id="@item.FkBaMonthlyReportsId">
+                                                                    <span class="text">
+                                                                        <i class="fa fa-eye"></i>
+                                                                    </span>
+                                                                </a>
+                                                    break;
+                                                case "BA Reassessment":
+                                                                <a class="btn btn-outline-primary d-print-none" asp-controller="BaReAssessments" asp-action="Edit" asp-route-id="@item.FkBaReAssessmentsId">
+                                                                    <span class="text">
+                                                                        <i class="fa fa-eye"></i>
+                                                                    </span>
+                                                                </a>
+                                                    break;
+                                                case "BA Note ABA":
+                                                case "BA Note Grp":
+                                                case "BA Note LA":
+                                                case "BA Note RBT":
+                                                                <a class="btn btn-outline-primary d-print-none" asp-controller="BaProgressNotes" asp-action="Edit" asp-route-id="@item.FkBaProgressNotesId">
+                                                                    <span class="text">
+                                                                        <i class="fa fa-eye"></i>
+                                                                    </span>
+                                                                </a>
+                                                    break;
+                                            }
+                                        }
+                                        @if (item.QaStatus != "Approved")
+                                        {
+                                            <a class="btn btn-outline-danger d-print-none" asp-controller="QualityAssurance" asp-action="ChangeQAStatus" asp-route-id="@item.AppointmentsId" asp-route-status="Reject">
+                                                <span class="text">
+                                                    <i class="fa fa-times"></i>
+                                                </span>
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <!-- CSV Export scripts -->
+    <script type="text/javascript" src="~/js/Exports/CSVExport.js"></script>
+
+    <!-- Page level custom scripts starts -->
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <script>
+        $(document).ready(async function () {
+            await loadScript("/js/afterLoad.js");
+            // Do whatever you want to do after script is ready
+        });
+    </script>
+}

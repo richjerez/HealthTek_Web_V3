@@ -1,0 +1,46 @@
+﻿@model HealthTek_Shared_Libraries.Intakes
+@{
+    ViewData["Title"] = "Intake Details";
+    ViewData["ActivePage"] = "Intakes";
+}
+<div class="card shadow card-body">
+    <form asp-controller="Documents" asp-action="AddIntakes" method="post" enctype="multipart/form-data">
+        <input id="FkIntakesId" name="FkIntakesId" value="@Model.IntakesId" type="hidden" />
+        <input asp-for="FkClientsId" type="hidden" />
+        <div class="row">
+            <div class="col-lg-6 border-right">
+                <div class="text-center">
+                    <span class="d-block">
+                        <a asp-controller="Clients" asp-action="Details" asp-route-id="@Model.FkClientsId">@Model.FkClients.FullName</a>
+                    </span>
+                    <span class="d-block">
+                        @Html.DisplayFor(model => model.FkClients.ClientsFacilities.FirstOrDefault().ChartNumber)
+                    </span>
+                    <span class="d-block">
+                        <a asp-controller="Facilities" asp-action="Details" asp-route-id="@Model.FkFacilitiesId">@Model.FkFacilities.FacilityName</a>
+                    </span>
+                    <span class="d-block">
+                        @Html.DisplayFor(model => model.StatusNote)
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                @foreach (var item in Model.IntakeDocumentation)
+                {
+                    if (item.IsAttached)
+                    {
+                        <i class="fas fa-check-square text-success mr-2"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-check-square text-secondary mr-2"></i>
+                    }
+                    @item.DocumentTitle
+                    <hr class="mt-2 mb-2" />
+                }
+            </div>
+        </div>
+        <hr />
+        <partial name="createDoc" model="Model.Documents" />
+    </form>
+</div>

@@ -1,0 +1,46 @@
+﻿@model HealthTek_Shared_Libraries.Messages
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" asp-route-contact="Contact" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <input asp-for="ToEmail" class="form-control" value="healthteksystems@gmail.com" hidden />
+            </div>
+            @if (Model == null)
+            {
+                <div class="form-group">
+                    <small class="control-small">From</small>
+                    <input asp-for="FromEmail" class="form-control" type="email" required placeholder="i.e. example@gmail.com" />
+                    <span asp-validation-for="FromEmail" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <small class="control-small">From User: <span>@Model.FromName</span></small>
+                    <input asp-for="FromName" class="form-control" hidden />
+                </div>
+                <div>
+                    <small class="control-small">From Email: <span>@Model.FromEmail</span></small>
+                    <input asp-for="FromEmail" class="form-control" hidden />
+                </div>
+                <hr />
+
+            }
+            <div class="form-group">
+                <small class="control-small">Subject</small>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <small class="control-small">Message</small>
+                <textarea asp-for="Message" class="form-control"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send Message" class="btn btn-primary float-right" />
+            </div>
+        </form>
+    </div>
+</div>

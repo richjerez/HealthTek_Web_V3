@@ -1,0 +1,235 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using HealthTek_Shared_Libraries.Data;
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@model HealthTek_Shared_Libraries.Clients
+@{
+    AppUser user = new AppUser();
+    if (SignInManager.IsSignedIn(User))
+    {
+        user = UserManager.GetUserAsync(User).Result;
+    }
+}
+@* Progress Notes *@
+<div class="card shadow mb-4 p-3">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseProgressNotes" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseProgressNotes">
+        <h6 class="m-0 font-weight-bold text-primary">Progress Notes</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseProgressNotes" style="">
+        <div class="card-body">
+            @if (Model.Appointments.Count != 0)
+            {
+                var report = Model.Appointments.Where(b => b.BaProgressNotes != null).ToList();
+                await Html.RenderPartialAsync("~/Views/BaProgressNotes/Index.cshtml", report);
+            }
+        </div>
+    </div>
+    <!-- Card Header - Accordion -->
+    <a href="#collapseAssessments" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseAssessments">
+        <h6 class="m-0 font-weight-bold text-primary">Assessments</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapseAssessments" style="">
+        <div class="card-body">
+            @if (Model.Appointments.Count != 0)
+            {
+                var report = Model.Appointments.Where(b => b.BaAssessments != null).ToList();
+                await Html.RenderPartialAsync("~/Views/BaAssessments/Index.cshtml", report);
+            }
+        </div>
+    </div>
+    <!-- Card Header - Accordion -->
+    <a href="#CCC" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="CCC">
+        <h6 class="m-0 font-weight-bold text-primary">Caregiver Competency Checks</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="CCC" style="">
+        <div class="card-body">
+            @if (Model.Appointments.Count != 0)
+            {
+                var report = Model.Appointments.Where(b => b.BaProgressNotes != null && b.BaProgressNotes.CaregiverCompetencies != null)
+                .Select(m => m.BaProgressNotes.CaregiverCompetencies).ToList();
+                await Html.RenderPartialAsync("~/Views/CaregiverCompetencies/Index.cshtml", report);
+            }
+        </div>
+    </div>
+    <!-- Card Header - Accordion -->
+    <a href="#collapseRBTCompetency" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseRBTCompetency">
+        <h6 class="m-0 font-weight-bold text-primary">RBT Competency Checks</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapseRBTCompetency" style="">
+        <div class="card-body">
+            @if (Model.Appointments.Count != 0)
+            {
+                var report = Model.Appointments.Where(b => b.Supervisions != null && b.Supervisions.FkRbtCompetencies != null).ToList();
+                await Html.RenderPartialAsync("~/Views/RbtCompetencies/Index.cshtml", report);
+            }
+        </div>
+    </div>
+    <!-- Card Header - Accordion -->
+    <a href="#collapseMonthlyReports" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseMonthlyReports">
+        <h6 class="m-0 font-weight-bold text-primary">Monthly Reports</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapseMonthlyReports" style="">
+        <div class="card-body">
+            @if (Model.Appointments.Count != 0)
+            {
+                var report = Model.Appointments.Where(b => b.BaMonthlyReports != null).ToList();
+                await Html.RenderPartialAsync("~/Views/BaMonthlyReports/Index.cshtml", report);
+            }
+        </div>
+    </div>
+    <!-- Card Header - Accordion -->
+    <a href="#collapseSupervisions" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseSupervisions">
+        <h6 class="m-0 font-weight-bold text-primary">Supervision Logs</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapseSupervisions" style="">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" id="dataTable5" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th style="display:none"></th>
+                            <th class="text-center">
+                                Status
+                            </th>
+                            <th>
+                                Employee
+                            </th>
+                            <th>
+                                StartTime - EndTime
+                            </th>
+                            <th>
+                                Duration
+                            </th>
+                            <th style="text-align:center">
+                                <small class="d-block">E-Signature</small>
+                                Supervisor
+                            </th>
+                            <th style="text-align:center">
+                                <small class="d-block">E-Signature</small>
+                                Supervisee
+                            </th>
+                            <th data-orderable="false"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Appointments.Select(m => m.Supervisions))
+                        {
+                            if (item != null)
+                            {
+                                <tr ondblclick="LoadEdit('@item.SupervisionsId', 'Supervisions')">
+                                    <td style="display:none">@item.StartTime.Value.ToString("MMMM")</td>
+                                    <td>
+                                        <a class="status-@String.Concat(item.SupervisionStatus.Where(c => !Char.IsWhiteSpace(c)))">@Html.DisplayFor(modelItem => item.SupervisionStatus)</a>
+                                    </td>
+                                    <td>
+                                        <a href="#">@item.FkAppointments.FkEmployees.EmployeeLabel</a>
+                                    </td>
+                                    <td>
+                                        @item.StartTime.Value.ToShortTimeString() - @item.EndTime.Value.ToShortTimeString()
+                                    </td>
+                                    <td>
+                                        @item.SupervisionDuration
+                                    </td>
+                                    @if (item.SupervisionStatus != "Submitted")
+                                    {
+                                        <td style="text-align:center">
+                                            @{
+                                                if (UserManager.IsInRoleAsync(user, "supervisor").Result)
+                                                {
+                                                    if (item.FkSupervisorSignaturesId != null)
+                                                    {
+                                                        <button onclick="UpdateSignature(@item.SupervisionsId, 'removeSupvSign')" class="btn btn-outline-danger d-print-none mr-4">
+                                                            <span class="text">
+                                                                <i class="fa fa-ban"></i>
+                                                            </span>
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button onclick="UpdateSignature(@item.SupervisionsId, 'addSupvSign')" class="btn btn-outline-primary d-print-none mr-4">
+                                                            <span class="text">
+                                                                <i class="fas fa-file-signature"></i>
+                                                            </span>
+                                                        </button>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (item.FkSupervisorSignaturesId == null)
+                                                    {
+                                                        <a class="status-MissingSignature">Missing Signature</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="status-Completed">Signed</a>
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td style="text-align:center">
+                                            @if (item.FkAppointments.FkEmployeesId == user.FkEmployeesId)
+                                            {
+                                                if (item.FkUserSignaturesId != null)
+                                                {
+                                                    <button onclick="UpdateSignature(@item.SupervisionsId, 'removeUserSign')" class="btn btn-outline-danger d-print-none mr-4">
+                                                        <span class="text">
+                                                            <i class="fa fa-ban"></i>
+                                                        </span>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button onclick="UpdateSignature(@item.SupervisionsId, 'addUserSign')" class="btn btn-outline-primary d-print-none mr-4">
+                                                        <span class="text">
+                                                            <i class="fas fa-file-signature"></i>
+                                                        </span>
+                                                    </button>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (item.FkUserSignaturesId == null)
+                                                {
+                                                    <a class="status-MissingSignature">Missing Signature</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="status-Completed">Signed</a>
+                                                }
+                                            }
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <a class="status-Completed">Signed</a>
+                                        </td>
+                                        <td>
+                                            <a class="status-Completed">Signed</a>
+                                        </td>
+                                    }
+                                    <td class="text-right">
+                                        <button onclick="DeleteElement('@item.SupervisionsId', 'Supervisions')" class="btn btn-outline-danger d-print-none">
+                                            <span class="text">
+                                                <i class="fa fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

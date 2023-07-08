@@ -1,0 +1,224 @@
+﻿@model HealthTek_Shared_Libraries.Maladaptives
+
+@{
+    var name = new string(Model.MaladaptiveName.Where(c => !char.IsWhiteSpace(c)).ToArray());
+}
+<!-- Card Header - Accordion -->
+<a href="#collapse-@name" class="d-block card-header py-3 collapsed bg-primary" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse-@name">
+    <h6 class="m-0 font-weight-bold text-white">@Model.MaladaptiveName</h6>
+</a>
+<!-- Card Content - Collapse -->
+<div class="collapse" id="collapse-@name">
+    <div class="card-body shadow">
+        <div>
+            <button type="button" onclick="DeleteElement(@Model.MaladaptivesId, 'Maladaptives')"
+                    class="d-none d-sm-inline-block btn btn-xs btn-danger shadow-sm btn-icon-split d-print-none float-right ml-2">
+                <span class="icon text-white-50">
+                    <i class="fas fa-trash fa-sm text-white-50"></i>
+                </span>
+            </button>
+            <button type="button" onclick="AddEditElements(@Model.MaladaptivesId, 'Maladaptives')"
+                    class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                <span class="icon text-white-50">
+                    <i class="fas fa-edit fa-sm text-white-50"></i>
+                </span>
+            </button>
+            <h5 class="font-weight-bold">@Model.MaladaptiveName</h5>
+            <p>@Model.Topography</p>
+            <hr />
+            <div class="row">
+                <div class="col-lg-6 border-right">
+                    <small>Collection Method</small>
+                    <span class="d-block">@Model.CollectionMethod</span>
+                    <small>Baseline Average</small>
+                    <span class="d-block">@Model.BaselineAverage</span>
+                    <small>@Html.DisplayNameFor(m => Model.Baseline1)</small>
+                    <span class="d-block">
+                        @Model.Baseline1
+                    </span>
+                    <small>@Html.DisplayNameFor(m => Model.Baseline2)</small>
+                    <span class="d-block">
+                        @Model.Baseline2
+                    </span>
+                    <small>@Html.DisplayNameFor(m => Model.Baseline3)</small>
+                    <span class="d-block">
+                        @Model.Baseline3
+                    </span>
+                    <small>Baseline Duration</small>
+                    @if (Model.BaselineDuration.HasValue)
+                    {
+                        <span class="d-block">@Model.BaselineDuration.Value @Model.BaselineDurationUnit</span>
+                    }
+                    <small>Intensity</small>
+                    <span class="d-block">@Model.MaladaptiveIntensity</span>
+
+                </div>
+                <div class="col-lg-6">
+                    @if (Model.FkCaregiverTrainingGoals != null)
+                    {
+                        var report = Model.FkCaregiverTrainingGoals;
+                        report.GoalType = "CTG-M";
+                        await Html.RenderPartialAsync("~/Views/CaregiverTrainingGoals/Details.cshtml", report);
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="button" onclick="AddEditElements(0, 'CaregiverTrainingGoals', false, @Model.MaladaptivesId, 'Maladaptives')"
+                                    class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-plus fa-sm text-white-50"></i>
+                                    </span>
+                                    <span class="text align-self-md-center">New Training Goal</span>
+                                </button>
+                                <h5 class="font-weight-bold">Caregiver Training Goals</h5>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-6 border-right">
+                    <div class="form-group">
+                        <label asp-for="@Model.MaladaptiveComment"></label>
+                        <textarea class="form-control" asp-for="@Model.MaladaptiveComment" disabled>@Model.MaladaptiveComment</textarea>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label asp-for="@Model.PrevalentSettingEvent"></label>
+                        <textarea class="form-control" asp-for="@Model.PrevalentSettingEvent" style="height:100%" disabled>@Model.PrevalentSettingEvent</textarea>
+                    </div>
+                </div>
+            </div>
+
+            @* Functions *@
+            <!-- Card Header - Accordion -->
+            <a href="#Functions-@name" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="Functions-@name">
+                <h6 class="m-0 font-weight-bold text-primary">Functions</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="Functions-@name">
+                <div class="card-body shadow p-0 mb-2">
+                    <div class="card-header py-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-6 text-right d-print-none">
+                                <a onclick="AddEditElements(0, 'Functions', false, @Model.MaladaptivesId)"
+                                   class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-plus fa-sm text-white-50"></i>
+                                    </span>
+                                    <span class="text">New Function</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        @foreach (var function in Model.FunctionsList)
+                        {
+                            await Html.RenderPartialAsync("~/Views/Functions/Details.cshtml", function);
+                        }
+                    </div>
+                </div>
+            </div>
+            @* Objectives *@
+            <!-- Card Header - Accordion -->
+            <a href="#collapseObjective-@Model.MaladaptivesId" class="d-block card-header py-3 collapsed" data-toggle="collapse"
+               role="button" aria-expanded="false" aria-controls="collapseObjective-@Model.MaladaptivesId">
+                <h6 class="m-0 font-weight-bold text-primary">Objectives</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="collapseObjective-@Model.MaladaptivesId">
+                <div class="card-body shadow mb-4" style="padding:0">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                                        Short Term Objectives<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                                    </h6>
+                                </div>
+                                <div class="col-md-6 text-right d-print-none">
+                                    <a onclick="AddEditElements(0, 'ShortTermObjectives',false, @Model.MaladaptivesId, 'Maladaptive')"
+                                       class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                                        </span>
+                                        <span class="text">New Objective</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @foreach (var sto in Model.ShortTermObjectives.Where(m => m.StoType == "Maladaptive"))
+                            {
+                                await Html.RenderPartialAsync("~/Views/ShortTermObjectives/Details.cshtml", sto);
+                            }
+                        </div>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                                        Long Term Objectives<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                                    </h6>
+                                </div>
+                                <div class="col-md-6 text-right d-print-none">
+                                    <a onclick="AddEditElements(0, 'LongTermObjectives',false, @Model.MaladaptivesId, 'Maladaptive')"
+                                       class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                                        </span>
+                                        <span class="text">New Objective</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @foreach (var lto in Model.LongTermObjectives.Where(m => m.LtoType == "Maladaptive"))
+                            {
+                                await Html.RenderPartialAsync("~/Views/LongTermObjectives/Details.cshtml", lto);
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* Discharge *@
+            <!-- Card Header - Accordion -->
+            <a href="#Discharges-@name" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="Discharges-@name">
+                <h6 class="m-0 font-weight-bold text-primary">Discharge</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="Discharges-@name">
+                <div class="card-body shadow">
+                    @if (Model.FkMaladaptiveDischarges != null)
+                    {
+                        var discharge = Model.FkMaladaptiveDischarges;
+                        await Html.RenderPartialAsync("~/Views/MaladaptiveDischarges/Details.cshtml", discharge);
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="button" onclick="AddEditElements(0, 'MaladaptiveDischarges',false,@Model.MaladaptivesId)"
+                                    class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-plus fa-sm text-white-50"></i>
+                                    </span>
+                                    <span class="text align-self-md-center">New Discharge</span>
+                                </button>
+                                <h5 class="font-weight-bold">Maladaptive Discharges</h5>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

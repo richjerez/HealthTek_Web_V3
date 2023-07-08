@@ -1,0 +1,26 @@
+﻿@model HealthTek_Shared_Libraries.ClientEvents
+
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: Deleting this client event can cause the application to not display certain views. Are you sure you want to delete the client event <code>@Html.DisplayFor(model => model.EventType)</code> ?
+    </h5>
+    <hr />
+    <form asp-action="Delete" class="text-right row">
+        <input type="hidden" asp-for="ClientEventsId" />
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="walletName" placeholder="Enter Client Event..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = @Html.Raw(Json.Serialize(Model.EventType));
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

@@ -1,0 +1,29 @@
+﻿@model HealthTek_Shared_Libraries.AbcReports
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create" onsubmit="return jQueryAjaxPost(this);">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="AbcReportsId" />
+                <input type="hidden" asp-for="FkBaAssessmentsId" />
+                <div class="form-group">
+                    <label asp-for="Antecedent" class="control-label"></label>
+                    <textarea asp-for="Antecedent" class="form-control"></textarea>
+                    <span asp-validation-for="Antecedent" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Behavior" class="control-label"></label>
+                    <textarea asp-for="Behavior" class="form-control"></textarea>
+                    <span asp-validation-for="Behavior" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Consequence" class="control-label"></label>
+                    <textarea asp-for="Consequence" class="form-control"></textarea>
+                    <span asp-validation-for="Consequence" class="text-danger"></span>
+                </div>
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Create");}
+            </form>
+        </div>
+    </div>
+</div>
+

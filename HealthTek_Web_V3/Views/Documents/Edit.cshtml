@@ -1,0 +1,144 @@
+﻿@model HealthTek_Shared_Libraries.Documents
+@{
+    ViewData["Title"] = "Edit Document";
+}
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6 class="m-0 font-weight-bold text-primary datatitle">
+                            Edit Document<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body bg-white">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @Html.HiddenFor(m => m.DocumentsId)
+                    @Html.HiddenFor(m => m.CreationDate)
+                    @Html.HiddenFor(m => m.DocumentUrl)
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CreationDate" class="control-label">Uploaded</label>
+                                <input asp-for="CreationDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" disabled />
+                                <span asp-validation-for="CreationDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FkUploadedById" class="control-label">By</label>
+                                <select asp-for="FkUploadedById" class="form-control" asp-items="ViewBag.FkUploadedById" data-live-search="true" disabled></select>
+                                <span asp-validation-for="FkUploadedById" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DocumentType" class="control-label">Type</label>
+                                <select asp-for="DocumentType" class="form-control" asp-items="ViewBag.Types" onchange="getTypeDetails()"><option selected disabled>Select Document Type</option></select>
+                                <span asp-validation-for="DocumentType" id="FkTypes" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DocumentStatus" class="control-label">Status</label>
+                                <select asp-for="DocumentStatus" id="FkStatus" class="form-control" asp-items="ViewBag.Status"></select>
+                                <span asp-validation-for="DocumentStatus" id="FkStatus" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="activeclients" style="display:none">
+                        <label asp-for="FkClientsId" class="control-label">Chart Owner</label>
+                        <select asp-for="FkClientsId" class="form-control" asp-items="ViewBag.ActivePatients" onchange="getClientChart()" data-live-search="true"><option selected disabled>Select Client</option></select>
+                        <span asp-validation-for="FkClientsId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="activeemp" style="display:none">
+                        <label asp-for="FkEmployeesId" class="control-label">Chart Owner</label>
+                        <select asp-for="FkEmployeesId" class="form-control" asp-items="ViewBag.ActiveEmployees" onchange="getEmpChart()" data-live-search="true"><option selected disabled>Select Employee</option></select>
+                        <span asp-validation-for="FkEmployeesId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="documentTitleInput" style="display:none">
+                        <label asp-for="DocumentTitle" class="control-label"></label>
+                        <input asp-for="DocumentTitle" class="form-control" />
+                        <span asp-validation-for="DocumentTitle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="documentTitle" style="display:none">
+                        <label asp-for="DocumentTitle" class="control-label">Title</label>
+                        <select asp-for="DocumentTitle" class="form-control" data-live-search="true"></select>
+                        <span asp-validation-for="DocumentTitle" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DocumentEffectiveDate" class="control-label"></label>
+                                <input asp-for="DocumentEffectiveDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                                <span asp-validation-for="DocumentEffectiveDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DocumentExpirationDate" class="control-label"></label>
+                                <input asp-for="DocumentExpirationDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                                <span asp-validation-for="DocumentExpirationDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DocumentDescription" class="control-label"></label>
+                        <textarea asp-for="DocumentDescription" class="form-control"></textarea>
+                        <span asp-validation-for="DocumentDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-right">
+                        <button type="button" onclick="DeleteElement(@Model.DocumentsId, 'Documents')" class="btn btn-outline-danger">Delete</button>
+                        <a asp-controller="Documents" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                        <input type="submit" value="Save" class="btn btn-primary" />
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        @{
+            if (Model.DocumentUrl != null)
+            {
+                var split = Model.DocumentUrl.Split(".");
+                var src = ViewBag.DocumentUrl;
+                @switch (split[1])
+                {
+                    case "png":
+                    case "jpg":
+                    case "jpeg":
+                    <img src="~/FilePool/@Model.DocumentUrl" width="100%"/>
+                    break;
+                    case "pdf":
+                        <iframe id="displayFile" src="~/FilePool/@Model.DocumentUrl" class="shadow" style="width: 100%; height: 100%; border: 0"></iframe>
+                        break;
+                    case "xlsx":
+                    <iframe width="100%" height="100%" src="data:text/html,@src" style="border:0" class="bg-white shadow"></iframe>
+                        break;
+                    case "docx":
+                    <iframe width="100%" height="100%" srcdoc="@src" style="border:0" class="bg-white shadow"></iframe>
+                        break;
+                }
+            }
+        }
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/Cruds/Documents.js"></script>
+    <script>
+        getTypeDetails();
+    </script>
+}

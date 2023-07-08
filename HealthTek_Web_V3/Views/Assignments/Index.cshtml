@@ -1,0 +1,195 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Assignments>
+@{
+    ViewData["Title"] = "Assignments";
+    ViewData["ActivePage"] = "Assignments";
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBP7MrKNcIjhlCTk4MAQ7xmyIK3Ni7ut5o&callback=initMap"></script>
+}
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Card Header - Accordion -->
+            <a href="#collapseAssignments" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseAssignments">
+                <h6 class="m-0 font-weight-bold text-primary">All Assignments</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="collapseAssignments">
+                <div class="card-body">
+                    <a class="btn btn-primary float-right" onclick="AddEditElements(0,'Assignments')" href="#">
+                        New Assignment
+                    </a>
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable" width="100%" cellspacing="0">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>Facility</th>
+                                    <th>
+                                        Employee
+                                    </th>
+                                    <th>
+                                        Client
+                                    </th>
+                                    <th>
+                                        Position
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Effective
+                                    </th>
+                                    <th>
+                                        Expiration
+                                    </th>
+                                    @*                                <th data-orderable="false" class="d-print-none"></th>
+                                *@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                            {
+                                <tr ondblclick="AddEditElements(@item.AssignmentsId, 'Assignments')">
+                                    <td>
+                                        <a asp-controller="Facilities" asp-action="Details" asp-route-id="@item.FkFacilitiesId">
+                                            @item.FkFacilities.FacilityName
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Employees" asp-action="Details" asp-route-id="@item.FkEmployeesId">
+                                            @Html.DisplayFor(modelItem => item.FkEmployees.EmployeeLabel)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Clients" asp-action="Details" asp-route-id="@item.FkClientsId" class="FullName">@Html.DisplayFor(modelItem => item.FkClients.FullName)</a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssignmentPosition)
+                                    </td>
+                                    <td>
+                                        <a class="status-@item.AssignmentStatus">@Html.DisplayFor(modelItem => item.AssignmentStatus)</a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssignmentEffectiveDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AssignmentExpirationDate)
+                                    </td>
+                                    @*                                    <td class="text-right d-print-none">
+                                <button onclick="DeleteElement('@item.AssignmentsId', 'Assignments')" href="#" class="btn btn-outline-danger ">
+                                <span class="text">
+                                <i class="fa fa-trash"></i>
+                                </span>
+                                </button>
+                                </td>
+                                *@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a onclick="AddEditElements(0,'Assignments')" href="#" class="d-block card-header py-3">
+                <i class="fas fa-plus text-primary float-right"></i>
+                <h6 class="m-0 font-weight-bold text-primary">Need Assignment</h6>
+            </a>
+            <div class="card-body">
+                <div class="table-responsive d-none d-md-block">
+                    <table class="table" id="dataTable1" width="100%" cellspacing="0" data-page-length='5'>
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th style="display:none"></th>
+                                <th style="display:none"></th>
+                                <th style="display:none"></th>
+                                <th>
+                                    <small>Client Info</small>
+                                </th>
+                                <th data-orderable="false"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Where(m => m.AssignmentStatus != "Accepted" || m.AssignmentStatus != "Archived"))
+                            {
+                                <tr>
+                                    <td style="display:none">
+                                        @item.AssignmentsId
+                                    </td>
+                                    <td style="display:none">
+                                        @item.FkClients.Locations.FirstOrDefault().GpsLatitude
+                                    </td>
+                                    <td style="display:none">
+                                        @item.FkClients.Locations.FirstOrDefault().GpsLongitude
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Clients" asp-action="Details" asp-route-id="@item.FkClients.ClientsId" class="FullName">@Html.DisplayFor(modelItem => item.FkClients.FullName)</a>
+                                        <small class="d-block">
+                                            @Html.DisplayFor(modelItem => item.FkClients.ClientsFacilities.FirstOrDefault().ChartNumber)
+                                            @{
+                                                var gender = "fa-venus";
+                                                switch (item.FkClients.Gender.ToLower())
+                                                {
+                                                    case "male":
+                                                        gender = "fa-mars";
+                                                        break;
+                                                    case "non-binary":
+                                                        gender = "fa-mercury";
+                                                        break;
+                                                }
+                                            }
+                                            <i class="fas @gender ml-2"></i>
+                                        </small>@Html.DisplayFor(modelItem => item.FkClients.Locations.FirstOrDefault().FullPrimaryAddress)
+                                        <small class="d-block text-danger">*@Html.DisplayFor(modelItem => item.AssignmentPosition)</small>
+                                    </td>
+                                    <td class="text-right" style="vertical-align: middle;">
+                                        <button onclick="AddEditElements('@item.AssignmentsId', 'Assignments', false, '@item.FkClientsId')" class="btn btn-outline-info ">
+                                            <span class="text">
+                                                <i class="fa fa-server"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div id="map" class="shadow"></div>
+        <div id="legend"></div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        let map;
+        let clientmarkers = [];
+        let markers = [];
+        const bbc = { lat: 25.510790, lng: -80.434070 };
+    </script>
+    <script src="~/js/Cruds/Map.js"></script>
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="/js/demo/datatables-demo.js"></script>
+    <script>
+        $(document).ready(async function() {
+            $("#dataTable1_length").parent().remove();
+            $("#dataTable1_filter").parent().removeClass("col-md-6");
+            $("#dataTable1_info").parent().removeClass('col-md-5');
+            $("#dataTable1_paginate").parent().removeClass('col-md-7');
+        });
+    </script>
+
+}

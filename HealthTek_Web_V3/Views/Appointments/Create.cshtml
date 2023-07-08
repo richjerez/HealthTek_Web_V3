@@ -1,0 +1,110 @@
+﻿@model HealthTek_Shared_Libraries.Appointments
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card shadow">
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="collapseCardExample" style="">
+                <div class="card-body">
+                    <form asp-action="Create" onsubmit="return jQueryAjaxPost(this);">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="FkFacilitiesId" class="control-label"></label>
+                                    <select asp-for="FkFacilitiesId" class="ModalSelect" asp-items="ViewBag.FkFacilitiesId"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="AppointmentType" class="control-label"></label>
+                                    <select asp-for="AppointmentType" class="ModalSelect" asp-items="ViewBag.Types" onchange="getFields()"><option selected disabled>Select Type of Appointment</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none" id="showHide">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="FkServiceCodesId" class="control-label"></label>
+                                    <select asp-for="FkServiceCodesId" class="ModalSelect" asp-items="ViewBag.FkServiceCodesId" data-live-search = "true"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="FkEmployeesId" class="control-label"></label>
+                                    <select asp-for="FkEmployeesId" class="ModalSelect" asp-items="ViewBag.FkEmployeesId" data-live-search = "true"><option selected disabled>Select Employee</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="client" style="display:none">
+                            <label asp-for="FkClientsId" class="control-label"></label>
+                            <select asp-for="FkClientsId" class="ModalSelect" asp-items="ViewBag.FkClientsId" onchange="getClientLocations()" data-live-search = "true"><option selected disabled>Select Client</option></select>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="StartTime" class="control-label"></label>
+                                    <input asp-for="StartTime" class="form-control" />
+                                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" id="endTime" style="display:none">
+                                <div class="form-group">
+                                    <label asp-for="EndTime" class="control-label"></label>
+                                    <input asp-for="EndTime" class="form-control" />
+                                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="LocationShowHide" style="display:none">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="FkStartLocationId" class="control-label"></label>
+                                    <select asp-for="FkStartLocationId" class="ModalSelect"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label asp-for="FkEndLocationId" class="control-label"></label>
+                                    <select asp-for="FkEndLocationId" class="ModalSelect"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea asp-for="Description" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <label class="control-label" for="Description" style="display: block;">Style</label>
+                        <div class="" style="display: inline-flex;">
+                            <div class="bg-primary" style="height: 35px;width: 40px;">
+                                <input type="radio" name="style" value="primary" style="vertical-align: bottom;text-align: center;width: -webkit-fill-available;" />
+                            </div>
+                            <div class="bg-info" style="height: 35px;width: 40px;">
+                                <input type="radio" name="style" value="info" style="vertical-align: bottom;text-align: center;width: -webkit-fill-available;" />
+                            </div>
+                            <div class="bg-success" style="height: 35px;width: 40px;">
+                                <input type="radio" name="style" value="success" style="vertical-align: bottom;text-align: center;width: -webkit-fill-available;" />
+                            </div>
+                            <div class="bg-warning" style="height: 35px;width: 40px;">
+                                <input type="radio" name="style" value="warning" style="vertical-align: bottom;text-align: center;width: -webkit-fill-available;" />
+                            </div>
+                            <div class="bg-danger" style="height: 35px;width: 40px;">
+                                <input type="radio" name="style" value="danger" style="vertical-align: bottom;text-align: center;width: -webkit-fill-available;" />
+                            </div>
+                        </div>
+
+                        @{
+                            await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml", "Create");
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(async function () {
+        await getFields();
+    });
+</script>

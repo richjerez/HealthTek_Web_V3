@@ -1,0 +1,124 @@
+﻿@model HealthTek_Shared_Libraries.Documents
+
+
+<div class="row">
+    <div class="col-lg-4">
+        <!-- DataTales Example -->
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="m-0 font-weight-bold text-primary datatitle">
+                            Document Details<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                        </h6>
+                    </div>
+                    <div class="col-md-6 text-right d-print-none">
+                        <a asp-controller="Documents" asp-action="Edit" asp-route-id="@Model.DocumentsId" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm btn-icon-split" style="margin:0">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-edit fa-sm text-white-50"></i>
+                            </span>
+                        </a>
+                        <a href="/FilePool/@Model.DocumentUrl" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split" style="margin:0">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-download fa-sm text-white-50"></i>
+                            </span>
+                        </a>
+                        <a onclick="DeleteElement(@Model.DocumentsId, 'Documents')" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm btn-icon-split" style="margin:0">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-trash fa-sm text-white-50"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <small class="d-block">Title</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.DocumentTitle)
+                </span>
+                <hr />
+                <small class="d-block">Description</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.DocumentDescription)
+                </span>
+                <hr />
+                <small class="d-block">Effective Date</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.DocumentEffectiveDate)
+                </span>
+                <hr />
+                <small class="d-block">Expiration Date</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.DocumentExpirationDate)
+                </span>
+                <hr />
+                <small class="d-block">Status</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.DocumentStatus)
+                </span>
+                <hr />
+                <small class="d-block">Type</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.DocumentType)
+                </span>
+                <hr />
+                <small class="d-block">Identifier</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.DocumentIdentifier)
+                </span>
+                <hr />
+                <small class="d-block">Client Name</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.FkClients.FullName)
+                </span>
+                <hr />
+                <small class="d-block">Chart#</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.FkClients.ClientsFacilities.FirstOrDefault().ChartNumber)
+                </span>
+                <hr />
+                <small class="d-block">Status</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.DocumentStatus)
+                </span>
+                <hr />
+                <small class="d-block">Upload By</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.FkUploadedBy.EmployeeLabel)
+                </span>
+                <hr />
+                <small class="d-block">Upload Date</small>
+                <span class="d-block">
+                    @Html.DisplayFor(modelItem => Model.CreationDate)
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        @{
+            var src = "";
+            if (Model.DocumentUrl != null)
+            {
+                var split = Model.DocumentUrl.Split(".");
+                src = ViewBag.DocumentUrl;
+                @switch (split[1])
+                {
+                    case "png":
+                    case "jpg":
+                    case "jpeg":
+                    <img src="~/FilePool/@Model.DocumentUrl" width="100%"/>
+                    break;
+                    case "pdf":
+                        <iframe id="displayFile" src="~/FilePool/@Model.DocumentUrl" class="shadow" style="width: 100%; height: 100%; border: 0"></iframe>
+                        break;
+                    case "xlsx":
+                    <iframe width="100%" height="100%" src="data:text/html,@src" style="border:0" class="bg-white shadow"></iframe>
+                        break;
+                    case "docx":
+                    <iframe width="100%" height="100%" srcdoc="@src" style="border:0" class="bg-white shadow"></iframe>
+                        break;
+                }
+            }
+        }
+    </div>
+</div>

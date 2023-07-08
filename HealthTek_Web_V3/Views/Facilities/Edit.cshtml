@@ -1,0 +1,162 @@
+﻿@model HealthTek_Shared_Libraries.Facilities
+@{
+    ViewData["Title"] = "Update Facility";
+
+}
+    <div class="card shadow">
+        <div class="card-body bg-white">
+            <form asp-action="Edit" id="myForm" method="post" onsubmit="return jQueryAjaxPost(this);">
+                <input type="hidden" asp-for="CreationDate" />
+                <input asp-for="FacilitiesId" hidden />
+                <input asp-for="Locations.LocationsId" hidden />
+                <input asp-for="Locations.LocationName" hidden />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="FacilityName" class="control-label"></label>
+                            <input asp-for="FacilityName" class="form-control" />
+                            <span asp-validation-for="FacilityName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="FacilityInitials" class="control-label"></label>
+                            <input asp-for="FacilityInitials" class="form-control" />
+                            <span asp-validation-for="FacilityInitials" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="DateOfArrival" class="control-label"></label>
+                            <input asp-for="DateOfArrival" type="date" asp-format="{0:yyy-MM-dd}" class="form-control" />
+                            <span asp-validation-for="DateOfArrival" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="OperatingStartTime" class="control-label"></label>
+                            <input asp-for="OperatingStartTime" type="time" class="form-control" />
+                            <span asp-validation-for="OperatingStartTime" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="OperatingEndTime" class="control-label"></label>
+                            <input asp-for="OperatingEndTime" type="time" class="form-control" />
+                            <span asp-validation-for="OperatingEndTime" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Timezone" class="control-label"></label>
+                            <select asp-for="Timezone" class="ModalSelect" asp-items="@ViewBag.TimeZones" data-live-search="true"><option disabled selected>Select a TimeZone</option></select>
+                            <span asp-validation-for="Timezone" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label" asp-for="PhoneNumber"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label" asp-for="AlternateNumber"></label>
+                            <input asp-for="AlternateNumber" class="form-control" />
+                            <span asp-validation-for="AlternateNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Fax Number</label>
+                            <input asp-for="FaxNumber" class="form-control" />
+                            <span asp-validation-for="FaxNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="FacilityType" class="control-label"></label>
+                            <select asp-for="FacilityType" class="ModalSelect" data-live-search="false" asp-items="@ViewBag.Types"><option disabled selected>Select the Type of Facility</option></select>
+                            <span asp-validation-for="FacilityType" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Facility Supervisor</label>
+                            <input asp-for="Supervisor" class="form-control" />
+                            <span asp-validation-for="Supervisor" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Locations.Address" class="control-label"></label>
+                    <input asp-for="Locations.Address" class="form-control" />
+                    <span asp-validation-for="Locations.Address" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label asp-for="Locations.City" class="control-label"></label>
+                            <input asp-for="Locations.City" class="form-control" />
+                            <span asp-validation-for="Locations.City" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label asp-for="Locations.State" class="control-label"></label>
+                            <select asp-for="Locations.State" asp-items="ViewBag.States" class="ModalSelect" data-live-search="true"><option disabled selected>Select State</option></select>
+
+                            <span asp-validation-for="Locations.State" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="Locations.Zipcode" class="control-label"></label>
+                            <input asp-for="Locations.Zipcode" class="form-control" />
+                            <span asp-validation-for="Locations.Zipcode" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Locations.County" class="control-label"></label>
+                            <input asp-for="Locations.County" class="form-control" />
+                            <span asp-validation-for="Locations.County" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Locations.Region" class="control-label"></label>
+                            <input asp-for="Locations.Region" class="form-control" />
+                            <span asp-validation-for="Locations.Region" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Locations.Country" class="control-label"></label>
+                    <select asp-for="Locations.Country" asp-items="ViewBag.Countries" class="ModalSelect" data-live-search="true"><option disabled selected>Select Country</option></select>
+                    <span asp-validation-for="Locations.Country" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FacilityUrl" class="control-label"></label>
+                    <input asp-for="FacilityUrl" class="form-control" />
+                    <span asp-validation-for="FacilityUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group text-right">
+                    <input type="button" value="Save" class="btn btn-primary" onclick="getGpsAddress()" />
+                </div>
+                <input asp-for="Locations.GpsLatitude" type="hidden" />
+                <input asp-for="Locations.GpsLongitude" type="hidden" />
+
+            </form>
+        </div>
+    </div>

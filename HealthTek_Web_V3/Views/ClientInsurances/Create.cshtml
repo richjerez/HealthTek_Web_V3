@@ -1,0 +1,61 @@
+﻿@model HealthTek_Shared_Libraries.ClientInsurances
+<div class="card shadow p-3">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create" onsubmit="return jQueryAjaxPost(this);">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @if(Model == null)
+                {
+                <div class="form-group">
+                    <label asp-for="FkClientsId" class="control-label"></label>
+                    <select asp-for="FkClientsId" class="form-control" asp-items="ViewBag.FkClientsId" data-live-search = "true"></select>
+                    <span asp-validation-for="FkClientsId" class="text-danger"></span>
+                </div>
+                }
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="EffectiveDate" class="control-label"></label>
+                            <input asp-for="EffectiveDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                            <span asp-validation-for="EffectiveDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="ExpirationDate" class="control-label"></label>
+                            <input asp-for="ExpirationDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                            <span asp-validation-for="ExpirationDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PolicyName" class="control-label"></label>
+                    <select asp-for="PolicyName" class="form-control" asp-items="ViewBag.Policies" data-live-search = "true"></select>
+                    <span asp-validation-for="PolicyName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PolicyProgram" class="control-label"></label>
+                    <input asp-for="PolicyProgram" class="form-control" />
+                    <span asp-validation-for="PolicyProgram" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PolicyStatus" class="control-label"></label>
+                    <select asp-for="PolicyStatus" class="form-control" asp-items="ViewBag.Status"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PolicyIdentifier" class="control-label"></label>
+                    <input asp-for="PolicyIdentifier" class="form-control" />
+                    <span asp-validation-for="PolicyIdentifier" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsVerified" /> @Html.DisplayNameFor(model => model.IsVerified)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary float-right" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

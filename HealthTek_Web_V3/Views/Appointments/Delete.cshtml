@@ -1,0 +1,23 @@
+﻿@model HealthTek_Shared_Libraries.Appointments
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: Are you sure you want to cancel the appointment on @Model.StartTime.ToString("MMM dd @h:mm tt") for the client <code>@Html.DisplayFor(model => model.FkClients.FullName)</code> ?
+    </h5>
+    <hr />
+    <form asp-action="Delete" asp-route-id="@Model.AppointmentsId" class="text-right row">
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="Name" placeholder="Enter Client Name..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = @Html.Raw(Json.Serialize(Model.FkClients.FullName));
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

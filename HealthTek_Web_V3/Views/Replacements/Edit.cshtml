@@ -1,0 +1,134 @@
+﻿@model HealthTek_Shared_Libraries.Replacements
+
+<div class="shadow p-3">
+    <form asp-action="Edit" method="post" onsubmit="return jQueryAjaxPost(this);">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="FkBaAssessmentsId" />
+        <input type="hidden" asp-for="FkMaladaptivesId" />
+        <input type="hidden" asp-for="ReplacementsId" />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="ReplacementName" class="control-label"></label>
+                    <select asp-for="ReplacementName" class="ModalSelect" data-live-search="true" asp-items="ViewBag.Replacements"><option selected disabled>Select Behavior</option></select>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="ReplacementName" class="control-label"></label>
+                    <input asp-for="ReplacementName" class="form-control" />
+                    <span asp-validation-for="ReplacementName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label asp-for="PromptLevel" class="control-label"></label>
+                    <input asp-for="PromptLevel" class="form-control" />
+                    <span asp-validation-for="PromptLevel" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label asp-for="BaselineDuration" class="control-label"></label>
+                    <input asp-for="BaselineDuration" class="form-control" />
+                    <span asp-validation-for="BaselineDuration" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label asp-for="BaselineDurationUnit" class="control-label"></label>
+                    <input asp-for="BaselineDurationUnit" class="form-control" />
+                    <span asp-validation-for="BaselineDurationUnit" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline1" class="control-label"></label>
+                    <input asp-for="Baseline1" class="form-control" />
+                    <span asp-validation-for="Baseline1" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline1StartDate" class="control-label"></label>
+                    <input asp-for="Baseline1StartDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline1StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline1EndDate" class="control-label"></label>
+                    <input asp-for="Baseline1EndDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline1EndDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline2" class="control-label"></label>
+                    <input asp-for="Baseline2" class="form-control" />
+                    <span asp-validation-for="Baseline2" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline2StartDate" class="control-label"></label>
+                    <input asp-for="Baseline2StartDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline2StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline2EndDate" class="control-label"></label>
+                    <input asp-for="Baseline2EndDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline2EndDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline3" class="control-label"></label>
+                    <input asp-for="Baseline3" class="form-control" />
+                    <span asp-validation-for="Baseline3" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline3StartDate" class="control-label"></label>
+                    <input asp-for="Baseline3StartDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline3StartDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label asp-for="Baseline3EndDate" class="control-label"></label>
+                    <input asp-for="Baseline3EndDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                    <span asp-validation-for="Baseline3EndDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CollectionMethod" class="control-label"></label>
+            <select asp-for="CollectionMethod" class="ModalSelect" asp-items="ViewBag.Collection"><option selected disabled>Select Collection Method</option></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Barrier" class="control-label"></label>
+            <textarea asp-for="Barrier" class="form-control"></textarea>
+            <span asp-validation-for="Barrier" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ReplacementComment" class="control-label"></label>
+            <textarea asp-for="ReplacementComment" class="form-control"></textarea>
+            <span asp-validation-for="ReplacementComment" class="text-danger"></span>
+        </div>
+        @{await Html.RenderPartialAsync("~/Views/Shared/_SubmitButton.cshtml","Save");}
+    </form>
+
+</div>

@@ -1,0 +1,337 @@
+﻿@using System.ComponentModel
+@using System.Reflection
+@model HealthTek_Shared_Libraries.BaMonthlyReports
+
+@section Styles {
+<!-- Custom styles for this page -->
+<link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+<div class="card shadow mb-4">
+    <div class="card-header pt-3 sticky-top pb-0">
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="m-0 font-weight-bold text-primary datatitle">
+                    Behavior Analysis Monthly Report<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                </h4>
+            </div>
+            <div class="col-md-6 text-right">
+                <small>Service Code:</small>
+                <p>Ba Monthly Report</p>
+            </div>
+        </div>
+        <hr class="mt-0" />
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <small>Client:</small>
+                <a class="d-block" asp-controller="Clients" asp-action="Details" asp-route-id="@Model.FkAppointments.FkClientsId">@Model.FkAppointments.FkClients.FullName</a>
+                <span>@Model.FkAppointments.FkClients.ClientsFacilities.FirstOrDefault().ChartNumber</span>
+            </div>
+            <div class="col-md-3 border-right">
+                <small>From - To:</small>
+                <span class="d-block">@Model.FkAppointments.StartTime</span>
+                <span>@Model.FkAppointments.EndTime</span>
+            </div>
+            <div class="col-md-3 border-right">
+                <small>Location Start:</small>
+                <span class="d-block">@Model.FkAppointments.FkStartLocation.Address</span>
+                <span>@Model.FkAppointments.FkStartLocation.CityState,@Model.FkAppointments.FkStartLocation.Zipcode</span>
+            </div>
+            <div class="col-md-3">
+                <small>Location End:</small>
+                <span class="d-block">@Model.FkAppointments.FkEndLocation.Address</span>
+                <span>@Model.FkAppointments.FkEndLocation.CityState,@Model.FkAppointments.FkEndLocation.Zipcode</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Edit" id="MyForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="BaMonthlyReportsId" type="hidden" />
+                    <input asp-for="FkAppointmentsId" type="hidden" />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="TextAreaWrapper">
+                                <div class="form-group">
+                                    <label asp-for="CaregiverTrainingStatement"></label>
+                                    <textarea asp-for="CaregiverTrainingStatement" class="form-control"></textarea>
+                                    <span asp-validation-for="CaregiverTrainingStatement" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="MonthlySummary" class="control-label"></label>
+                                    <textarea asp-for="MonthlySummary" class="form-control"></textarea>
+                                    <span asp-validation-for="MonthlySummary" class="text-danger"></span>
+                                </div>
+                            </div>
+                            @* Add Environmentals *@
+                            <!-- Card Header - Accordion -->
+                            <a href="#collapseEnvironmental" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseEnvironmental">
+                                <h6 class="m-0 font-weight-bold text-primary">Environmental Changes</h6>
+                            </a>
+                            <!-- Card Content - Collapse -->
+                            <div class="collapse" id="collapseEnvironmental">
+                                <div class="card-body shadow mb-2">
+                                    <button type="button" onclick="AddEditElements(0, 'EnvironmentalChanges', false,@Model.BaMonthlyReportsId, 'FkBaMonthlyReportsId')"
+                                            class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                                        </span>
+                                        <span class="text align-self-md-center">New Environmental</span>
+                                    </button>
+
+                                    <div class="table-responsive">
+                                        <table class="table" id="dataTable1" width="100%" cellspacing="0">
+                                            <thead class="bg-primary text-white">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Category</th>
+                                                    <th>Description</th>
+                                                    <th data-orderable="false" class="d-print-none"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.EnvironmentalChanges)
+                                                {
+                                                    <tr ondblclick="AddEditElements(@item.EnvironmentalChangesId, 'EnvironmentalChanges')">
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.DateOfOccurrence)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Category)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Description)
+                                                        </td>
+                                                        <td class="text-right d-print-none">
+                                                            <button onclick="DeleteElement(@item.EnvironmentalChangesId, 'EnvironmentalChanges')" class="btn btn-outline-danger " type="button">
+                                                                <span class="text">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </span>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @* Maladaptives *@
+                            <!-- Maladaptives - Card Header - Accordion -->
+                            <a href="#collapseMaladaptives" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseMaladaptives">
+                                <h6 class="m-0 font-weight-bold text-primary">Behaviors</h6>
+                            </a>
+                            <!-- Maladaptives Content -->
+                            <div class="collapse" id="collapseMaladaptives">
+                                <div class="card-body shadow">
+                                    <div class="table-responsive">
+                                        <table class="table" id="dataTable" width="100%" cellspacing="0">
+                                            <thead class="bg-primary text-white">
+                                                <tr>
+                                                    <th>
+                                                        Target Behavior
+                                                    </th>
+                                                    <th>
+                                                        Topography
+                                                    </th>
+                                                    <th>
+                                                        Baseline Avg / Week
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="TableBody">
+                                                @foreach (var item in Model.FkBaAssessments.Maladaptives)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.MaladaptiveName)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Topography)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.BaselineAverage)
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3" style="padding: 0;">
+                                                            @{
+                                                                var name = new string(item.MaladaptiveName.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                                                            }
+                                                            @* Maladaptives *@
+                                                            <!-- Maladaptives - Card Header - Accordion -->
+                                                        <a href="#collapse-@name" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse-@name">
+                                                                <h6 class="m-0 font-weight-bold text-primary">Maladaptive Goals</h6>
+                                                            </a>
+                                                            <!-- Maladaptives Content -->
+                                                        <div class="collapse" id="collapse-@name">
+                                                                <div class="card-body shadow">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-9 border-right">
+                                                                            @foreach (var sto in item.ShortTermObjectives)
+                                                                            {
+                                                                                <span class="d-block mb-1">
+                                                                                    <strong>STO #@sto.ObjectiveNumber:</strong>
+                                                                                    @sto.Description
+                                                                                </span>
+                                                                            }
+                                                                            <hr />
+                                                                            @foreach (var lto in item.LongTermObjectives)
+                                                                            {
+                                                                                <span class="d-block mb-1">
+                                                                                    <strong>LTO #@lto.ObjectiveNumber:</strong>
+                                                                                    @lto.Description
+                                                                                </span>
+                                                                            }
+                                                                        </div>
+                                                                        <div class="col-lg-3">
+                                                                            @if (item.FkCaregiverTrainingGoals != null)
+                                                                            {
+                                                                                <h5>Caregiver Training Goal</h5>
+                                                                                var ctg = item.FkCaregiverTrainingGoals;
+                                                                                <small>Baseline</small>
+                                                                                <span class="d-block">@ctg.Baseline</span>
+                                                                                <small>Collected Start</small>
+                                                                                <span class="d-block">@ctg.BaselineCollectedStart</span>
+                                                                                <small>Collected End</small>
+                                                                                <span class="d-block">@ctg.BaselineCollectedEnd</span>
+                                                                                <hr />
+                                                                                @foreach (var sto in ctg.ShortTermObjectives)
+                                                                                {
+                                                                                    <span class="d-block">
+                                                                                        <strong>STO #@sto.ObjectiveNumber:</strong>
+                                                                                        @sto.Description
+                                                                                    </span>
+                                                                                }
+                                                                                @foreach (var lto in ctg.LongTermObjectives)
+                                                                                {
+                                                                                    <span class="d-block">
+                                                                                        <strong>LTO #@lto.ObjectiveNumber:</strong>
+                                                                                        @lto.Description
+                                                                                    </span>
+                                                                                }
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3" style="padding: 0;">
+                                                            @if (item.FkReplacements != null)
+                                                            {
+                                                                var replacements = item.FkReplacements;
+                                                                var replacementName = new string(replacements.ReplacementName.Where(c => !char.IsWhiteSpace(c)).ToArray());
+
+                                                                @* Replacements *@
+                                                                <!-- Replacements - Card Header - Accordion -->
+                                                                <a href="#collapse-@replacementName" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse-@replacementName">
+                                                                    <h6 class="m-0 font-weight-bold text-primary">Acquisition Goals (Replacements)</h6>
+                                                                </a>
+                                                                <!-- Replacements Content -->
+                                                                <div class="collapse" id="collapse-@replacementName">
+                                                                    <div class="card-body shadow mb-4 ">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-9 border-right">
+                                                                                @foreach (var sto in replacements.ShortTermObjectives)
+                                                                                {
+                                                                                    <span class="d-block mb-1">
+                                                                                        <strong>STO #@sto.ObjectiveNumber:</strong>
+                                                                                        @sto.Description
+                                                                                    </span>
+                                                                                }
+                                                                                <hr/>
+                                                                                @foreach (var lto in replacements.LongTermObjectives)
+                                                                                {
+                                                                                    <span class="d-block mb-1">
+                                                                                        <strong>LTO #@lto.ObjectiveNumber:</strong>
+                                                                                        @lto.Description
+                                                                                    </span>
+                                                                                }
+                                                                            </div>
+                                                                            <div class="col-lg-3">
+                                                                                @if (replacements.FkCaregiverTrainingGoals != null)
+                                                                                {
+                                                                                    <h5>Caregiver Training Goal</h5>
+                                                                                    var ctg = replacements.FkCaregiverTrainingGoals;
+                                                                                    <small>Baseline</small>
+                                                                                    <span class="d-block">@ctg.Baseline</span>
+                                                                                    <small>Collected Start</small>
+                                                                                    <span class="d-block">@ctg.BaselineCollectedStart</span>
+                                                                                    <small>Collected End</small>
+                                                                                    <span class="d-block">@ctg.BaselineCollectedEnd</span>
+                                                                                    <hr />
+                                                                                    @foreach (var sto in ctg.ShortTermObjectives)
+                                                                                    {
+                                                                                        <span class="d-block">
+                                                                                            <strong>STO #@sto.ObjectiveNumber:</strong>
+                                                                                            @sto.Description
+                                                                                        </span>
+                                                                                    }
+                                                                                    @foreach (var lto in ctg.LongTermObjectives)
+                                                                                    {
+                                                                                        <span class="d-block">
+                                                                                            <strong>LTO #@lto.ObjectiveNumber:</strong>
+                                                                                            @lto.Description
+                                                                                        </span>
+                                                                                    }
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            @* Disclaimer *@
+                            <div class="container mt-4"><div class="alert alert-warning text-center"><strong>Disclaimer:</strong> Applying the E-Signature will save the form and route the user to the Quality Asurrance page.</div></div>
+                            @* Signatures *@
+                            <div class="d-flex justify-content-center">
+                                <div style="padding: 1rem;">
+                                    <span style="vertical-align: -webkit-baseline-middle;">
+                                        @Model.FkAppointments.FkEmployees.EmployeesRoleNames.FirstOrDefault().FkRoleNames.RoleName:
+                                        @Model.FkAppointments.FkEmployees.FullName
+                                    </span>
+                                </div>
+                                <div style="border: dashed;padding: 1rem;">
+                                    <input type="submit" value="Apply E-Sign" class="btn btn-outline-primary mb-0 mt-0">
+                                </div>
+                                <div style="padding: 1rem;">
+                                    <span style="vertical-align: -webkit-baseline-middle;">
+                                        @DateTime.Now.ToShortDateString()
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<!-- Page level plugins -->
+<script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts starts -->
+<script src="~/js/demo/datatables-demo.js"></script>
+
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

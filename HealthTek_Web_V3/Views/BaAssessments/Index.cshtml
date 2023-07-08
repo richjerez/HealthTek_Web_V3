@@ -1,0 +1,148 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Appointments>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@{
+    var user = UserManager.GetUserAsync(User).Result;
+}
+<div class="table-responsive">
+    <table class="table" id="dataTable" width="100%" cellspacing="0">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>
+                    <small class="d-block">QA</small> Status
+                </th>
+                <th>
+                    <small class="d-block">Billing</small> Status
+                </th>
+                <th>
+                    Employee
+                </th>
+                <th>
+                    <small class="d-block">Service</small> Date
+                </th>
+                <th>
+                    Units
+                </th>
+                <th class="text-center">
+                    <small class="d-block">E-Sign</small> Supervisor
+                </th>
+                <th class="text-center">
+                    <small class="d-block">E-Sign</small> Supervisee
+                </th>
+                <th data-orderable="false" class="d-print-none"></th>
+            </tr>
+        </thead>
+        <tbody id="TableBody">
+            @foreach (var item in Model.Where(b => b.BaAssessments != null).ToList())
+            {
+                <tr ondblclick="LoadEdit('@item.FkBaAssessmentsId', 'BaAssessments')">
+                    <td>
+                        <a class="status-@String.Concat(item.QaStatus.Where(c => !Char.IsWhiteSpace(c))) mr-2">
+                            @Html.DisplayFor(modelItem => item.QaStatus)
+                        </a>
+                    </td>
+                    <td>
+                        @if (item.BillingStatus != null)
+                        {
+                            <a class="status-@String.Concat(item.BillingStatus.Where(c => !Char.IsWhiteSpace(c))) mr-2">
+                                @Html.DisplayFor(modelItem => item.BillingStatus)
+                            </a>
+                        }
+                        else
+                        {
+                            <span>Not in Billing</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-controller="Employees" asp-action="Details" asp-route-id="@item.FkEmployeesId">
+                            @Html.DisplayFor(modelItem => item.FkEmployees.FullName)
+                        </a>
+                    </td>
+                    <td>
+                        @item.StartTime.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Units)
+                    </td>
+                    <td class="text-center">
+                        @if (await UserManager.IsInRoleAsync(user, "supervisor"))
+                        {
+                            if (item.BaAssessments.FkSupervisorSignatureId != null)
+                            {
+                                <a class="btn btn-outline-danger d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaAssessmentsId" asp-route-status="BA Assessment" asp-route-who="Super" asp-route-toggleAction="RemoveSignature">
+                                    <span class="text">
+                                        <i class="fa fa-ban"></i>
+                                    </span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-outline-primary d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaAssessmentsId" asp-route-status="BA Assessment" asp-route-who="Super" asp-route-toggleAction="Sign">
+                                    <span class="text">
+                                        <i class="fa fa-file-signature"></i>
+                                    </span>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            if (item.BaAssessments.FkSupervisorSignatureId != null)
+                            {
+                                <a class="status-Completed mr-4">Signed</a>
+                            }
+                            else
+                            {
+                                <a class="status-MissingSignature mr-4">Missing Signature</a>
+                            }
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if (item.FkEmployeesId == user.FkEmployeesId)
+                        {
+                            if (item.BaAssessments.FkAnalystSignatureId != null)
+                            {
+                                <a class="btn btn-outline-danger d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaAssessmentsId" asp-route-status="BA Assessment" asp-route-who="User" asp-route-toggleAction="RemoveSignature">
+                                    <span class="text">
+                                        <i class="fa fa-ban"></i>
+                                    </span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-outline-primary d-print-none mr-4" asp-action="ToggleFormSignature" asp-route-id="@item.FkBaAssessmentsId" asp-route-status="BA Assessment" asp-route-who="User" asp-route-toggleAction="Sign">
+                                    <span class="text">
+                                        <i class="fa fa-file-signature"></i>
+                                    </span>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            if (item.BaAssessments.FkAnalystSignatureId != null)
+                            {
+                                <a class="status-Completed mr-4">Signed</a>
+                            }
+                            else
+                            {
+                                <a class="status-MissingSignature mr-4">Missing Signature</a>
+                            }
+                        }
+                    </td>
+                    <td class="text-right d-print-none">
+                        <a class="btn btn-outline-primary d-print-none" asp-controller="BaAssessments" asp-action="Edit" asp-route-id="@item.FkBaAssessmentsId">
+                            <span class="text">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </a>
+
+                        <button onclick="DeleteElement('@item.FkBaAssessmentsId', 'BaAssessments')" href="#" class="btn btn-outline-danger ">
+                            <span class="text">
+                                <i class="fa fa-trash"></i>
+                            </span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

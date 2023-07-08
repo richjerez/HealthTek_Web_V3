@@ -1,0 +1,148 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Authorizations>
+
+<div class="card shadow mb-4 p-3">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseAuthorizations" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseAuthorizations">
+        <h6 class="m-0 font-weight-bold text-primary">Authorizations</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseAuthorizations" style="">
+        <div class="card-body">
+            <div class="timeline-content " id="activity">
+                <div class="timeline-content" style="float: right;margin-right: 5px;">
+                    <div class="status-legend status-pink" style="border-radius: 5px;overflow: hidden;"></div>
+                    <small style="display: inline-block;margin-left: 5px;">Units &lt; 20%</small>
+                </div><div class="timeline-content " style="float: right;margin-right: 5px;">
+                    <div class="status-legend status-orange" style="border-radius: 5px;overflow: hidden;"></div>
+                    <small style="margin-left: 5px;">Units Left</small>
+                </div>
+                <div class="timeline-content " style="margin-right: 5px;float: right;">
+                    <div class="status-legend status-blue" style="border-radius: 5px;"></div>
+                    <small style="margin-left: 5px;">Units Used</small>
+                </div><div class="timeline-content " style="margin-right: 5px;float: right;">
+                    <div class="status-legend status-Closed"></div>
+                    <small style="margin-left: 5px;">Total Units</small>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th class="text-center">
+                                Status
+                            </th>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                                @* There cannot be any # in the tables *@
+                                @* it prevents from exprting to csv. *@
+                                PA Number
+                            </th>
+                            <th class="text-center">
+                                Units
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EffectiveDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ExpirationDate)
+                            </th>
+                            <th data-orderable="false" class="d-print-none"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            var start = item.EffectiveDate;
+                            var present_date = DateTime.Now;
+                            var exp = item.ExpirationDate;
+
+                            // To calculate the time difference of present and effective date
+                            var timePassed = present_date.Subtract(start.Value);
+                            // To calculate the no. of days between present and effective date
+                            var daysPassed = timePassed.TotalDays;
+
+                            // To calculate the time difference of expiration and effective date
+                            var totalTime = exp.Value.Subtract(start.Value);
+                            // To calculate the no. of days between expiration and effective date
+                            var totalDays = totalTime.TotalDays;
+
+                            // To calculate the time difference of expiration and effective date
+                            var TimeLeft = exp.Value.Subtract(present_date);
+                            // To calculate the no. of days between expiration and effective date
+                            var daysLeft = TimeLeft.TotalDays;
+
+                            var daysPercent = totalDays * .2;
+
+                            var elementStyle = "";
+
+                            if (daysPassed < 8)
+                            {
+                                elementStyle = "background:rgb(224, 255, 225); color:black";
+                            }
+                            if (daysLeft < daysPercent)
+                            {
+                                elementStyle = "background-color: rgb(255 207 1 / 22%); color:black";
+                            }
+                            if (item.ExpirationDate < present_date)
+                            {
+                                elementStyle = "background-color: rgb(255 43 0 / 17%); color:black";
+                            }
+
+
+                        <tr ondblclick="LoadEdit('@item.AuthorizationsId', 'Authorizations')" style="@elementStyle">
+                            <td class="text-center" style="vertical-align: middle;">
+                                <a class="status-@item.AuthorizationStatus">
+                                    @Html.DisplayFor(modelItem => item.AuthorizationStatus)
+                                </a>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                @Html.DisplayFor(modelItem => item.FkServiceCodes.FullCode)
+                            </td>
+                            <td style="vertical-align: middle;">
+                                @Html.DisplayFor(modelItem => item.AuthorizationNumber)
+                            </td>
+                            <td style="vertical-align: middle;">
+                                @{
+                                    var clasSstyle = "custom-badge status-orange";
+                                    var used = "0";
+                                    if (item.UnitsUsed != null) { used = item.UnitsUsed.ToString(); }
+                                    var unitsleft = item.UnitAmount.ToString();
+                                    if (item.UnitsLeft != null) { unitsleft = item.UnitsLeft.ToString(); }
+                                    if (item.UnitsLeft < (item.UnitAmount * 20 / 100))
+                                    {
+
+                                        clasSstyle = "custom-badge status-pink";
+                                    }
+                                }
+                                <div style="text-align:center">
+                                    <span class="custom-badge status-purple">@item.UnitAmount</span>
+                                    <span class="custom-badge status-blue">@used</span>
+                                    <span class="@clasSstyle">@unitsleft</span>
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                @Html.DisplayFor(modelItem => item.EffectiveDate)
+                            </td>
+                            <td style="vertical-align: middle;">
+                                @Html.DisplayFor(modelItem => item.ExpirationDate)
+                            </td>
+                            <td class="text-right d-print-none">
+                                <button onclick="DeleteElement('@item.AuthorizationsId', 'Authorizations')" href="#" class="btn btn-outline-danger ">
+                                    <span class="text">
+                                        <i class="fa fa-trash"></i>
+                                    </span>
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

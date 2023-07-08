@@ -1,0 +1,79 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.DocumentationProcess>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FkRoleDocsCatalogId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FkUploadedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FkDocuments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FkEmployees)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkRoleDocsCatalogId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkUploadedBy.EmployeesId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkDocuments.DocumentsId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkEmployees.EmployeesId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DocumentationProcessId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DocumentationProcessId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DocumentationProcessId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>

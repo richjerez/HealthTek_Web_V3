@@ -1,0 +1,217 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.Authorizations>
+@{
+    ViewData["Title"] = "Authorizations";
+    ViewData["ActivePage"] = "Authorizations";
+}
+@section Styles{
+    <!-- Custom styles for this page -->
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+}
+
+<div class="">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="m-0 font-weight-bold text-primary datatitle">
+                        Authorizations<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                    </h6>
+                </div>
+                <div class="col-md-6 text-right d-print-none">
+                    <a onclick="AddEditElements(0, 'Authorizations')" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-plus fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">New Authorization</span>
+                    </a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="window.print()">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-print fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">Print</span>
+                    </a>
+                    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" asp-controller="Report" asp-action="Get" asp-route-ClassName="Authorizations" style="margin:0">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-pdf fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">PDF</span>
+                    </a>
+                    <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm btn-icon-split d-print-none" style="margin:0" onclick="ExportCSV('Authorizations',7)">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-csv fa-sm text-white-50"></i>
+                        </span>
+                        <span class="text">CSV</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="timeline-content " id="activity">
+                <div class="timeline-content" style="float: right;margin-right: 5px;">
+                    <div class="status-legend status-purple" style="border-radius: 5px;overflow: hidden;"></div>
+                    <small style="display: inline-block;margin-left: 5px;">Units &lt; 20%</small>
+                </div><div class="timeline-content " style="float: right;margin-right: 5px;">
+                    <div class="status-legend status-orange" style="border-radius: 5px;overflow: hidden;"></div>
+                    <small style="margin-left: 5px;">Units Left</small>
+                </div>
+                <div class="timeline-content " style="margin-right: 5px;float: right;">
+                    <div class="status-legend status-blue" style="border-radius: 5px;"></div>
+                    <small style="margin-left: 5px;">Units Used</small>
+                </div><div class="timeline-content " style="margin-right: 5px;float: right;">
+                    <div class="status-legend status-Closed"></div>
+                    <small style="margin-left: 5px;">Total Units</small>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th class="text-center">
+                                Status
+                            </th>
+                            <th>
+                                Client
+                            </th>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                                @* There cannot be any # in the tables *@
+                                @* it prevents from exprting to csv. *@
+                                PA Number
+                            </th>
+                            <th class="text-center">
+                                Units
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EffectiveDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ExpirationDate)
+                            </th>
+                            <th data-orderable="false"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            
+                                var start = item.EffectiveDate;
+                                var present_date = DateTime.Now;
+                                var exp = item.ExpirationDate;
+
+                                // To calculate the time difference of present and effective date
+                                var timePassed = present_date.Subtract(start.Value);
+                                // To calculate the no. of days between present and effective date
+                                var daysPassed = timePassed.TotalDays;
+
+                                // To calculate the time difference of expiration and effective date
+                                var totalTime = exp.Value.Subtract(start.Value);
+                                // To calculate the no. of days between expiration and effective date
+                                var totalDays = totalTime.TotalDays;
+
+                                // To calculate the time difference of expiration and effective date
+                                var TimeLeft = exp.Value.Subtract(present_date);
+                                // To calculate the no. of days between expiration and effective date
+                                var daysLeft = TimeLeft.TotalDays;
+
+                                var daysPercent = totalDays * .2;
+
+                                var elementStyle ="";
+
+                                if (daysPassed < 8)
+                                {
+                                    elementStyle = "background:rgb(224, 255, 225); color:black";
+                                }
+                                if (daysLeft < daysPercent)
+                                {
+                                    elementStyle = "background-color: rgb(255 207 1 / 22%); color:black";
+                                }
+                                if (item.ExpirationDate < present_date)
+                                {
+                                    elementStyle = "background-color: rgb(255 43 0 / 17%); color:black";
+                                }
+
+                            
+                            <tr ondblclick="AddEditElements(@item.AuthorizationsId, 'Authorizations')" style="@elementStyle">
+                                <td class="text-center" style="vertical-align: middle;">
+                                    <a class="status-@item.AuthorizationStatus">
+                                        @Html.DisplayFor(modelItem => item.AuthorizationStatus)
+                                    </a>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <a asp-controller="Clients" asp-action="Details" asp-route-id="@item.FkClients.ClientsId">
+                                        @Html.DisplayFor(modelItem => item.FkClients.FullName)
+                                    </a>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @Html.DisplayFor(modelItem => item.FkServiceCodes.FullCode)
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @Html.DisplayFor(modelItem => item.AuthorizationNumber)
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @{
+                                        var clasSstyle = "custom-badge status-orange";
+                                        var used = "0";
+                                        if (item.UnitsUsed != null) { used = item.UnitsUsed.ToString(); }
+                                        var unitsleft = item.UnitAmount.ToString();
+                                        if (item.UnitsLeft != null) { unitsleft = item.UnitsLeft.ToString(); }
+                                        if (item.UnitsLeft < (item.UnitAmount * 20 / 100))
+                                        {
+
+                                            clasSstyle = "custom-badge status-pink";
+                                        }
+                                        var hours = (double)item.UnitAmount / 4;
+                                    }
+                                    <div style="text-align:center">
+                                        <span class="custom-badge status-purple">@item.UnitAmount / @Math.Round(hours, 2)</span>
+                                        <span class="custom-badge status-blue">@used</span>
+                                        <span class="@clasSstyle">@unitsleft</span>
+                                    </div>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @Html.DisplayFor(modelItem => item.EffectiveDate)
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @Html.DisplayFor(modelItem => item.ExpirationDate)
+                                </td>
+                                <td class="text-right d-print-none" style="vertical-align: middle;">
+                                    <button onclick="AddEditElements('@item.AuthorizationsId', 'Authorizations', true)" href="#" class="btn btn-outline-info ">
+                                        <span class="text">
+                                            <i class="fa fa-server"></i>
+                                        </span>
+                                    </button>
+                                    <button onclick="DeleteElement(@item.AuthorizationsId, 'Authorizations', 'Authorizations', 'Index', 0)" href="#" class="btn btn-outline-danger ">
+                                        <span class="text">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <!-- Page level plugins -->
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/demo/datatables-demo.js"></script>
+
+    <!-- CSV Export scripts -->
+    <script type="text/javascript" src="~/js/Exports/CSVExport.js"></script>
+
+    <script>
+        $(document).ready(async function () {
+            await loadScript("/js/afterLoad.js");
+            // Do whatever you want to do after script is ready
+        });
+    </script>
+
+}

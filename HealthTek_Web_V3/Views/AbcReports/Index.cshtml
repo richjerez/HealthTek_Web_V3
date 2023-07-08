@@ -1,0 +1,73 @@
+﻿@model IEnumerable<HealthTek_Shared_Libraries.AbcReports>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Antecedent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Behavior)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Consequence)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FkBaAssessments)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Antecedent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Behavior)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Consequence)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FkBaAssessments.BaAssessmentsId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AbcReportsId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AbcReportsId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AbcReportsId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>

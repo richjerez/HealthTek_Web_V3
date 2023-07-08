@@ -1,0 +1,331 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
+@using HealthTek_Shared_Libraries.Data;
+@inject IAuthorizationService AuthorizationService
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@inject IdentityContext _content
+@{
+    AppUser user = new AppUser();
+    if (SignInManager.IsSignedIn(User))
+    {
+        user = UserManager.GetUserAsync(User).Result;
+    }
+}
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    @if (SignInManager.IsSignedIn(User))
+    {
+
+        <button id="sidebarToggleTop" class="btn btn-outline-primary rounded-block mr-3">
+            <i class="fa fa-bars"></i>
+        </button>
+    }
+
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            // Appointments Link
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a id="appointmentsDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <!-- Counter - Tasks -->
+                    @{
+                        var userAppmts = _content.Appointments.Where(u => u.FkEmployeesId == user.FkEmployeesId && u.StartTime == DateTime.Today).Count();
+
+                        if (userAppmts > 9)
+                        {
+                            <span class="badge badge-danger badge-counter" id="badgecounter">9+</span>
+                        }
+                        else if (userAppmts > 0 && userAppmts < 9)
+                        {
+                            <span class="badge badge-danger badge-counter" id="badgecounter">@userAppmts</span>
+                        }
+                    }
+                </a>
+                <!-- Dropdown - Appointments -->
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="appointmentsDropdown">
+                    <h6 class="dropdown-header">
+                        Appointments Center
+                    </h6>
+                    <a class="dropdown-item text-center small text-primary" href="#" onclick="AddEditElements(0,'Appointments')"> New Appointment</a>
+                    @{
+                        var appointmentsList = _content.Appointments.Where(u => u.FkEmployeesId == user.FkEmployeesId).OrderByDescending(m => m.StartTime).Take(3).ToList();
+
+                        foreach (var task in appointmentsList)
+                        {
+                            <a class="dropdown-item d-flex align-items-center" onclick="AddEditElements(@task.AppointmentsId,'Appointments')" href="#">
+                                <div>
+                                    <div class="small text-gray-500">@task.StartTime.ToString("MMM dd @h:mm tt")</div>
+                                    @task.Description
+                                </div>
+                            </a>
+                        }
+                    }
+                    <a class="dropdown-item text-center small text-gray-500" asp-controller="Appointments" asp-action="Index">Show All Appointments</a>
+                </div>
+            </li>
+            <div class="topbar-divider d-none d-sm-block"></div>
+            // Tasks Dropdown
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-fw fa-tasks"></i>
+                    <!-- Counter - Tasks -->
+                    @{
+                        var userTasks = _content.Tasks.Where(u => u.FkAssignedToId == user.FkEmployeesId && u.IsCleared != true).Count();
+
+                        if (userTasks > 9)
+                        {
+                            <span class="badge badge-danger badge-counter" id="badgecounter">9+</span>
+                        }
+                        else if (userTasks > 0 && userTasks < 9)
+                        {
+                            <span class="badge badge-danger badge-counter" id="badgecounter">@userTasks</span>
+                        }
+                    }
+                </a>
+                <!-- Dropdown - Tasks -->
+                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="tasksDropdown">
+                    <h6 class="dropdown-header">
+                        Tasks Center
+                    </h6>
+                    <a class="dropdown-item text-center small text-primary" href="#" onclick="AddEditElements(0,'Tasks')"> New Task</a>
+                    @{
+                        var taskList = _content.Tasks.Where(u => u.FkAssignedToId == user.FkEmployeesId).OrderByDescending(m => m.CreationDate).Take(3).ToList();
+
+                        foreach (var task in taskList)
+                        {
+                            <a class="dropdown-item d-flex align-items-center" onclick="AddEditElements(@task.TasksId, 'Tasks', true)" href="#">
+                                <div>
+                                    <div class="small text-gray-500">@task.CreationDate.ToString("MMM dd @h:mm tt")</div>
+                                    @if (task.IsCleared != true)
+                                    {
+                                        <span class="font-weight-bold">@task.TaskNote</span>
+                                    }
+                                    else
+                                    {
+                                        @task.TaskNote
+                                    }
+                                </div>
+                            </a>
+                        }
+                    }
+                    <a class="dropdown-item text-center small text-gray-500" asp-controller="Tasks" asp-action="Index">Show All Tasks</a>
+                </div>
+            </li>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "ADMIN")).Succeeded)
+            {
+                <div class="topbar-divider d-none d-sm-block"></div>
+                <!-- Nav Item - User Information -->
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="img-profile rounded-block"
+                     src="@user.Avatar">
+                    </a>
+                    <!-- Dropdown - User Information -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-white"
+                 aria-labelledby="userDropdown" style="width:700px">
+                        <div class="row no-gutters">
+                            <div style="padding-right: 0;border-right: 1px solid lightgrey;" class="col-md-4">
+                                @* Catalog Section *@
+                                <h4 style="padding: 10px; background-color: #fffdf0; color: slategrey;">
+                                    <i class="fas fa-th-large"></i>
+                                    <span> Catalogs</span>
+                                </h4>
+                                <a class="dropdown-item" asp-controller="IntakeDocsCatalog" asp-action="Index">Intake Docs</a>
+                                <a class="dropdown-item" asp-controller="ServiceCodes" asp-action="Index">Service Codes</a>
+                                <a class="dropdown-item" asp-controller="OperatingCounties" asp-action="Index">Operating Counties</a>
+                                <a class="dropdown-item" asp-controller="ClientInsurancesCatalog" asp-action="Index">Insurance Plans</a>
+                                <a class="dropdown-item" asp-controller="MaladaptivesCatalog" asp-action="Index">Maladaptives</a>
+                                <a class="dropdown-item" asp-controller="ReplacementsCatalog" asp-action="Index">Replacements</a>
+                                <a class="dropdown-item" asp-controller="ReinforcerCatalog" asp-action="Index">Reinforcers</a>
+                                <a class="dropdown-item" asp-controller="Functions" asp-action="Index">Functions</a>
+                                <a class="dropdown-item" asp-controller="Interventions" asp-action="Index">Interventions</a>
+                                <a class="dropdown-item" asp-controller="PreferencesCatalog" asp-action="Index">Preferences</a>
+                                <a class="dropdown-item" asp-controller="EnvironmentalsCatalog" asp-action="Index">Environmentals</a>
+                                <a class="dropdown-item" asp-controller="CaregiverCompChecksCatalog" asp-action="Index">CCC Trainings</a>
+                                <a class="dropdown-item" asp-controller="RbtCompTrainingsCatalog" asp-action="Index">RCC Trainings</a>
+                            </div>
+                            <div style="padding-left: 0; padding-right: 0; border-right: 1px solid lightgrey;" class="col-md-4">
+                                @* Users Section*@
+                                <h4 style="padding: 10px; background-color: #edf2ff; color: slategray;">
+                                    <i class="fas fa-users-cog"></i>
+                                    <span> Users</span>
+                                </h4>
+                                <a class="dropdown-item" title="Manage" asp-controller="Users" asp-action="Index">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Manage Users
+                                </a>
+                                @if ((await AuthorizationService.AuthorizeAsync(User, "SUPERUSER")).Succeeded)
+                                {
+                                    <a class="dropdown-item" title="Manage" asp-controller="UserRoles" asp-action="Index">
+                                        <i class="fas fa-id-card fa-sm fa-fw mr-2 text-gray-400"></i>  User Roles
+                                    </a>
+                                }
+                                <a class="dropdown-item" title="Manage" asp-controller="RoleDocsCatalog" asp-action="Index">
+                                    <i class="fas fa-clipboard-list fa-sm fa-fw mr-2 text-gray-400"></i>  HR Requirements
+                                </a>
+                                <a class="dropdown-item mb-2" asp-controller="RoleNames" asp-action="Index">
+                                    <i class="fas fa-id-card-alt fa-sm fa-fw mr-2 text-gray-400"></i>  Employee Roles
+                                </a>
+                                @* Client Section *@
+                                <h4 style="padding: 10px;color: slategrey; background-color: #f0feff;">
+                                    <i class="fas fa-users"></i>
+                                    <span> Clients</span>
+                                </h4>
+                                <a class="dropdown-item" title="Manage" asp-controller="ClientEventTypesCatalog" asp-action="Index">
+                                    <i class="fas fa-file-medical-alt fa-sm fa-fw mr-2 text-gray-400"></i>  Client Events
+                                </a>
+                                <a class="dropdown-item mb-2" asp-controller="CaregiverFeedback" asp-action="Index">
+                                    <i class="fas fa-file-medical-alt fa-sm fa-fw mr-2 text-gray-400"></i>  Caregiver Feedback
+                                </a>
+                                @* Facilities Section *@
+                                <h4 style="padding: 10px;color: slategrey; background-color: #feffed;">
+                                    <i class="fas fa-hospital-alt"></i>
+                                    <span> Facilities</span>
+                                </h4>
+                                <a class="dropdown-item" title="Manage" asp-controller="Facilities" asp-action="Index">
+                                    <i class="fas fa-hospital-user fa-sm fa-fw mr-2 text-gray-400"></i>  Available Facilities
+                                </a>
+                                <a class="dropdown-item" onclick="AddEditElements(0, 'Facilities')" href="#">
+                                    <i class="fas fa-hospital fa-sm fa-fw mr-2 text-gray-400"></i>  Add New Facility
+                                </a>
+                            </div>
+                            <div style="padding-left: 1px;" class="col-md-4">
+                                @* Account Section *@
+                                <h4 style="padding: 10px; background-color: #edfdff; color: slategrey;">
+                                    <i class="fas fa-user-cog"></i>
+                                    <span> Account</span>
+                                </h4>
+                                <div>
+                                    <div style="text-align: center;">
+                                        <i class="fas fa-lg fa-sun mt-1" style=""></i>
+                                        <div class="custom-control custom-switch ml-2" style="display: inline;">
+                                            <input type="checkbox" class="custom-control-input" id="theme" name="theme">
+                                            <label class="custom-control-label" for="theme" onclick="getCssClass()"></label>
+                                        </div>
+                                        <i class="fas fa-moon" style=""></i>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Settings
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="Employees" asp-action="Details" asp-route-id="@user.FkEmployeesId">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Profile
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="ESignatures" asp-action="Index">
+                                        <i class="fas fa-signature fa-sm fa-fw mr-2 text-gray-400"></i>My Signatures
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item mb-2" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
+
+                                @* Config Section *@
+                                <h4 style="padding: 10px; background-color: #fff1f0; color: slategrey;">
+                                    <i class="fas fa-cogs"></i>
+                                    <span> Configs</span>
+                                </h4>
+                                <a class="dropdown-item" onclick="AddEditElements(0,'SupportTickets')" href="#">
+                                    <i class="fas fa-fire fa-sm fa-fw mr-2 text-gray-400"></i>New Support Ticket
+                                </a>
+                                @if ((await AuthorizationService.AuthorizeAsync(User, "SUPERUSER")).Succeeded)
+                                {
+                                    <a class="dropdown-item" asp-controller="SupportTickets" asp-action="Index">
+                                        <i class="fas fa-envelope-open-text fa-sm fa-fw mr-2 text-gray-400"></i>Support Tickets
+                                    </a>
+                                }
+                                <a class="dropdown-item" asp-controller="DashboardSettings" asp-action="Index">
+                                    <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-gray-400"></i>Dashboard Settings
+                                </a>
+                                <a class="dropdown-item" asp-controller="Widgets" asp-action="Index">
+                                    <i class="fas fa-universal-access fa-sm fa-fw mr-2 text-gray-400"></i>Widgets
+                                </a>
+                            </div>
+
+                            <div class="col-lg-6"></div>
+                            <div class="col-xl-1" style="max-width: fit-content;">
+                                <div class="divider"></div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            }
+            else
+            {
+                <div class="topbar-divider d-none d-sm-block"></div>
+                <!-- Nav Item - User Information -->
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="img-profile rounded-block"
+                     src="@user.Avatar">
+                    </a>
+                    <!-- Dropdown - User Information -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in bg-white"
+                 aria-labelledby="userDropdown">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @* Account Section *@
+                                <h4 style="padding: 10px; background-color: #edfdff; color: slategrey;">
+                                    <i class="fas fa-user-cog"></i>
+                                    <span> Account</span>
+                                </h4>
+                                <div>
+                                    <div style="text-align: center;">
+                                        <i class="fas fa-lg fa-sun mt-1" style=""></i>
+                                        <div class="custom-control custom-switch ml-2" style="display: inline;">
+                                            <input type="checkbox" class="custom-control-input" id="theme" name="theme">
+                                            <label class="custom-control-label" for="theme" onclick="getCssClass()"></label>
+                                        </div>
+                                        <i class="fas fa-moon" style=""></i>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Settings
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="Employees" asp-action="Details" asp-route-id="@user.FkEmployeesId">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Profile
+                                    </a>
+                                    <a class="dropdown-item" asp-controller="ESignatures" asp-action="Index">
+                                        <i class="fas fa-signature fa-sm fa-fw mr-2 text-gray-400"></i>My Signatures
+                                    </a>
+                                                                    <a class="dropdown-item" onclick="AddEditElements(0,'SupportTickets')" href="#">
+                                    <i class="fas fa-fire fa-sm fa-fw mr-2 text-gray-400"></i>New Support Ticket
+                                </a>
+                                                                <a class="dropdown-item" asp-controller="DashboardSettings" asp-action="Index">
+                                    <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-gray-400"></i>Dashboard Settings
+                                </a>
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item mb-2" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            }
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark font-weight-bold" onclick="AddEditElements(0,'Messages')" href="#">Contact Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark font-weight-bold" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>
+        }
+    </ul>
+</nav>

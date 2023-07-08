@@ -1,0 +1,68 @@
+﻿@model HealthTek_Shared_Libraries.Replacements
+
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+@section Scripts{
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+            // Initialize a new bar chart from methods
+                var replacementsId = @Html.Raw(Model.ReplacementsId);
+            fetch('/ReplacementMeasurements/GetGraphView?id=' + replacementsId, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+            }).then(response => response.json())
+                .then(responsedata => {
+                            const labels = responsedata.dates;
+    const footer = (tooltipItems) => {
+      return 'Behavior Baseline';
+    };
+            const data = {
+              labels: labels,
+              datasets: [{
+                label: responsedata.maladaptive ,
+                backgroundColor: 'rgb(75, 192, 192)',
+                borderColor: 'rgb(75, 192, 192)',
+                data: responsedata.baseline,
+                fill: false,
+                tension: 0.1,
+                pointStyle: 'circle',
+                pointRadius: 6,
+              }]
+            };
+
+            const config = {
+              type: 'line',
+              data: data,
+                 options: {
+                    interaction: {
+                      intersect: false,
+                      mode: 'index',
+                },
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      footer: footer,
+                    }
+                  },
+                        title: {
+            display: true,
+            text: 'Replacement Measurements',
+          }
+                }
+          }
+            };
+
+                        const myChart = new Chart(
+              document.getElementById('myChart'),
+              config
+            );
+                })
+                .catch(console.error);
+
+</script>
+}

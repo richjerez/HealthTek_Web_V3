@@ -1,0 +1,233 @@
+﻿@model HealthTek_Shared_Libraries.ESignatures
+@{
+    ViewData["Title"] = "E-Signature";
+    var image = "img/undraw_going_up_ttm5.svg";
+        if (Model != null) {
+        image = Model.ESignatureUrl;
+    }
+}
+<div class="container">
+    <div class="alert alert-danger text-center"><label class="d-block mb-0">Draw your signature on the canvas below! Refresh the box by clicking on the reload button.</label><label class="d-block mb-0">Or upload an E-Signature Image. Formats accepted: .jpeg, png, tif, and gif.</label></div>
+    <div class="card shadow mb-4">
+        <!-- Card Header - Accordion -->
+        <div class="d-block card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">E-Signatures</h6>
+        </div>
+        <!-- Card Content - Collapse -->
+        <div class="card-body">
+            <div>
+                <form asp-controller="ESignatures" asp-action="Create" method="post" enctype="multipart/form-data" encoding="multipart/form-data">
+                    <input asp-for="ESignatureUrl" type="hidden" />
+                    <div class="row mb-4">
+                        <div class="col-md-6 text-center mt-5">
+                            <canvas id="signature-pad" style="border: .05rem solid lightgray;touch-action: none;background-color: #fefefe3d;"></canvas><label style="display: block;">Write your signature here, with either a mouse or by touch.</label>
+                        </div>
+                        <div class="col-md-1 mt-4 mb-4"><div class="divider d-none d-sm-block"></div></div>
+                        <div class="col-md-5 text-center mt-5">
+                            <img class="img-fluid px-3 px-sm-4 mb-4" style="width: 22rem;" src="@image" alt="..." id="imgId"><label style="display: block;">Drop your signature here from exhisting file.</label>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Accordion -->
+                        <a href="#collapseCardExample" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseCardExample">
+                            <h6 class="m-0 font-weight-bold text-primary">E-Signature Terms &amp; Conditions</h6>
+                        </a>
+                        <!-- Card Content - Collapse -->
+                        <div class="collapse" id="collapseCardExample" style="">
+                            <div class="card-body">
+                                <div class="scroll-object collapse" id="collapseCardExample" style="">
+                                    <div class="scroll-div">
+                                        <div class="scroll">
+                                            <p>
+                                                <b>INFORMED CONSENT AND AGREEMENT TO USE ELECTRONIC RECORDS AND SIGNATURES ("Consent and Agreement", "ESIGN")</b> <br>
+                                                Please carefully review this Informed Consent and Agreement to Use Electronic Records and Signatures. If you consent and agree to electronically sign the documents
+                                                you create, review or approve subject to the terms below, check the "I agree and consent for my signature to be used for each document generated, approved or reviewed
+                                                by me" button below.
+                                                <br><br>
+
+                                                <b>Why We Are Asking for Your Consent</b><br>
+
+                                                HealthTek Inc. and our Associates (Associates in this context refers to the Companies that use the HealthTek platform and/or HealthTek's ESIGN enabled products)
+                                                must ask for and obtain your consent and agreement before using electronic documents and signatures in its relationship with you in order to create electronic records,
+                                                as described in more detail below. In order to for you to sign the electronic documents created, reviewed or approved by you, rather than signing paper documents by hand,
+                                                we need your consent.
+                                                <br><br>
+
+                                                <b>Your Consent and Agreement and What it Means</b>
+                                                Your Consent is optional. It is solely up to you whether or not to do so. If you want to use electronic documents and signatures, then you must consent and agree to the
+                                                terms and conditions relating to the system and process that we will use, as set forth below. By accepting this Consent, we assume that we have your permission to fully
+                                                use your signature on your dealings with any company that uses HealthTek Inc. system. HealthTek Inc. will not ask for your consent for every time time you create, review
+                                                or approve a document.
+                                                <br><br>
+
+                                                By checking the "I consent to use Electronic Records and Signatures" box, you will be giving us your informed consent and agreement to use the electronic documents and
+                                                signature system and process described below to electronically receive and review and electronically sign paperless documents. You will be agreeing to be bound by any
+                                                documents you electronically sign the same as if you had received a paper copy of the document and signed it by hand with an ink pen. If you do not agree to the terms of
+                                                this Consent and Agreement, do not check the "I agree..." box. Note that even if you agree now, in the future after receiving an electronic document, you will be able to
+                                                choose whether or not to electronically sign that document or ask for a paper version to sign. You may also withdraw your consent as described below.
+                                                <br><br>
+
+                                                <b>What Documents You will Receive Electronically</b><br>
+
+                                                By agreeing to this Consent and Agreement you will receive, review and sign electronically the electronic documents presented when you click the "Review Document" button
+                                                below. These electronic documents may include, but are not limited to license, service and other agreements between you and us relating to our products and services. We
+                                                may always, in our sole discretion, provide you with any document on paper, even if you have authorized electronic delivery. Sometimes the law, or our agreement with you,
+                                                requires you to give us a written notice. You must still provide these notices to us on paper, unless we tell you how to deliver the notice to us electronically.
+                                                <br><br>
+
+                                                <b>Withdrawing Your Consent</b><br>
+
+                                                We will ask you for this Consent and Agreement each time we present an envelope of one or more electronic documents. If HealthTek Inc. finds your Consent and Agreement
+                                                active, HealthTek Inc. will use it to sign any document that you create, review or approve, you cannot withdraw your signature for those documents. You can, however,
+                                                choose not to give your consent in the future. If you do this, you will be unable to electronically sign any documents, and you may be required to use paper documents
+                                                and signatures.
+                                                <br><br>
+
+                                                <b>Retaining Electronic Documents</b><br>
+
+                                                You should retain a copy of all electronic documents we provide to you, including this Consent and Agreement, for your future reference. You can do this by printing the page
+                                                on paper or saving it to your computer. A copy of this Consent and Agreement, as it may be amended from time to time for consents to be given in the future, will also be
+                                                available to you at app.HealthTek.com.
+                                                <br><br>
+
+                                                <b>Hardware and Software Requirements</b><br>
+
+                                                In order to receive electronic documents and electronically sign them, you will need access to a computer or mobile device with internet service and access to an email account.
+                                                In order to access the electronic documents sent to you, your computer or mobile device must meet certain requirements, the current version of which is shown below. These
+                                                requirements will change from time to time, and without notice to you, as third-party technology providers update their products. You can visit http://www.HealthTekWeb.com
+                                                for the most up to date system requirements. These requirements include: (1) an operating system and internet browser that together support the display of PDF documents;
+                                                and (2) up-to-date PDF reader software. If you have questions related to the current requirements, please contact us.
+                                                <br><br>
+
+                                                The Current Version of software and hardware that meets these requirements is identified below. By "Current Version," we mean a version of the software that is currently being
+                                                supported by its publisher. We reserve the right to discontinue support of a Current Version if, in our sole opinion, it suffers from a security flaw or other flaw that
+                                                makes it unsuitable for use in the transaction.
+                                                <br><br>
+                                            </p>
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Operating Systems:</td>
+                                                        <td>Windows XP, Windows Vista; Windows 7, Mac OS X</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Browsers:</td>
+                                                        <td>Final release versions of Internet Explorer 7.0 or above (Windows only); Mozilla Firefox 3.0 or above (Windows and Mac); SafariTM 3.0 or above (Mac OS only); Google Chrome" 5.0 or above</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mobile</td>
+                                                        <td>Apple iOS 4.0 or above; AndroidTM 2.2 or above</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>PDF Reader:</td>
+                                                        <td>Acrobat or similar software may be required to view and print PDF files</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Screen Resolution:</td>
+                                                        <td>1024 x 768 minimum</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Enabled Security Settings:</td>
+                                                        <td>Allow per session cookies</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p>
+                                                Your email notifications are made available in HTML (regular Web hypertext) format, and your electronic documents are made available in PDF format. Your electronic documents
+                                                may be viewed electronically via the Web and printed with a local printer. You may also save your electronic documents to your local hard drive the way you would any other file
+                                                from the Internet. Depending upon your comfort level with accessing and storing electronic documents, you should determine whether electronic or paper documents and delivery is
+                                                best for you. For viewing, printing, storing or downloading your email announcements or the linked web pages, you should use the latest version of your web browser with JavaScript
+                                                enabled. To access the PDF format for printer-friendly electronic documents, you will also need Adobe Acrobat ReaderTM. If you do not have Adobe Acrobat Reader installed on your
+                                                computer, you can download the necessary software free at any time at www.adobe.com.
+                                                <br><br>
+
+                                                If accessing the HealthTek Inc. system via a mobile device, please understand that wireless network coverage and Wi-Fi network speed varies by provider and geographic location.
+                                                Counterparty is not responsible for limitations and/or failures in performance associated with any wireless or Wi-Fi service used to access the HealthTek Inc. system or for the
+                                                security of any wireless or Wi-Fi service (see "Security and Privacy Information," below).
+                                                <br><br>
+
+                                                <b>Security and Privacy Information</b><br>
+                                                In accessing electronic documents and electronically signing them, you should use a computer operating system that has a firewall (software that is designed to prevent unauthorized
+                                                access to your computer by blocking suspicious people or websites) and that it is turned on and up-to-date. You should also make sure that your computer has anti-virus software
+                                                that it is turned on and that your subscription is current.
+                                                <br><br>
+
+                                                HealthTek Inc.'s privacy policy applies to your use of the HealthTek Inc. system. In addition, as an affiliate of HealthTek Inc., the HealthTek Inc. privacy policy applies to
+                                                information we receive from you as part of the electronic signature process. To view the HealthTek Inc. privacy policy, go to www.HealthTek.com.
+                                                <br><br>
+
+                                                Accessing the HealthTek Inc. system via a mobile device involves the electronic transmission of information across the networks of your wireless service provider. Counterparty is not
+                                                responsible for the privacy or security of wireless data transmissions. Use only reputable service providers and check with your wireless service provider for information about its
+                                                privacy and security practices.
+                                                <br><br>
+
+                                                <b> The Effect of Your Consent and Agreement</b><br>
+
+                                                By checking the "I consent to use Electronic Records and Signatures and I agree and consent for my signature to be used for each document generated, approved or reviewed by me" button
+                                                below you are providing your electronic signature on this Agreement and indicating that you acknowledge, agree and demonstrate that:
+                                                <br>
+                                            </p>
+                                            <ul>
+                                                <li>You have read this Consent and Agreement and understand it.</li>
+                                                <li>You consent to electronically receive and review the electronic documents included in the electronic envelopes sent to you.</li>
+                                            </ul>
+                                            <ul>
+                                                <li>You consent to electronically receive and review the electronic documents</li>
+                                            </ul>
+                                            <p>
+                                                and you can (1) access, view, and print on paper or on your computer this electronic Consent and Agreement and the electronic documents and (2) access the Web sites described above,
+                                                including their content, in either HTML or PDF formats, as applicable.
+                                            </p>
+                                            <ul>
+                                                <li>
+                                                    Your electronic signature on any of the electronic documents, including this Consent and Agreement, will bind you to that document the same as if you had signed a paper copy of the
+                                                    document with an ink pen. You will not contest the validity or enforceability of any electronic document that you sign because the document and your signature are in electronic form.
+                                                </li>
+                                                <li>You understand that you should contact us to report any problem with your enrollment.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="col-md-12">
+                        <label>
+                            <input type="checkbox" id="IsAuthorized" name="IsAuthorized" class="mr-2"><small style="vertical-align: text-top;">
+                                I hereby consent and agree to the above terms and conditions.
+                            </small>
+                        </label>
+                    </div>
+                    <hr class="mt-2">
+                    <div class="col-md-12" style="text-align: end;">
+
+                        <button id="Reload" class="btn btn-outline-info mr-2">
+                            Reload
+                        </button><button id="Save" class="btn btn-primary" disabled>Save Signature</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="/js/sign.js"></script>
+    <script>
+        document.getElementById('IsAuthorized').addEventListener('click', function () {
+            this.value = this.checked;
+            if (this.value) {
+                document.getElementById('Save').disabled = false;
+            }
+        });
+        document.getElementById('Save').addEventListener('click', function () {
+            var canvas = document.getElementById('signature-pad');
+            var signature = document.getElementById('ESignatureUrl');
+            if (canvas != null) {
+                var data = canvas.toDataURL();
+                signature.value = data;
+            }
+        });
+    </script>
+}

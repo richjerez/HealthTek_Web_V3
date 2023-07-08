@@ -1,0 +1,36 @@
+﻿@model HealthTek_Shared_Libraries.CaregiverCompChecksCatalog
+
+<div class="container">
+    <div class="card shadow mb-8">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Edit" onsubmit="return jQueryAjaxPost(this);">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="CaregiverCompChecksCatalogId" />
+                        <input type="hidden" asp-for="CreationDate" />
+                        <input type="hidden" asp-for="UsageCount" />
+                        <div class="form-group">
+                            <label asp-for="TrainingItem" class="control-label"></label>
+                            <input asp-for="TrainingItem" class="form-control" />
+                            <span asp-validation-for="TrainingItem" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TrainingDescription" class="control-label"></label>
+                            <input asp-for="TrainingDescription" class="form-control" />
+                            <span asp-validation-for="TrainingDescription" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TrainingInstructions" class="control-label"></label>
+                            <input asp-for="TrainingInstructions" class="form-control" />
+                            <span asp-validation-for="TrainingInstructions" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary float-right" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+@inject SignInManager<AppUser> SignInManager
+@{
+    string cookieValueFromContext = this.Context.Request.Cookies["Theme"];
+    if (cookieValueFromContext == null)
+    {
+        cookieValueFromContext = "primary.css";
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head Section Styles & Scripts -->
+    @{await Html.RenderPartialAsync("_Styles");}
+    <!-- User Theme styleshet -->
+    <link id="cssSelector" href="~/css/@cookieValueFromContext" rel="stylesheet">
+    @RenderSection("Styles", required: false)
+</head>
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Side-Bar-Menu -->
+        <partial name="_SideBarMenu" />
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Top-Bar-Menu -->
+                <partial name="_TopBarMenu" />
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- CRUD Modal-->
+    @{
+        await Html.RenderPartialAsync("_AddEditModal");
+        <!-- Logout Modal-->
+        await Html.RenderPartialAsync("_Logout");
+        <!-- Load Section Scripts-->
+        await Html.RenderPartialAsync("_Scripts");
+    }
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+﻿@model HealthTek_Shared_Libraries.Preferences
+
+<div class="text-center">
+    <i class="fas fa-exclamation-triangle fa-5x text-warning pb-2"></i>
+    <h5>
+        Warning: This will permanently delete this preference. Are you sure you want to delete 
+        <code>@Model.Preference</code> for client <code>@Html.DisplayFor(model => model.FkClients.FullName)</code> ?
+    </h5>
+    <hr />
+    <form asp-action="Delete" class="text-right row">
+        <input type="hidden" asp-for="PreferencesId" />
+        <input type="text" class="form-control col-md-7 mt-1 ml-2" id="asName" placeholder="Enter the preference..." name="Name">
+        <input type="submit" value="Delete" class="btn btn-danger col-md-4 ml-2 " disabled id="deleteBtn" />
+    </form>
+</div>
+<script>
+    $('input[name="Name"]').keyup(function () {
+        var Name = @Html.Raw(Json.Serialize(Model.Preference));
+        var name = $(this).val();
+        if (Name == name) {
+            document.getElementById('deleteBtn').disabled = false;
+        } else {
+            document.getElementById('deleteBtn').disabled = true;
+        }
+    });
+</script>

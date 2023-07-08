@@ -1,0 +1,69 @@
+﻿    <!-- Bootstrap core JavaScript-->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/js/sb-admin-2.js"></script>
+    <script src="~/js/custom.js"></script>
+    <script src="~/js/CrudModal.js"></script>
+
+    <!-- Google ReCaptcha Api-->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
+    <script>
+        var cookieValueFromContext  = @Html.Raw(Json.Serialize(Context.Request.Cookies["Theme"]));
+
+        if (cookieValueFromContext != null) {
+            cookieValueFromContext = cookieValueFromContext.substring(0, cookieValueFromContext.indexOf("."));
+        } else {
+            cookieValueFromContext = "primary";
+        }
+        var input = document.getElementById("theme");
+        switch (cookieValueFromContext) {
+            case "primary":
+                input.checked = false;
+                break;
+            case "dark":
+                input.checked = true;
+                break;
+        }
+
+        function getCssClass() {
+            var cookieValue = @Html.Raw(Json.Serialize(Context.Request.Cookies["Theme"]));
+            if (cookieValue != null) {
+                cookieValue = cookieValue.substring(0, cookieValue.indexOf("."));
+            } else {
+                cookieValue = "primary";
+            }
+        var url = "/Home/SetThemeCookie";
+        var userTheme = "";
+            switch (cookieValue) {
+            case "primary":
+                userTheme = "dark"
+                break;
+                case "dark":
+                userTheme = "primary"
+                break;
+
+        }
+            PushThemeCookies(url, userTheme);
+            var theme = document.getElementById('cssSelector');
+        // Change the value of href attribute
+        // to change the css sheet.
+        theme.setAttribute('href', '/css/' + userTheme + '.css');
+        }
+
+    </script>
+
+    <script src="/js/Cruds/Appointments.js"></script>
+        <script>
+        $(document).ready(async function () {
+            await loadScript("/js/afterLoad.js");
+            // Do whatever you want to do after script is ready
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

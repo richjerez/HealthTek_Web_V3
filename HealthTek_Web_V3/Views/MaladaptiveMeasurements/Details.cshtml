@@ -1,0 +1,63 @@
+﻿@model HealthTek_Shared_Libraries.MaladaptiveMeasurements
+
+@{
+    var maladaptives = Model.FkMaladaptives;
+    var name = new string(maladaptives.MaladaptiveName.Where(c => !char.IsWhiteSpace(c)).ToArray());
+    var mal = maladaptives.MaladaptiveMeasurements;
+}
+
+<!-- Card Header - Accordion -->
+<a href="#collapse-@name" class="d-block card-header py-3 collapsed bg-primary" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse-@name">
+    <h6 class="m-0 font-weight-bold text-white">@maladaptives.MaladaptiveName</h6>
+</a>
+<!-- Card Content - Collapse -->
+<div class="collapse" id="collapse-@name">
+    <div class="card-body shadow">
+        <button type="button" onclick="AddEditElements(@mal.MaladaptiveMeasurementsId, 'MaladaptiveMeasurements', false)"
+                class="d-none d-sm-inline-block btn btn-xs btn-primary shadow-sm btn-icon-split d-print-none float-right">
+            <span class="icon text-white-50">
+                <i class="fas fa-edit fa-sm text-white-50"></i>
+            </span>
+            <span class="text align-self-md-center">Update Measurements</span>
+        </button>
+        <h5>@maladaptives.MaladaptiveName</h5>
+
+        @switch (maladaptives.CollectionMethod)
+        {
+            case "Frequency":
+                <span>Frequency: @mal.Frequency</span>
+                break;
+            case "Trials":
+                <span class="d-block">Frequency: @mal.Frequency</span>
+                <span class="d-block">Duration: @mal.Duration</span>
+                break;
+            case "Duration":
+                <span>Frequency: @mal.Frequency</span>
+                <span class="d-block">Duration: @mal.Duration @mal.DurationUnit</span>
+                break;
+        }
+        @{
+            var sto = maladaptives.ShortTermObjectives.Where(m => m.IsCurrent).FirstOrDefault();
+            var lto = maladaptives.LongTermObjectives.Where(m => m.IsCurrent).FirstOrDefault();
+        }
+        <span class="d-block">Interventions Used: @mal.InterventionsUsed</span>
+        @if (sto != null)
+        {
+            <div class="form-group">
+                <label class="control-label">Current Short Term Objective</label>
+                <span class="d-block">@sto.Description</span>
+            </div>
+        }
+        @if (lto != null)
+        {
+            <div class="form-group">
+                <label class="control-label">Current Long Term Objective</label>
+                <span class="d-block">@lto.Description</span>
+            </div>
+        }
+        <div class="form-group">
+            <label class="control-label">Comment</label>
+            <span class="d-block">@mal.MaladaptiveMeasureComment</span>
+        </div>
+    </div>
+</div>

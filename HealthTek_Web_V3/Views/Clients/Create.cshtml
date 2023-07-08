@@ -1,0 +1,315 @@
+﻿@model HealthTek_Shared_Libraries.Clients
+@{
+    ViewData["Title"] = "Create Client";
+    ViewData["ActivePage"] = "Clients";
+
+}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+            <div class="col-md-12">
+                <h6 class="m-0 font-weight-bold text-primary datatitle">
+                    Create Client<i class="fa fa-plus float-right d-md-none d-sm-block" style="color: gray;"></i>
+                </h6>
+            </div>
+        </div>
+    </div>
+    <div class="card-body bg-white">
+        <form asp-action="Create" id="myForm" class="row" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-xl-6 border-right pb-0 pr-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="control-label"></label>
+                            <input asp-for="FirstName" class="form-control" onchange="createChartNumber()" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="MiddleName" class="control-label"></label>
+                            <input asp-for="MiddleName" class="form-control" />
+                            <span asp-validation-for="MiddleName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="LastName" class="control-label"></label>
+                            <input asp-for="LastName" class="form-control" onchange="createChartNumber()" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="MainPhoneNumber" class="control-label"></label>
+                            <input asp-for="MainPhoneNumber" class="form-control" />
+                            <span asp-validation-for="MainPhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="AlternateContactInfo" class="control-label"></label>
+                            <input asp-for="AlternateContactInfo" class="form-control" type="tel" />
+                            <span asp-validation-for="AlternateContactInfo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Dob" class="control-label"></label>
+                            <input asp-for="Dob" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                            <span asp-validation-for="Dob" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Ssn" class="control-label"></label>
+                            <input asp-for="Ssn" class="form-control" />
+                            <span asp-validation-for="Ssn" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                       <div class="form-group">
+                            <label class="control-label" asp-for="AvatarUrl"></label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" asp-for="customFile"
+                                       accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,image/*,.pdf,.docx">
+                                <label class="custom-file-label mb-0" for="customFile">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ListLanguages" class="select-label"></label>
+                            <select asp-for="ListLanguages" class="selectpicker" asp-items="ViewBag.Languages" multiple data-live-search="true">
+                                <option disabled>Select Languages</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Gender" class="select-label d-block">Gender</label>
+                            <select asp-for="Gender" class="selectpicker" data-live-search="false">
+                                <option disabled>Select Gender</option>
+                                <option>Female</option>
+                                <option>Male</option>
+                                <option>Non-Binary</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Religion" class="select-label"></label>
+                            <select asp-for="Religion" class="selectpicker" asp-items="ViewBag.Religions" data-live-search="true">
+                                <option disabled>Select Religion</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Ethnicity" class="select-label"></label>
+                            <select asp-for="Ethnicity" class="selectpicker" asp-items="ViewBag.Ethnicities" data-live-search="true">
+                                <option disabled selected>Select Ethnicity</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Originator" class="control-label"></label>
+                            <input asp-for="Originator" class="form-control" />
+                            <span asp-validation-for="Originator" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="OriginatorContactInfo" class="control-label"></label>
+                            <input asp-for="OriginatorContactInfo" class="form-control" />
+                            <span asp-validation-for="OriginatorContactInfo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 pb-0 pl-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Home Address</label>
+                            <input asp-for="Locations.FirstOrDefault().Address" class="form-control" />
+                            <span asp-validation-for="Locations.FirstOrDefault().Address" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Locations.FirstOrDefault().City" class="select-label"></label>
+                            <select asp-for="Locations.FirstOrDefault().City" asp-items="ViewBag.Cities" class="selectpicker" data-live-search="true">
+                                <option disabled>Select City</option>
+                            </select>
+                            <span asp-validation-for="Locations.FirstOrDefault().City" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Locations.FirstOrDefault().State" class="select-label"></label>
+                            <select asp-for="Locations.FirstOrDefault().State" asp-items="ViewBag.States" class="selectpicker" data-live-search="true">
+                                <option disabled>Select State</option>
+                            </select>
+                            <span asp-validation-for="Locations.FirstOrDefault().State" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Locations.FirstOrDefault().Zipcode" class="control-label"></label>
+                            <input asp-for="Locations.FirstOrDefault().Zipcode" class="form-control" />
+                            <span asp-validation-for="Locations.FirstOrDefault().Zipcode" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="Locations.FirstOrDefault().County" class="select-label"></label>
+                            <select asp-for="Locations.FirstOrDefault().County" class="selectpicker" asp-items="ViewBag.OperatingCounties" data-live-search="true">
+                                <option disabled>Select County</option>
+                            </select>
+                            <span asp-validation-for="Locations.FirstOrDefault().County" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="Locations.FirstOrDefault().Region" class="control-label"></label>
+                            <input asp-for="Locations.FirstOrDefault().Region" class="form-control" />
+                            <span asp-validation-for="Locations.FirstOrDefault().Region" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="ClientsFacilities.FirstOrDefault().FkFacilitiesId" class="select-label"></label>
+                            <select asp-for="ClientsFacilities.FirstOrDefault().FkFacilitiesId" class="selectpicker" asp-items="ViewBag.FkFacilitiesId" data-live-search="true">
+                                <option disabled selected>Select Facility</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="ClientsFacilities.FirstOrDefault().ChartNumber" class="control-label"></label>
+                            <input asp-for="ClientsFacilities.FirstOrDefault().ChartNumber" class="form-control" />
+                            <span asp-validation-for="ClientsFacilities.FirstOrDefault().ChartNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <label asp-for="ClientStatus" class="select-label"></label>
+                            <select asp-for="ClientStatus" class="selectpicker" asp-items="ViewBag.Status" data-live-search="false">
+                                <option disabled>Select Status</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ReferralDate" class="control-label"></label>
+                            <input asp-for="ReferralDate" class="form-control" type="date" asp-format="{0:yyy-MM-dd}" />
+                            <span asp-validation-for="ReferralDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ReferringNpi" class="control-label"></label>
+                            <input asp-for="ReferringNpi" class="form-control" />
+                            <span asp-validation-for="ReferringNpi" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ReferringPhysician" class="control-label"></label>
+                            <input asp-for="ReferringPhysician" class="form-control" />
+                            <span asp-validation-for="ReferringPhysician" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="SchoolName" class="control-label"></label>
+                            <input asp-for="SchoolName" class="form-control" />
+                            <span asp-validation-for="SchoolName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label asp-for="SchoolLevel" class="select-label"> Current/Completed School </label>
+                            <select asp-for="SchoolLevel" class="selectpicker" asp-items="ViewBag.SchoolLevel" data-live-search="false">
+                                <option disabled selected>Select Scool Level</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label asp-for="SchoolPhone" class="control-label"></label>
+                            <input asp-for="SchoolPhone" class="form-control" />
+                            <span asp-validation-for="SchoolPhone" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12">
+                <div class="form-group mr-2 d-inline-block float-left">
+                    <input asp-for="@Model.NeedAbaServices" type="checkbox" onchange="this.value=this.checked" />
+                    <label asp-for="@Model.NeedAbaServices"></label>
+                </div>
+                <div class="form-group mr-2 d-inline-block float-left">
+                    <input asp-for="@Model.NeedClinicalServices" type="checkbox" onchange="this.value=this.checked" />
+                    <label asp-for="@Model.NeedClinicalServices"></label>
+                </div>
+                <div class="form-group m-r-20 text-md-right">
+                    <input type="button" value="Cancel" class="btn btn-outline-cancel float-end"
+                           onclick="location.href='@Url.Action("Index", "Clients")';" />
+                    <input type="button" value="Upload Profile Image" class="btn btn-outline-info disabled mr-2" hidden>
+                    <input type="button" id="submitBtn" value="Create Client" class="btn btn-outline-primary" onclick="getGpsAddress()" />
+                </div>
+            </div>
+            <input asp-for="Locations.FirstOrDefault().GpsLatitude" type="hidden" />
+            <input asp-for="Locations.FirstOrDefault().GpsLongitude" type="hidden" />
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(async function () {
+            await loadScript("/js/Cruds/Clients.js");
+            // Do whatever you want to do after script is ready
+        });
+    </script>
+}

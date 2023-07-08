@@ -1,0 +1,268 @@
+﻿@model HealthTek_Shared_Libraries.Clients
+@{
+    var id = ViewData["ID"];
+}
+
+<div class="card shadow mb-4 p-3">
+    <!-- Card Header - Accordion -->
+    <a href="#collapseMaladaptives" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseMaladaptives">
+        <h6 class="m-0 font-weight-bold text-primary">Maladaptives</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse show" id="collapseMaladaptives" style="">
+        <div class="card-body">
+            @foreach (var behavior in Model.Maladaptives)
+            {
+                var name = new string(behavior.MaladaptiveName.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                <!-- Card Header - Accordion -->
+                <a href="#collapse-@name" class="d-block card-header py-3 collapsed bg-primary" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse-@name">
+                    <h6 class="m-0 font-weight-bold text-white">@behavior.MaladaptiveName</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse" id="collapse-@name">
+                    <div class="card-body shadow">
+                        <div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h6 class="font-weight-bold">
+                                        @behavior.MaladaptiveName
+                                    </h6>
+                                    <small class="text-muted">@behavior.Topography</small>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row no-gutters">
+                                <div class="col-lg-3 border-right pr-3">
+                                    <small>Collection Method</small>
+                                    <span class="d-block">@behavior.CollectionMethod</span>
+                                    <small>Baseline Average</small>
+                                    <span class="d-block">@behavior.BaselineAverage</span>
+                                    <small>@Html.DisplayNameFor(m => behavior.Baseline1)</small>
+                                    <span class="d-block">
+                                        @behavior.Baseline1
+                                    </span>
+                                    <small>@Html.DisplayNameFor(m => behavior.Baseline2)</small>
+                                    <span class="d-block">
+                                        @behavior.Baseline2
+                                    </span>
+                                    <small>@Html.DisplayNameFor(m => behavior.Baseline3)</small>
+                                    <span class="d-block">
+                                        @behavior.Baseline3
+                                    </span>
+                                    <small>Baseline Duration</small>
+                                    @if (behavior.BaselineDuration.HasValue)
+                                    {
+                                        <span class="d-block">@behavior.BaselineDuration.Value @behavior.BaselineDurationUnit</span>
+                                    }
+                                    <small>Intensity</small>
+                                    <span class="d-block">@behavior.MaladaptiveIntensity</span>
+                                    <small>Prevalent Setting Event</small>
+                                    <span class="d-block">@behavior.PrevalentSettingEvent</span>
+                                    <small>Comment</small>
+                                    <span class="d-block">@behavior.MaladaptiveComment</span>
+                                    <small>Functions</small>
+                                    @foreach (var function in behavior.FunctionsList)
+                                    {
+                                        <span class="d-block">- @function.FunctionName</span>
+                                    }
+                                    <hr />
+                                    <div class="text-center">
+                                        <a class="btn btn-outline-secondary mx-1" style="width: fit-content;"
+                                       asp-controller="Maladaptives" asp-action="ArchiveMaladaptive" asp-route-id="@behavior.MaladaptivesId">
+                                            <i class="fas fa-archive"></i>
+                                        </a>
+                                        @*
+                                            <a class="btn btn-outline-primary mx-1"
+                                            onclick="AddEditElements(@behavior.MaladaptivesId, 'Maladaptives', false, @behavior.FkBaAssessmentsId)"
+                                            style="width: fit-content;" href="#">
+                                            <i class="fas fa-edit"></i>
+                                            </a>
+                                        *@
+                                        <a class="btn btn-outline-info mx-1" asp-controller="MaladaptiveMeasurements" asp-action="Index"
+                                        asp-route-id="@behavior.MaladaptivesId" style="width: fit-content;">    
+                                        <i class="fas fa-chart-bar"></i>
+                                        </a>
+                                        @*
+                                            <a class="btn btn-outline-danger mx-1" style="width: fit-content;"
+                                            onclick="DeleteElement(@behavior.MaladaptivesId, 'Maladaptives')" href="#">
+                                            <i class="fas fa-trash"></i>
+                                            </a>
+                                        *@
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 p-3">
+                                    @foreach (var sto in behavior.ShortTermObjectives)
+                                    {
+                                        await Html.RenderPartialAsync("~/Views/ShortTermObjectives/Details.cshtml", sto);
+                                    }
+
+                                    @foreach (var lto in behavior.LongTermObjectives)
+                                    {
+                                        await Html.RenderPartialAsync("~/Views/LongTermObjectives/Details.cshtml", lto);
+                                    }
+                                    <div class="d-flex justify-content-center mt-4">
+                                        <button class="btn btn-info mr-2" onclick="AddEditElements(0, 'LongTermObjectives', false, @behavior.MaladaptivesId, 'Maladaptive')">
+                                            <small>Add LTO</small>
+                                        </button>
+                                        <button class="btn btn-primary" onclick="AddEditElements(0,'ShortTermObjectives', false, @behavior.MaladaptivesId, 'Maladaptive')">
+                                            <small>Add STO</small>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                if (behavior.FkReplacements != null)
+                {
+                    var replacement = behavior.FkReplacements;
+                    name = new string(replacement.ReplacementName.Where(c => !char.IsWhiteSpace(c)).ToArray());
+                    <!-- Card Header - Accordion -->
+                    <a href="#collapse-@name" class="d-block card-header py-3 collapsed bg-danger" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapse-@name">
+                        <h6 class="m-0 font-weight-bold text-white">@behavior.MaladaptiveName (Replacement)</h6>
+                    </a>
+                    <!-- Card Content - Collapse -->
+                    <div class="collapse" id="collapse-@name">
+                        <div class="card-body shadow">
+                            <div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h6 class="font-weight-bold">
+                                            @replacement.ReplacementName
+                                        </h6>
+                                        <small class="text-muted">@replacement.Barrier</small>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col-lg-3 border-right pr-3">
+                                        <small>Collection Method</small>
+                                        <span class="d-block">@replacement.CollectionMethod</span>
+                                        <small>Baseline Average</small>
+                                        <span class="d-block">@replacement.BaselineAverage</span>
+                                        <small>@Html.DisplayNameFor(m => replacement.Baseline1)</small>
+                                        <span class="d-block">
+                                            @replacement.Baseline1
+                                        </span>
+                                        <small>@Html.DisplayNameFor(m => behavior.Baseline2)</small>
+                                        <span class="d-block">
+                                            @replacement.Baseline2
+                                        </span>
+                                        <small>@Html.DisplayNameFor(m => behavior.Baseline3)</small>
+                                        <span class="d-block">
+                                            @replacement.Baseline3
+                                        </span>
+                                        <small>Baseline Duration</small>
+                                        @if (replacement.BaselineDuration.HasValue)
+                                        {
+                                            <span class="d-block">@replacement.BaselineDuration.Value</span>
+                                        }
+                                        <small>Prompt Level</small>
+                                        <span class="d-block">@replacement.PromptLevel</span>
+                                        <small>Comment</small>
+                                        <span class="d-block">@replacement.ReplacementComment</span>
+                                        <hr />
+                                        <div class="text-center">
+                                            <a class="btn btn-outline-secondary mx-1" style="width: fit-content;" asp-controller="Replacements" asp-action="ArchiveReplacements" asp-route-id="@replacement.ReplacementsId">
+                                                <i class="fas fa-archive"></i>
+                                            </a>
+                                            @*
+                                                <a class="btn btn-outline-primary mx-1"
+                                                onclick="AddEditElements(@behavior.MaladaptivesId, 'Maladaptives', false, @behavior.FkBaAssessmentsId)"
+                                                style="width: fit-content;" href="#">
+                                                <i class="fas fa-edit"></i>
+                                                </a>
+                                            *@
+                                        <a class="btn btn-outline-info mx-1" asp-controller="ReplacementMeasurements" asp-action="Index"
+                                        asp-route-id="@replacement.ReplacementsId" style="width: fit-content;">    
+                                        <i class="fas fa-chart-bar"></i>
+                                        </a>
+                                            @*
+                                                <a class="btn btn-outline-danger mx-1" style="width: fit-content;"
+                                                onclick="DeleteElement(@behavior.MaladaptivesId, 'Maladaptives')" href="#">
+                                                <i class="fas fa-trash"></i>
+                                                </a>
+                                            *@
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-9 p-3">
+                                        @foreach (var sto in behavior.ShortTermObjectives)
+                                        {
+                                            await Html.RenderPartialAsync("~/Views/ShortTermObjectives/Details.cshtml", sto);
+                                        }
+
+                                        @foreach (var lto in behavior.LongTermObjectives)
+                                        {
+                                            await Html.RenderPartialAsync("~/Views/LongTermObjectives/Details.cshtml", lto);
+                                        }
+                                        <div class="d-flex justify-content-center mt-4">
+                                            <button class="btn btn-info mr-2" onclick="AddEditElements(0,'LongTermObjectives', false, @replacement.ReplacementsId, 'Replacement')">
+                                                <small>Add LTO</small>
+                                            </button>
+                                            <button class="btn btn-primary" onclick="AddEditElements(0,'ShortTermObjectives', false, @replacement.ReplacementsId, 'Replacement')">
+                                                <small>Add STO</small>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+        </div>
+    </div>
+    <!-- Card Header - Accordion -->
+    <a href="#collapsePreferences" class="d-block card-header py-3 collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsePreferences">
+        <h6 class="m-0 font-weight-bold text-primary">Preferences</h6>
+    </a>
+    <!-- Card Content - Collapse -->
+    <div class="collapse" id="collapsePreferences" style="">
+        <div class="card-body">
+            <button class="btn btn-primary float-right" onclick="AddEditElements(0, 'Preferences', false,@id)">
+                New Preference
+            </button>
+            <div class="table-responsive">
+                <table class="table" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Preference</th>
+                            <th>Source</th>
+                            <th>Reinforcer</th>
+                            <th>Description</th>
+                            <th data-orderable="false" class="d-print-none"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Preferences)
+                        {
+                            <tr ondblclick="AddEditElements(@item.PreferencesId,'Preferences')">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Preference)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Source)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FkReinforcersCatalog.ReinforcerName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FkReinforcersCatalog.ReinforcerDescription)
+                                </td>
+                                <td class="text-right d-print-none">
+                                    <button onclick="DeleteElement('@item.PreferencesId', 'Preferences')" href="#" class="btn btn-outline-danger ">
+                                        <span class="text">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
