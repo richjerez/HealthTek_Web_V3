@@ -781,7 +781,6 @@ function AddEditElements(itemId, ItemClass, details, optionalClass,optionalParam
                     break;
             }
             break;
-
     }
     if (details) {
         url = "/" + ItemClass + "/Details/" + itemId;

@@ -448,7 +448,6 @@ namespace HealthTek_Web_V3.Controllers.ClientControllers
                 _context.Clients.Update(clients);
                 await _context.SaveChangesAsync();
 
-
                 return RedirectToAction(nameof(Index));
             }
             ExternalLists externalLists = new ExternalLists();
@@ -471,7 +470,6 @@ namespace HealthTek_Web_V3.Controllers.ClientControllers
                     {
                         item.Selected = true;
                     }
-
                 }
             }
             ViewData["Languages"] = langs;
